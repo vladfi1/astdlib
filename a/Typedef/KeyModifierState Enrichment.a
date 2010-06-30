@@ -4,19 +4,19 @@ package a.natives;
 * @author tolleder
 */
 
-typedef keyModifierState uses int;
-enrich keyModifierState
+typedef KeyModifierState uses int;
+enrich KeyModifierState
 {
     /**
     *       It does not matter whether the key is pressed or not.
     */
-    public const static keyModifierState IGNORE=(keyModifierState)c_keyModifierStateIgnore;
+    public const static KeyModifierState IGNORE=(KeyModifierState)c_keyModifierStateIgnore;
     /**
     *       The trigger will only fire if the key is pressed.
     */
-    public const static keyModifierState REQUIRE=(keyModifierState)c_keyModifierStateRequire;
+    public const static KeyModifierState REQUIRE=(KeyModifierState)c_keyModifierStateRequire;
     /**
     *       The trigger will not fire if the key is pressed.
     */
-    public const static keyModifierState EXCLUDE=(keyModifierState)c_keyModifierStateExclude;
+    public const static KeyModifierState EXCLUDE=(KeyModifierState)c_keyModifierStateExclude;
 }

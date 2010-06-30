@@ -3,20 +3,20 @@ package a.natives;
 *	Definition and enrichment for difficulty type
 *	@author NewName
 */
-typedef difficulty uses int;
+typedef Difficulty uses int;
 
-public enrich difficulty
+public enrich Difficulty
 {
-	public static const difficulty 
-		VERY_EASY = (difficulty)(0),	// I've confirmed very easy, the rest are speculation -NewName
+	public static const Difficulty 
+		VERY_EASY = (Difficulty)(0),	// I've confirmed very easy, the rest are speculation -NewName
 
 
-		EASY = (difficulty)(1),
-		MEDIUM = (difficulty)(2),	// looking at bliz's code, this seems to be the case
+		EASY = (Difficulty)(1),
+		MEDIUM = (Difficulty)(2),	// looking at bliz's code, this seems to be the case
 
 
-		HARD = (difficulty)(3),
-		VERY_HARD = (difficulty)(4);	// ???
+		HARD = (Difficulty)(3),
+		VERY_HARD = (Difficulty)(4);	// ???
 
 
 

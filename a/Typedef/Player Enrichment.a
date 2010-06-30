@@ -1,15 +1,15 @@
 package a.natives;
-import a.natives.difficulty;
+import a.natives.Difficulty;
 
 /**  
 *	Definition and enrichment for player type.
 *	@author NewName
 */
-typedef player uses int;
+typedef Player uses int;
 
-public enrich player
+public enrich Player
 {
-	public static const player ANY = (player)(-1);
+	public static const Player ANY = (Player)(-1);
 
 	/**
 	*	The player's current credits.
@@ -362,7 +362,7 @@ public enrich player
 	*	@param target the player who will or will not be able to see this player's allied chat.
 	*	@param state true if allied chat should be shared, false otherwise.
 	*/
-	public void setAlliedChat(player target, bool state)
+	public void setAlliedChat(Player target, bool state)
 	{
 		PlayerSetAlliance((int)this, c_allianceIdChat, (int)target, state);
 	}
@@ -372,7 +372,7 @@ public enrich player
 	*	@param target the player to check.
 	*	@return true if allied chat is shared, false otherwise.
 	*/
-	public bool getAlliedChat(player target)
+	public bool getAlliedChat(Player target)
 	{
 		return PlayerGetAlliance((int)this, c_allianceIdChat, (int)target);
 	}
@@ -382,7 +382,7 @@ public enrich player
 	*	@param target the player seeking help.
 	*	@param state true if giving help is allowed, false otherwise.
 	*/
-	public void setGiveHelp(player target, bool state)
+	public void setGiveHelp(Player target, bool state)
 	{
 		PlayerSetAlliance((int)this, c_allianceIdGiveHelp, (int)target, state);
 	}
@@ -392,7 +392,7 @@ public enrich player
 	*	@param target the player to check.
 	*	@return true true if help can be given, false otherwise.
 	*/
-	public bool getGiveHelp(player target)
+	public bool getGiveHelp(Player target)
 	{
 		return PlayerGetAlliance((int)this, c_allianceIdGiveHelp, (int)target);
 	}
@@ -402,7 +402,7 @@ public enrich player
 	*	@param target the target player
 	*	@param state true if this player's units should be passive, false otherwise.
 	*/
-	public void setPassive(player target, bool state)
+	public void setPassive(Player target, bool state)
 	{
 		PlayerSetAlliance((int)this, c_allianceIdPassive, (int)target, state);
 	}
@@ -412,7 +412,7 @@ public enrich player
 	*	@param target the target player to check.
 	*	@return true true if this player's units are passive, false otherwise.
 	*/
-	public bool getPassive(player target)
+	public bool getPassive(Player target)
 	{
 		return PlayerGetAlliance((int)this, c_allianceIdPassive, (int)target);
 	}
@@ -422,7 +422,7 @@ public enrich player
 	*	@param target the player who will be able to push this player's units around.
 	*	@param state true if units should be pushable, false otherwise.
 	*/
-	public void setPushable(player target, bool state)
+	public void setPushable(Player target, bool state)
 	{
 		PlayerSetAlliance((int)this, c_allianceIdPushable, (int)target, state);
 	}
@@ -432,7 +432,7 @@ public enrich player
 	*	@param target the player to check.
 	*	@return true true if units are pushable, false otherwise.
 	*/
-	public bool getPushable(player target)
+	public bool getPushable(Player target)
 	{
 		return PlayerGetAlliance((int)this, c_allianceIdPushable, (int)target);
 	}
@@ -442,7 +442,7 @@ public enrich player
 	*	@param target the player to receive the help requests.
 	*	@param state true if seeking help is allowed, false otherwise.
 	*/
-	public void setSeekHelp(player target, bool state)
+	public void setSeekHelp(Player target, bool state)
 	{
 		PlayerSetAlliance((int)this, c_allianceIdSeekHelp, (int)target, state);
 	}
@@ -452,7 +452,7 @@ public enrich player
 	*	@param target the target player.
 	*	@return true true if help can be sought, false otherwise.
 	*/
-	public bool getSeekHelp(player target)
+	public bool getSeekHelp(Player target)
 	{
 		return PlayerGetAlliance((int)this, c_allianceIdSeekHelp, (int)target);
 	}
@@ -462,7 +462,7 @@ public enrich player
 	*	@param target the player who can control this player's units.
 	*	@param state true if unit control should be shared, false otherwise.
 	*/
-	public void setSharedControl(player target, bool state)
+	public void setSharedControl(Player target, bool state)
 	{
 		PlayerSetAlliance((int)this, c_allianceIdControl, (int)target, state);
 	}
@@ -472,7 +472,7 @@ public enrich player
 	*	@param target the target player.
 	*	@return true true if unit control is shared, false otherwise.
 	*/
-	public bool getSharedControl(player target)
+	public bool getSharedControl(Player target)
 	{
 		return PlayerGetAlliance((int)this, c_allianceIdControl, (int)target);
 	}
@@ -482,7 +482,7 @@ public enrich player
 	*	@param target the player to share defeat with.
 	*	@param state true if defeat should be shared, false otherwise.
 	*/
-	public void setSharedDefeat(player target, bool state)
+	public void setSharedDefeat(Player target, bool state)
 	{
 		PlayerSetAlliance((int)this, c_allianceIdDefeat, (int)target, state);
 	}
@@ -492,7 +492,7 @@ public enrich player
 	*	@param target the target player.
 	*	@return true true if defeat is shared, false otherwise.
 	*/
-	public bool getSharedDefeat(player target)
+	public bool getSharedDefeat(Player target)
 	{
 		return PlayerGetAlliance((int)this, c_allianceIdDefeat, (int)target);
 	}
@@ -502,7 +502,7 @@ public enrich player
 	*	@param target the player to share vision with.
 	*	@param state true if map vision should be shared, false otherwise.
 	*/
-	public void setSharedVision(player target, bool state)
+	public void setSharedVision(Player target, bool state)
 	{
 		PlayerSetAlliance((int)this, c_allianceIdVision, (int)target, state);
 	}
@@ -512,7 +512,7 @@ public enrich player
 	*	@param target the target player.
 	*	@return true true if map vision is shared, false otherwise.
 	*/
-	public bool getSharedVision(player target)
+	public bool getSharedVision(Player target)
 	{
 		return PlayerGetAlliance((int)this, c_allianceIdVision, (int)target);
 	}
@@ -522,7 +522,7 @@ public enrich player
 	*	@param target the player who can spend this player's resources.
 	*	@param state true if spending resources should be allowed, false otherwise.
 	*/
-	public void setSpendResources(player target, bool state)
+	public void setSpendResources(Player target, bool state)
 	{
 		PlayerSetAlliance((int)this, c_allianceIdSpend, (int)target, state);
 	}
@@ -532,7 +532,7 @@ public enrich player
 	*	@param target the target player.
 	*	@return true true if spending resources is allowed, false otherwise.
 	*/
-	public bool getSpendResources(player target)
+	public bool getSpendResources(Player target)
 	{
 		return PlayerGetAlliance((int)this, c_allianceIdSpend, (int)target);
 	}
@@ -542,7 +542,7 @@ public enrich player
 	*	@param target the target of resource trading.
 	*	@param state true if trading resources should be allowed, false otherwise.
 	*/
-	public void setTradeResources(player target, bool state)
+	public void setTradeResources(Player target, bool state)
 	{
 		PlayerSetAlliance((int)this, c_allianceIdTrade, (int)target, state);
 	}
@@ -552,7 +552,7 @@ public enrich player
 	*	@param target the target player.
 	*	@return true true if trading resources is allowed, false otherwise.
 	*/
-	public bool getTradeResources(player target)
+	public bool getTradeResources(Player target)
 	{
 		return PlayerGetAlliance((int)this, c_allianceIdTrade, (int)target);
 	}

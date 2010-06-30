@@ -1,7 +1,7 @@
 package a.natives;
-import a.natives.player;
-import a.natives.key;
-import a.natives.keyModifierState;
+import a.natives.Player;
+import a.natives.Key;
+import a.natives.KeyModifierState;
 
 /*
 *	Enrichment for native type 'trigger'
@@ -844,7 +844,7 @@ public enrich trigger
 	*	@param control whether the control key has to be pressed in addition to the key
 	*	@param alt whether the shift alt has to be pressed in addition to the key
 	*/
-	public void addEventKeyPressed(player player, key key, bool down, keyModifierState shift, keyModifierState control, keyModifierState alt)
+	public void addEventKeyPressed(Player player, Key key, bool down, KeyModifierState shift, KeyModifierState control, KeyModifierState alt)
 	{
 		TriggerAddEventKeyPressed(this, (int)player, (int) key, down, (int)shift, (int)control, (int)alt);
 	}

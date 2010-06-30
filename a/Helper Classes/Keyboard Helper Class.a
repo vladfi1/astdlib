@@ -1,9 +1,9 @@
 package a.natives;
-import a.natives.trigger;
-import a.natives.player;
-import a.natives.key;
-import a.natives.keyModifierState;
-import a.natives.trigger;
+import a.natives.Trigger;
+import a.natives.Player;
+import a.natives.Key;
+import a.natives.KeyModifierState;
+import a.natives.Trigger;
 
 /**
 * Helper class to determine if a player is pressing a key
@@ -43,8 +43,8 @@ public static class Keyboard
                 keyDown[p][k]=false;
             }
         }
-        keyDownTrigger.addEventKeyPressed( player.ANY, key.KEY_ANY, true, keyModifierState.IGNORE, keyModifierState.IGNORE, keyModifierState.IGNORE);
-        keyUpTrigger.addEventKeyPressed( player.ANY, key.KEY_ANY, false, keyModifierState.IGNORE, keyModifierState.IGNORE, keyModifierState.IGNORE);
+        keyDownTrigger.addEventKeyPressed( Player.ANY, Key.KEY_ANY, true, KeyModifierState.IGNORE, KeyModifierState.IGNORE, KeyModifierState.IGNORE);
+        keyUpTrigger.addEventKeyPressed( Player.ANY, Key.KEY_ANY, false, KeyModifierState.IGNORE, KeyModifierState.IGNORE, KeyModifierState.IGNORE);
     }
 
     /**
@@ -53,7 +53,7 @@ public static class Keyboard
     *       @param key the key to check
     *       @returns true if the player is pressing the key, otherwise false
     */
-    public static bool isKeyDown(player player, key key)
+    public static bool isKeyDown(Player player, Key key)
     {
         return keyDown[(int)player][(int)key];
     }

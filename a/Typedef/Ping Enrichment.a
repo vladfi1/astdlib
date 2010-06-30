@@ -3,9 +3,9 @@ package a.natives;
 *	Definition and enrichment for ping type
 *	@author NewName
 */
-typedef ping uses int;
+typedef Ping uses int;
 
-public enrich ping
+public enrich Ping
 {
 	/**
 	*	Utility function to create a standard ping on the minimap. This ping cannot be modified after it is created.
@@ -20,7 +20,7 @@ public enrich ping
 		MinimapPing (playergroup players, point position, fixed duration, color c);
 	}
 	
-	public static const ping INVALID_PING = (ping)c_invalidPingId;
+	public static const Ping INVALID_PING = (Ping)c_invalidPingId;
 	
 	/**
 	*	Create a ping with the specified customisations.
@@ -31,7 +31,7 @@ public enrich ping
 	*	@param duration the duration that this ping lasts.
 	*	@return a ping instance with the specified attributes.
 	*/
-	public static ping create(playergroup players, string modelLink, point position, color c, fixed duration)
+	public static Ping create(playergroup players, string modelLink, point position, color c, fixed duration)
 	{
 		return PingCreate (playergroup players, string modelLink, point position, color c, fixed duration);
 	}
