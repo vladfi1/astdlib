@@ -1,0 +1,116 @@
+package a.natives;
+/**
+* Definition and enrichment for type 'key'
+* @author tolleder
+*/
+
+typedef key uses int;
+enrich key
+{
+    /**
+    *       If this constant is used in addEventKeyPressed the trigger will be executed for every key
+    *       press/release fulfilling the other filters.
+    */
+    public static const key KEY_ANY = (key)c_keyNone;
+
+    public static const key KEY_NONE = (key)c_keyNone;
+    public static const key KEY_SHIFT = (key)c_keyShift;
+    public static const key KEY_CONTROL = (key)c_keyControl;
+    public static const key KEY_ALT = (key)c_keyAlt;
+    public static const key KEY_0 = (key)c_key0;
+    public static const key KEY_1 = (key)c_key1;
+    public static const key KEY_2 = (key)c_key2;
+    public static const key KEY_3 = (key)c_key3;
+    public static const key KEY_4 = (key)c_key4;
+    public static const key KEY_5 = (key)c_key5;
+    public static const key KEY_6 = (key)c_key6;
+    public static const key KEY_7 = (key)c_key7;
+    public static const key KEY_8 = (key)c_key8;
+    public static const key KEY_9 = (key)c_key9;
+    public static const key KEY_A = (key)c_keyA;
+    public static const key KEY_B = (key)c_keyB;
+    public static const key KEY_C = (key)c_keyC;
+    public static const key KEY_D = (key)c_keyD;
+    public static const key KEY_E = (key)c_keyE;
+    public static const key KEY_F = (key)c_keyF;
+    public static const key KEY_G = (key)c_keyG;
+    public static const key KEY_H = (key)c_keyH;
+    public static const key KEY_I = (key)c_keyI;
+    public static const key KEY_J = (key)c_keyJ;
+    public static const key KEY_K = (key)c_keyK;
+    public static const key KEY_L = (key)c_keyL;
+    public static const key KEY_M = (key)c_keyM;
+    public static const key KEY_N = (key)c_keyN;
+    public static const key KEY_O = (key)c_keyO;
+    public static const key KEY_P = (key)c_keyP;
+    public static const key KEY_Q = (key)c_keyQ;
+    public static const key KEY_R = (key)c_keyR;
+    public static const key KEY_S = (key)c_keyS;
+    public static const key KEY_T = (key)c_keyT;
+    public static const key KEY_U = (key)c_keyU;
+    public static const key KEY_V = (key)c_keyV;
+    public static const key KEY_W = (key)c_keyW;
+    public static const key KEY_X = (key)c_keyX;
+    public static const key KEY_Y = (key)c_keyY;
+    public static const key KEY_Z = (key)c_keyZ;
+    public static const key KEY_SPACE = (key)c_keySpace;
+    public static const key KEY_GRAVE = (key)c_keyGrave;
+    public static const key KEY_NUMPAD0 = (key)c_keyNumPad0;
+    public static const key KEY_NUMPAD1 = (key)c_keyNumPad1;
+    public static const key KEY_NUMPAD2 = (key)c_keyNumPad2;
+    public static const key KEY_NUMPAD3 = (key)c_keyNumPad3;
+    public static const key KEY_NUMPAD4 = (key)c_keyNumPad4;
+    public static const key KEY_NUMPAD5 = (key)c_keyNumPad5;
+    public static const key KEY_NUMPAD6 = (key)c_keyNumPad6;
+    public static const key KEY_NUMPAD7 = (key)c_keyNumPad7;
+    public static const key KEY_NUMPAD8 = (key)c_keyNumPad8;
+    public static const key KEY_NUMPAD9 = (key)c_keyNumPad9;
+    public static const key KEY_NUMPADPLUS = (key)c_keyNumPadPlus;
+    public static const key KEY_NUMPADMINUS = (key)c_keyNumPadMinus;
+    public static const key KEY_NUMPADMULTIPLY = (key)c_keyNumPadMultiply;
+    public static const key KEY_NUMPADDIVIDE = (key)c_keyNumPadDivide;
+    public static const key KEY_NUMPADDECIMAL = (key)c_keyNumPadDecimal;
+    public static const key KEY_EQUALS = (key)c_keyEquals;
+    public static const key KEY_MINUS = (key)c_keyMinus;
+    public static const key KEY_BRACKETOPEN = (key)c_keyBracketOpen;
+    public static const key KEY_BRACKETCLOSE = (key)c_keyBracketClose;
+    public static const key KEY_BACKSLASH = (key)c_keyBackSlash;
+    public static const key KEY_SEMICOLON = (key)c_keySemiColon;
+    public static const key KEY_APOSTROPHE = (key)c_keyApostrophe;
+    public static const key KEY_COMMA = (key)c_keyComma;
+    public static const key KEY_PERIOD = (key)c_keyPeriod;
+    public static const key KEY_SLASH = (key)c_keySlash;
+    public static const key KEY_ESCAPE = (key)c_keyEscape;
+    public static const key KEY_ENTER = (key)c_keyEnter;
+    public static const key KEY_BACKSPACE = (key)c_keyBackSpace;
+    public static const key KEY_TAB = (key)c_keyTab;
+    public static const key KEY_LEFT = (key)c_keyLeft;
+    public static const key KEY_UP = (key)c_keyUp;
+    public static const key KEY_RIGHT = (key)c_keyRight;
+    public static const key KEY_DOWN = (key)c_keyDown;
+    public static const key KEY_INSERT = (key)c_keyInsert;
+    public static const key KEY_DELETE = (key)c_keyDelete;
+    public static const key KEY_HOME = (key)c_keyHome;
+    public static const key KEY_END = (key)c_keyEnd;
+    public static const key KEY_PAGEUP = (key)c_keyPageUp;
+    public static const key KEY_PAGEDOWN = (key)c_keyPageDown;
+    public static const key KEY_CAPSLOCK = (key)c_keyCapsLock;
+    public static const key KEY_NUMLOCK = (key)c_keyNumLock;
+    public static const key KEY_SCROLLLOCK = (key)c_keyScrollLock;
+    public static const key KEY_PAUSE = (key)c_keyPause;
+    public static const key KEY_PRINTSCREEN = (key)c_keyPrintScreen;
+    public static const key KEY_NEXTTRACK = (key)c_keyNextTrack;
+    public static const key KEY_PREVTRACK = (key)c_keyPrevTrack;
+    public static const key KEY_F1 = (key)c_keyF1;
+    public static const key KEY_F2 = (key)c_keyF2;
+    public static const key KEY_F3 = (key)c_keyF3;
+    public static const key KEY_F4 = (key)c_keyF4;
+    public static const key KEY_F5 = (key)c_keyF5;
+    public static const key KEY_F6 = (key)c_keyF6;
+    public static const key KEY_F7 = (key)c_keyF7;
+    public static const key KEY_F8 = (key)c_keyF8;
+    public static const key KEY_F9 = (key)c_keyF9;
+    public static const key KEY_F10 = (key)c_keyF10;
+    public static const key KEY_F11 = (key)c_keyF11;
+    public static const key KEY_F12 = (key)c_keyF12;
+}

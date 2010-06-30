@@ -1,0 +1,60 @@
+package a.natives;
+import a.natives.trigger;
+import a.natives.player;
+import a.natives.key;
+import a.natives.keyModifierState;
+import a.natives.trigger;
+
+/**
+* Helper class to determine if a player is pressing a key
+* @author tolleder
+*/
+
+public static class Keyboard
+{
+    private static const int KEY_COUNT=99;
+    private static bool[16][KEY_COUNT] keyDown;
+    private static trigger keyDownTrigger=trigger.create(onKeyDown.name);
+    private static trigger keyUpTrigger=trigger.create(onKeyUp.name);
+    private static bool onKeyDown (bool testConditions, bool runActions)
+    {
+        if (!runActions) {
+            return true;
+        }
+        
+        keyDown[EventPlayer()][EventKeyPressed()]=true;
+        return true;
+    }
+    private static bool onKeyUp (bool testConditions, bool runActions)
+    {
+        if (!runActions) {
+            return true;
+        }
+        
+        keyDown[EventPlayer()][EventKeyPressed()]=false;
+        return true;
+    }
+    static
+    {
+        for(int p=0;p<16;p++)
+        {
+            for(int k=0;k<KEY_COUNT;k++)
+            {
+                keyDown[p][k]=false;
+            }
+        }
+        keyDownTrigger.addEventKeyPressed( player.ANY, key.KEY_ANY, true, keyModifierState.IGNORE, keyModifierState.IGNORE, keyModifierState.IGNORE);
+        keyUpTrigger.addEventKeyPressed( player.ANY, key.KEY_ANY, false, keyModifierState.IGNORE, keyModifierState.IGNORE, keyModifierState.IGNORE);
+    }
+
+    /**
+    *       Returns whether the player is pressing the key.
+    *       @param player the player whose key status should be checked.
+    *       @param key the key to check
+    *       @returns true if the player is pressing the key, otherwise false
+    */
+    public static bool isKeyDown(player player, key key)
+    {
+        return keyDown[(int)player][(int)key];
+    }
+}
