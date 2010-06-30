@@ -1,0 +1,130 @@
+package a.natives;
+/*
+*	Enrichment for native type 'actor'
+*	@author Still needs one!
+*/
+
+public enrich actor
+{
+	/**
+	*	Description here.
+	*	@return Returns a actorscope.
+	*/
+	public actorscope scopeFromActor()
+	{
+		return ActorScopeFromActor(this);
+	}
+
+	/**
+	*	Description here.
+	*	@param p2 Unknown string.
+	*	@return Returns a actor.
+	*/
+	public actor fromActor(string p2)
+	{
+		return ActorFromActor(this, p2);
+	}
+
+	/**
+	*	Description here.
+	*	@return Returns a text.
+	*/
+	public text getText()
+	{
+		return ActorGetText(this);
+	}
+
+	/**
+	*	Description here.
+	*	@param p2 Unknown string.
+	*	@return Returns a actor.
+	*/
+	public actor refGet(string p2)
+	{
+		return ActorRefGet(this, p2);
+	}
+
+	/**
+	*	Description here.
+	*	@param p2 Unknown string.
+	*	@param p3 Unknown actor.
+	*/
+	public void refSet(string p2, actor p3)
+	{
+		ActorRefSet(this, p2, p3);
+	}
+
+	/**
+	*	Description here.
+	*	@param p2 Unknown string.
+	*/
+	public void send(string p2)
+	{
+		ActorSend(this, p2);
+	}
+
+	/**
+	*	Description here.
+	*	@param p2 Unknown string.
+	*	@param p3 Unknown string.
+	*/
+	public void sendTo(string p2, string p3)
+	{
+		ActorSendTo(this, p2, p3);
+	}
+
+	/**
+	*	Description here.
+	*	@param p2 Unknown string.
+	*	@param p3 Unknown int.
+	*	@param p4 Unknown fixed.
+	*	@param p5 Unknown actor.
+	*/
+	public void lookAtStart(string p2, int p3, fixed p4, actor p5)
+	{
+		ActorLookAtStart(this, p2, p3, p4, p5);
+	}
+
+	/**
+	*	Description here.
+	*	@param p2 Unknown string.
+	*	@param p3 Unknown int.
+	*	@param p4 Unknown fixed.
+	*/
+	public void lookAtStop(string p2, int p3, fixed p4)
+	{
+		ActorLookAtStop(this, p2, p3, p4);
+	}
+
+	/**
+	*	Description here.
+	*	@param p2 Unknown string.
+	*	@param p3 Unknown actor.
+	*/
+	public void lookAtTypeStart(string p2, actor p3)
+	{
+		ActorLookAtTypeStart(this, p2, p3);
+	}
+
+	/**
+	*	Description here.
+	*	@param p2 Unknown string.
+	*/
+	public void lookAtTypeStop(string p2)
+	{
+		ActorLookAtTypeStop(this, p2);
+	}
+
+	/**
+	*	Description here.
+	*	@param p2 Unknown int.
+	*	@param p3 Unknown string.
+	*	@param p4 Unknown string.
+	*	@param p5 Unknown string.
+	*/
+	public void regionSend(int p2, string p3, string p4, string p5)
+	{
+		ActorRegionSend(this, p2, p3, p4, p5);
+	}
+
+}

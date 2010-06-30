@@ -1,0 +1,57 @@
+package a.natives;
+/**
+*Enrichment for native type 'color'
+*/
+
+public enrich color
+{
+
+	/**
+	*	Red component.
+	*	Need some testing.
+	*/
+	public fixed r
+	{
+		public get 
+		{
+			return ColorGetComponent(this, c_colorComponentRed);
+		}
+		public set
+		{
+			this = color(value, ColorGetComponent(this, c_colorComponentGreen), ColorGetComponent(this, c_colorComponentBlue));
+		}
+	}
+
+	/**
+	*	Green component.
+	*	Need some testing.
+	*/
+	public fixed g
+	{
+		public get 
+		{
+			return ColorGetComponent(this, c_colorComponentGreen);
+		}
+		public set
+		{
+			this = color(ColorGetComponent(this, c_colorComponentRed), value, ColorGetComponent(this,  c_colorComponentBlue));
+		}
+	}
+
+	/**
+	*	Blue component.
+	*	Need some testing.
+	*/
+	public fixed b
+	{
+		public get 
+		{
+			return ColorGetComponent(this, c_colorComponentBlue);
+		}
+		public set
+		{
+			this = color(ColorGetComponent(this,  c_colorComponentRed), ColorGetComponent(this, c_colorComponentGreen), value);
+		}
+	}
+
+}
