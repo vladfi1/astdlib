@@ -1,5 +1,5 @@
 package a.natives;
-/*
+/**
 *	Enrichment for native type 'string'
 *	@author geX
 */
