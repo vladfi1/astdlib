@@ -1,9 +1,8 @@
-package a.natives;
+package a.util;
 import a.natives.Trigger;
 import a.natives.Player;
-import a.natives.Key;
-import a.natives.KeyModifierState;
-import a.natives.Trigger;
+import a.util.Key;
+import a.util.KeyModifierState;
 
 /**
 * Helper class to determine if a player is pressing a key

@@ -1,7 +1,7 @@
 package a.natives;
 import a.natives.Player;
-import a.natives.Key;
-import a.natives.KeyModifierState;
+import a.util.Key;
+import a.util.KeyModifierState;
 
 /*
 *	Enrichment for native type 'trigger'

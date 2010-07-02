@@ -17,7 +17,7 @@ public enrich Ping
 	*/
 	public static void ping(playergroup players, point position, fixed duration, color c)
 	{
-		MinimapPing (playergroup players, point position, fixed duration, color c);
+		MinimapPing (players, position, duration, c);
 	}
 	
 	public static const Ping INVALID_PING = (Ping)c_invalidPingId;
@@ -33,7 +33,7 @@ public enrich Ping
 	*/
 	public static Ping create(playergroup players, string modelLink, point position, color c, fixed duration)
 	{
-		return PingCreate (playergroup players, string modelLink, point position, color c, fixed duration);
+		return (Ping)PingCreate (players, modelLink, position, c, duration);
 	}
 	
 	/**

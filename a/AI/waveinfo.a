@@ -1,4 +1,4 @@
-package a.natives;
+package a.ai;
 /*
 *	Enrichment for native type 'waveinfo'
 *	@author Still needs one!

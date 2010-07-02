@@ -309,10 +309,10 @@ public enrich Player
 	/**
 	*	The difficulty level that the player has selected.
 	*/
-	public difficulty difficultyLevel
+	public Difficulty difficultyLevel
 	{
 		public get {
-			return (difficulty)PlayerDifficulty((int)this);
+			return (Difficulty)PlayerDifficulty((int)this);
 		}
 		public set {
 			PlayerSetDifficulty((int)this, (int)value);

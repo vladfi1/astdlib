@@ -1,4 +1,4 @@
-package a.natives;
+package a.util;
 /**
 * Definition and enrichment for type 'keyModifierState'
 * @author tolleder
