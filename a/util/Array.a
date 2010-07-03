@@ -1,0 +1,75 @@
+package a.util;
+
+/**
+ * Simple array built on the Heap.
+ * Does not perform bounds checks.
+ */
+public class Array<E> [512] {
+	public static Array create(int length) {
+		int header = Heap.alloc(length);
+		if(header == Heap.NULL) return null;
+		else return new Array(Heap.index(header), length);
+	}
+	
+	/**
+	 * Index in the Heap.
+	 */
+	private int index;
+	/**
+	 * Length of the array.
+	 */
+	public /* final */ int length;
+	
+	private Array(int index, int length) {
+		this.index = index;
+		this.length = length;
+	}
+	
+	~Array() {
+		Heap.dealloc(index);
+	}
+	
+	/**
+	 * Stores a value at index.
+	 * Does not perform bounds checks.
+	 */
+	public void setIndex(int index, E value) {
+		Heap.array[this.index + index] = value;
+	}
+	
+	/**
+	 * Retrieves the value at index.
+	 * Does not perform bounds checks.
+	 */
+	public E getIndex(int index) {
+		return Heap.array[this.index + index];
+	}
+	
+	/**
+	 * @return An iterator for this Array.
+	 */
+	public ArrayIterator<E> getIterator() {
+		return new ArrayIterator(this);
+	}
+}
+
+/**
+ * Iterator for Array.
+ */
+private class ArrayIterator<E> [64] {
+	private Array<E> array;
+	private int index;
+	
+	ArrayIterator(Array<E> array) {
+		this.array = array;
+		index = 0;
+	}
+	
+	public bool hasNext() {return index < array.length;}
+	
+	public E next() {
+		E temp = array.getIndex(index);
+		index++;
+		return temp;
+	}
+}

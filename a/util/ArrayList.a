@@ -1,0 +1,226 @@
+package a.util;
+
+/**
+ * ArrayList implementation that uses a Heap as storage.
+ */
+public class ArrayList<E> [256] {
+	
+	public static const int DEFAULT_CAPACITY = 7;
+	
+	/**
+	 * Creates a new ArrayList with the default capacity.
+	 * @return The new ArrayList, or null if cannot allocate.
+	 */
+	public static ArrayList<E> create() {
+		return create(DEFAULT_CAPACITY);
+	}
+	
+	/**
+	 * Creates a new ArrayList with the specified capacity.
+	 * @return The new ArrayList, or null if cannot allocate.
+	 */
+	public static ArrayList<E> create(int capacity) {
+		int header = Heap.alloc(capacity);
+		if(header == Heap.NULL) return null;
+		else return new ArrayList<E>(Heap.level(header), Heap.index(header));
+	}
+	
+	/**
+	 * The ArrayList's capacity.
+	 */
+	private int capacity;
+	/**
+	 * The index in the Heap.
+	 */
+	private int index;
+	/**
+	 * The current size.
+	 */
+	private int size;
+	
+	private ArrayList(int level, int index) {
+		capacity = Heap.size(level);
+		this.index = index;
+		size = 0;
+	}
+	
+	~ArrayList() {
+		Heap.dealloc(index);
+	}
+	
+	/**
+	 * @return The number of elements in this ArrayList.
+	 */
+	public int size() {
+		return size;
+	}
+	
+	/**
+	 * @return Whether this ArrayList is empty.
+	 */
+	public bool isEmpty() {
+		return size == 0;
+	}
+	
+	/**
+	 * Clears this ArrayList.
+	 * Does not delete the elements.
+	 */
+	public void clear() {
+		size = 0;
+	}
+	
+	/**
+	 * Deletes all elements.
+	 */
+	public void deleteAll() {
+		for(int i = 0; i < size; i++)
+			delete getIndex(i);
+		size = 0;
+	}
+	
+	/**
+	 * Tries to set the capacity to a specified amount.
+	 * @return Whether successful.
+	 */
+	public bool setCapacity(int capacity) {
+		int header = Heap.realloc(index, capacity);
+		if(header == Heap.NULL) return false;
+		capacity = Heap.size(Heap.level(header));
+		index = Heap.index(header);
+		return true;
+	}
+	
+	/**
+	 * Ensures a minimum specified capacity.
+	 * @return Whether successful.
+	 */
+	public bool ensureCapacity(int capacity) {
+		if(capacity < this.capacity) return true;
+		return setCapacity(capacity);
+	}
+	
+	/**
+	 * Decreases the capacity to a certain level.
+	 * @return Whether successful.
+	 */
+	public bool decreaseCapacity(int capacity) {
+		if(capacity < size) return false;
+		return setCapacity(capacity);
+	}
+	
+	/**
+	 * Decreases the capacity to its minimum possible level.
+	 * @return Whether successful.
+	 */
+	public bool trimToSize() {
+		return decreaseCapacity(size);
+	}
+	
+	/**
+	 * @return The element at index.
+	 */
+	public E getIndex(int index) {
+		if(index < 0 || index >= size) return null;
+		return (E)Heap.array[this.index + index];
+	}
+	
+	/**
+	 * Sets the element at index.
+	 */
+	public void setIndex(int index, E element) {
+		if(index < 0 || index >= size) return;
+		Heap.array[this.index + index] = element;
+	}
+	
+	/**
+	 * Adds an element to the end of this list.
+	 */
+	public bool addLast(E element) {
+		if(size == capacity)
+			if(!ensureCapacity(size + 1)) return false;
+		
+		Heap.array[this.index + size] = element;
+		size++;
+		return true;
+	}
+	
+	/**
+	 * Adds an element at index.
+	* @return Whether successful.
+	*/
+	public bool addIndex(int index, E element) {
+		if(index < 0 || index > size) return false;
+		if(size == capacity)
+			if(!ensureCapacity(size + 1)) return false;
+		
+		for(int i = size - 1; i >= index; i--) {
+			Heap.array[this.index + i + 1] = Heap.array[this.index + i];
+		}
+		Heap.array[this.index + index] = element;
+		size++;
+		return true;
+	}
+	
+	/**
+	 * Removes the last element of this list.
+	 * @return The element removed.
+	 */
+	public E removeLast() {
+		if(isEmpty()) return null;
+		size--;
+		E element = Heap.array[this.index + size];
+		return element;
+	}
+	
+	/**
+	 * Removes the element at index.
+	 * @return The element removed.
+	 */
+	public E removeIndex(int index) {
+		if(index < 0 || index > size) return null;
+		E element = Heap.array[this.index + index];
+		for(int i = index + 1; i < size; i++) {
+			Heap.array[this.index + i - 1] = Heap.array[this.index + i];
+		}
+		size--;
+		return element;
+	}
+	
+	/**
+	 * @return An iterator for this ArrayList.
+	 */
+	public ArrayListIterator<E> getIterator() {
+		return new ArrayIterator(this);
+	}
+	
+	public Array<E> toArray() {
+		Array<E> array = Array.create(size);
+		if(array == null) return null;
+		for(int i = 0; i < size; i++) {
+			array.setIndex(i, getIndex(i));
+		}
+		return array;
+	}
+}
+
+/**
+ * Iterator for ArrayList.
+ */
+private class ArrayListIterator<E> [64] {
+	private ArrayList<E> list;
+	private int index;
+	
+	ArrayListIterator(ArrayList<E> list) {
+		this.list = list;
+		index = 0;
+	}
+	
+	public bool hasNext() {return index < list.size();}
+	
+	public E next() {
+		E temp = list.getIndex(index);
+		index++;
+		return temp;
+	}
+}

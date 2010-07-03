@@ -1,0 +1,221 @@
+package a.util;
+
+/**
+ * Implemntation of a doubly linked list.
+ */
+public class LinkedList<E> {
+	
+	/**
+	 * Head of the list. Contains no data.
+	 */
+	private Link<E> head;
+	/**
+	 * Current size of the list.
+	 */
+	private int size;
+	
+	/**
+	 * Creates an empty list.
+	 */
+	public LinkedList() {
+		head = new Link<E>();
+		size = 0;
+	}
+	
+	/**
+	 * @return The list's size.
+	 */
+	public int getSize() {return size;}
+	
+	/**
+	 * @return Whether this list is empty.
+	 */
+	public bool isEmpty() {return size==0;}
+	
+	/**
+	 * Clears all elements from this list.
+	 */
+	public void clear() {
+		Link<E> link = head.next;
+		for(int i = 0; i < size; i++) {
+			link = link.next;
+			delete link.previous;
+		}
+		size = 0;
+		head.next = head.previous = head;
+	}
+	
+	/**
+	 * Runs in O(index) time.
+	 * @return The link at index.
+	 */
+	private Link<E> getLink(int index) {
+		if(index < (size >> 1)) {
+			Link<E> link = head.next;
+			for(int i = 0; i < index; i++) {
+				link = link.next;
+			}
+			return link;
+		} else {
+			Link<E> link = head.previous;
+			for(int i = size-1; i > index; i--) {
+				link = link.previous;
+			}
+			return link;
+		}
+	}
+	
+	/**
+	 * Adds an element to the front of this list.
+	 */
+	public void addFirst(E element) {
+		new Link(element, head.next, head);
+		size++;
+	}
+	
+	/**
+	 * Adds an element to the end of this list.
+	 */
+	public void addLast(E element) {
+		new Link(element, head, head.previous);
+		size++;
+	}
+	
+	/**
+	 * Adds an element at index.
+	 */
+	public void addIndex(int index, E element) {
+		Link<E> link = getLink(index);
+		new Link(element, link.previous, link);
+		size++;
+	}
+	
+	/**
+	 * @return The first element of this list.
+	 */
+	public E getFirst() {
+		return head.next.element;
+	}
+	
+	/**
+	 * @return The last element of this list.
+	 */
+	public E getLast() {
+		return head.previous.element;
+	}
+	
+	/**
+	 * @return The element at index.
+	 */
+	public E getIndex(int index) {
+		return getLink(index).element;
+	}
+	
+	/**
+	 * Sets the first element of this list.
+	 */
+	public void setFirst(E element) {
+		head.next.element = element;
+	}
+	
+	/**
+	 * Sets the last element of this list.
+	 */
+	public void setLast(E element) {
+		head.previous.element = element;
+	}
+	
+	/**
+	 * Sets the element at index.
+	 */
+	public void setIndex(int index, E element) {
+		getLink(index).element = element;
+	}
+	
+	/**
+	 * Removes the first element of this list.
+	 * @return The element removed.
+	 */
+	public E removeFirst() {
+		Link<E> first = head.next;
+		head.next = first.next;
+		first.next.previous = head;
+		E element = first.element;
+		delete first;
+		size--;
+		return element;
+	}
+	
+	/**
+	 * Removes the last element of this list.
+	 * @return The element removed.
+	 */
+	public E removeLast() {
+		Link<E> last = head.previous;
+		head.previous = last.previous;
+		last.previous.next = head;
+		E element = last.element;
+		delete last;
+		size--;
+		return element;
+	}
+	
+	/**
+	 * Removes the element at index.
+	 * @return The element removed.
+	 */
+	public E removeIndex(int index) {
+		Link<E> link = getLink(index);
+		link.previous.next = link.next;
+		link.next.previous = link.previous;
+		E element = link.element;
+		delete link;
+		size--;
+		return element;
+	}
+	
+	/**
+	 * @return An iterator for this LinkedList.
+	 */
+	public LinkedListIterator<E> getIterator() {
+		return new LinkedListIterator(this);
+	}
+}
+
+private class Link<E> [512] {
+	E element;
+	Link<E> next, previous;
+	
+	Link() {
+		element = null;
+		next = previous = this;
+	}
+	
+	Link(E element, Link<E> next, Link<E> previous) {
+		this.element = element;
+		this.next = next;
+		this.previous = previous;
+		next.previous = this;
+		previous.next = this;
+	}
+}
+
+/**
+ * Iterator for LinkedList.
+ */
+private class LinkedListIterator<E> [64] {
+	private LinkedList<E> list;
+	private Link<E> current;
+	
+	LinkedListIterator(LinkedList<E> list) {
+		this.list = list;
+		current = list.head;
+	}
+	
+	public bool hasNext() {return current.next != list.head;}
+	
+	public E next() {
+		current = current.next;
+		return current.element;
+	}
+}
