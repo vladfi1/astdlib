@@ -1,18 +1,135 @@
 package a.util;
 
-
-public static class Math{
-	public const static fixed PI = 3.14159;
-	public const static fixed E = 2.71828;
-
-	public static int floor(fixed f){
+/**
+ * Useful math functions.
+ * @author XPilot
+ */
+public static class Math {
+	/**
+	 * Number of bits used in the fractional part of a fixed.
+	 */
+	public static const int FRACTION_BITS = 12;
+	public static const int FRACTION_MASK = (1 << FRACTION_BITS) - 1;
+	public static /* const */ fixed FRACTION_FACTOR = 4096.0;
+	
+	/**
+	 * Closest fixed value to pi = 3.14159.
+	 */
+	public static /* const */ fixed PI = 12868.0 / FRACTION_FACTOR;
+	
+	/**
+	 * Closest fixed value to e = 2.71828.
+	 */
+	public static /* const */ fixed E = 11134.0 / FRACTION_FACTOR;
+	
+	/**
+	 * Smallest possible positive fixed value.
+	 */
+	public static /* const */ fixed EPSILON = 1.0 / FRACTION_FACTOR;
+	
+	public static const int MIN_INT = 1 << 32;
+	public static const int MAX_INT = ~MIN_INT;
+	public static const fixed MAX_FIXED = 524287.999755859375;
+	public static const fixed MIN_FIXED = -524288.0;
+	
+	public static int fixedToIntBits(fixed f) {
+		int i = (int)f;
+		return (i << FRACTION_BITS) + (int)((f - (fixed)i) * FRACTION_FACTOR);
+	}
+	
+	public static fixed intToFixedBits(int i) {
+		fixed f = (fixed)(i >> FRACTION_BITS);
+		return f + ((fixed)(i & FRACTION_MASK) / FRACTION_FACTOR);
+	}
+	
+	public static int floor(fixed f) {
 		return (int)f;
 	}
 	
-	public static int ceil(fixed f){
+	public static int ceil(fixed f) {
 		int i = (int)f;
-		if(i == f)
-			return i;
-		return i+1;
+		if(f == (fixed)i) return i;
+		else return i + 1;
+	}
+	
+	public static int round(fixed f) {
+		return floor(f + 0.5);
+	}
+	
+	public static fixed integer(fixed f) {
+		return (fixed)((int)f);
+	}
+	
+	public static fixed fraction(fixed f) {
+		return f - integer(f);
+	}
+	
+	public static int abs(int i) {
+		if(i < 0) return -i;
+		else return i;
+	}
+	
+	public static fixed abs(fixed f) {
+		if(f < 0) return -f;
+		else return f;
+	}
+	
+	public static int signum(int i) {
+		if(i > 0) return 1;
+		else if(i == 0) return 0;
+		else return -1;
+	}
+	
+	public static int signum(fixed f) {
+		if(f > 0.0) return 1;
+		else if(f == 0.0) return 0;
+		else return -1;
+	}
+	
+	public static int min(int i1, int i2) {
+		if(i1 < i2) return i1;
+		else return i2;
+	}
+	
+	public static int max(int i1, int i2) {
+		if(i1 > i2) return i1;
+		else return i2;
+	}
+
+	public static fixed min(fixed f1, fixed f2) {
+		if(f1 < f2) return f1;
+		else return f2;
+	}
+	
+	public static fixed max(fixed f1, fixed f2) {
+		if(f1 > f2) return f1;
+		else return f2;
+	}
+	
+	public static int mod(int i, int mod) {
+		i -= mod * (i / mod);
+		if(i < 0) return i + mod;
+		else return i;
+	}
+	
+	public static fixed mod(fixed f, fixed mod) {
+		f -= mod * (fixed)((int)(f / mod));
+		if(f < 0.0) return f + mod;
+		else return f;
+	}
+	
+	//TODO: faster implementation
+	public static fixed sqrt(fixed f) {
+		return SquareRoot(f);
+	}
+	
+	//TODO: faster implementation
+	public static fixed exp(fixed exponent) {
+		return Pow(E, exponent);
+	}
+	
+	//TODO: faster implementation
+	public static fixed pow(fixed base, fixed exponent) {
+		return Pow(base, exponent);
 	}
 }

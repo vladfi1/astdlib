@@ -3,6 +3,7 @@ package a.util;
 /**
  * Simple array built on the Heap.
  * Does not perform bounds checks.
+ * @author XPilot
  */
 public class Array<E> [512] {
 	public static Array create(int length) {

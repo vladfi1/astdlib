@@ -2,6 +2,7 @@ package a.util;
 
 /**
  * ArrayList implementation that uses a Heap as storage.
+ * @author XPilot
  */
 public class ArrayList<E> [256] {
 	

@@ -3,6 +3,7 @@ package a.util;
 /**
  * Manages the Heap, which can dynamically allocate arrays.
  * Uses a buddy system to minimize internal fragmentation.
+ * @author XPilot
  */
 public static class Heap {
 

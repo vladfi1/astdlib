@@ -2,6 +2,7 @@ package a.util;
 
 /**
  * Stack implementation using a singly linked list.
+ * @author XPilot
  */
 public class LinkedStack<E> {
 	/**
