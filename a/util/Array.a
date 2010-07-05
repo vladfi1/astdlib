@@ -6,6 +6,7 @@ package a.util;
  */
 public class Array<E> [512] {
 	public static Array create(int length) {
+		if(length == 0) return new Array<E>();
 		int header = Heap.alloc(length);
 		if(header == Heap.NULL) return null;
 		else return new Array(Heap.index(header), length);
@@ -19,6 +20,14 @@ public class Array<E> [512] {
 	 * Length of the array.
 	 */
 	public /* final */ int length;
+	
+	/**
+	 * Zero length array.
+	 */
+	private Array() {
+		index = -1;
+		length = 0;
+	}
 	
 	private Array(int index, int length) {
 		this.index = index;
