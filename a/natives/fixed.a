@@ -1,4 +1,7 @@
 package a.natives;
+
+import a.util.Math;
+
 /**  
 *        Enrichment for type fixed
 *        @author Belphegor
@@ -161,7 +164,7 @@ public enrich fixed
 	* 	@param that fixed to which we compare
 	* 	@return  negative, zero or a positive fixedeger if this is lesser, equal or greater than that respectively
 	*/
-	public fixed compare(fixed that)
+	public fixed compareTo(fixed that)
 	{
 		if (this <  that) return -1;
 		if (this == that) return 0;
@@ -185,6 +188,14 @@ public enrich fixed
 	public int hash()
 	{
 		return (int) this;
+	}
+	
+	/**
+	* 	Returns a hash code of this fixed.
+	*	@return An int with the same bits as this fixed.
+	*/
+	public int hashCode() {
+		return Math.fixedToIntBits(this);
 	}
 	
 	/**

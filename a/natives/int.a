@@ -121,7 +121,7 @@ public enrich int
 	* 	@param that int to which we compare
 	* 	@return  negative, zero or a positive integer if this is lesser, equal or greater than that respectively
 	*/
-	public int compare(int that)
+	public int compareTo(int that)
 	{
 		if (this <  that) return -1;
 		if (this == that) return 0;
@@ -145,7 +145,14 @@ public enrich int
 	public int hash()
 	{
 		return this; // old version it obfuscates int  return (this ^ this<<2);
-
+	}
+	
+	/**
+	 * Returns a hash code of this int.
+	 * @return This int.
+	 */
+	public int hashCode() {
+		return this;
 	}
 	
 	/**

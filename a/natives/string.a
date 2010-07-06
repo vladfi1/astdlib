@@ -28,6 +28,13 @@ public enrich string{
 	}
 	
 	/**
+	 * @return The length of this string.
+	 */
+	public int length() {
+		return StringLength(this);
+	}
+	
+	/**
 	*	Returns a copy of this string, transformed to upper/lower case
 	*	@param upper if the result should be uppercase (lowercase otherwise)
 	*	@return the string in upper/lower case
