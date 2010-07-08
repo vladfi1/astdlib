@@ -1,36 +1,36 @@
 package a.natives;
-/*
-*	Enrichment for native type 'timer'
-*	@author Kricz
-*/
+/**
+ * Enrichment for native type 'timer'
+ * @author Kricz
+ */
 public enrich timer{
 
 	//Variables used by the start-method as timeType
 
-	
-	
-	//GameTime - Takes into account the current game speed, 
-
-	//and will pass more slowly at slow speeds, and vice versa.
-
+	/**
+	 * GameTime - Takes into account the current game speed, 
+	 * and will pass more slowly at slow speeds, and vice versa.
+	 */
 	public static const int GAME_TIME				= 0;
 	
-	//Real Time - Passes at the same rate regardless of game speed, and approximates time 
-
-	//passing in the real world for the user.  However, "real" time is still synchronous,
-
-	//and will therefore be affected by lag due to network or system issues.
-
+	/**
+	 * Real Time - Passes at the same rate regardless of game speed, and approximates time 
+	 * passing in the real world for the user.  However, "real" time is still synchronous,
+	 * and will therefore be affected by lag due to network or system issues.
+	 */
 	public static const int REAL_TIME				= 1;
 	
-	//AI Time - Passes at the same rate as game time, but may be paused/unpaused 
-
-	//independently of game time via triggers.  This is most commonly done to
-
-	//pause the AI while an in-game cinematic sequence is run.
-
+	/**
+	 * AI Time - Passes at the same rate as game time, but may be paused/unpaused 
+	 * independently of game time via triggers.  This is most commonly done to
+	 * pause the AI while an in-game cinematic sequence is run.
+	 */
 	public static const int AI_TIME  				= 2;
 	
+	/**
+	 * Used to start an infinite timer.
+	 */
+	public static const fixed DURATION_INFINITE = -1.0;
 
 	/**
 	*	Creates a new timer
@@ -40,16 +40,18 @@ public enrich timer{
 		return TimerCreate();
 	}
 	
-	
 	/**
 	*	Destroys the timer
+	*	This function is does not exist!
 	*/
+	/*
 	public void destroy(){
 		TimerPause(this); //may not required but safety goes first...
-
+		
+		//TimerDestroy does not exist?
 		return TimerDestroy(this);
 	}
-	
+	*/
 	
 	/**
 	*	Starts the timer with custom options
@@ -60,7 +62,6 @@ public enrich timer{
 	public void start(fixed duration, bool periodic, int timeType){
 		TimerStart(this, duration, periodic, timeType);
 	}
-	
 	
 	/**
 	*	Starts a periodical timer
@@ -90,7 +91,6 @@ public enrich timer{
 		}
 	}
 	
-	
 	/**
 	*	The duration of the timer (readonly)
 	*/
@@ -100,7 +100,6 @@ public enrich timer{
 		}
 	}
 	
-	
 	/**
 	*	The elapsed time of the timer (readonly)
 	*/
@@ -109,7 +108,6 @@ public enrich timer{
 			return TimerGetElapsed(this);
 		}
 	}
-	
 	
 	/**
 	*	pauses the timer or checks, if it is paused
@@ -127,6 +125,12 @@ public enrich timer{
 		}
 	}
 	
+	/**
+	 * Pauses this timer.
+	 */
+	public void pause() {
+		TimerPause(this, false);
+	}
 	
 	/**
 	*	Restarts the timer
@@ -134,5 +138,4 @@ public enrich timer{
 	public void restart(){
 		TimerRestart(this);
 	}
-
 }
