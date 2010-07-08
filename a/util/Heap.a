@@ -7,83 +7,96 @@ package a.util;
  */
 public static class Heap {
 
-	static const int LEVEL_BITS = 5;
-	static const int LEVEL_MASK = (1 << LEVEL_BITS) - 1;
-	static const int OTHER_BITS = 32 - LEVEL_BITS;
-	static const int OTHER_MASK = (1 << OTHER_BITS) - 1;
-
-	static int header(int level, int index) {
-		return (level << OTHER_BITS) | index;
-	}
-	
-	public static int level(int header) {
-		return (header >> OTHER_BITS) & LEVEL_MASK;
-	}
-	
-	public static int index(int header) {
-		return header & OTHER_MASK;
-	}
-	
-	static bool isTaken(int header) {
-		return (header >> OTHER_BITS) == 0;
-	}
-	
 	/**
 	 * Signifies an allocation error.
 	 */
-	public static const int NULL = 0;
-	
-	//static int buddy(int level, int index) {return index ^ (1 << level);}
-	static int buddy(int level, int index) {
-		if((index & (1 << level)) == 0) return index | (1 << level);
-		else return index & ~(1 << level);
-	}
+	public static const int ERROR = -1;
 	
 	/**
 	 * The number of levels used in this Heap.
 	 */
-	public static const int LEVEL = 18;
+	public static const int LEVEL = 14;
 	
 	/**
 	 * Size of the backing array. Has the value 2^LEVEL.
 	 */
 	public static const int HEAP_SIZE = 1 << LEVEL;
 	
+	private static const int SIZE = HEAP_SIZE + 2 * LEVEL;
 	/**
 	 * The backing array. The last 2*LEVEL indexes are for header information.
 	 */
-	//static int[HEAP_SIZE + 2 * LEVEL] array;
-	//12: 4120
-	//13: 8218
-	//14: 16412
-	//15: 
-	//16: 
-	//17: 
-	//18: 262180
-	static int[262180] array;
-	
+	public static int[SIZE] array;
+
+	private static const int LISTS = LEVEL + 1;
 	/**
 	 * Each list keeps track of the nodes at a certain level.
 	 */
-	//private static BlockList[LEVEL + 1] lists;
-	private static BlockList[19] lists;
+	private static BlockList[LISTS] lists;
+	
+	/*
+	static {
+		initHeap();
+	}
+	*/
 	
 	/**
-	 * Initializes the Heap.
+	 * Initializes the Heap. Should be done in the static init block.
 	 */
-	public static void init() {
+	public static void initHeap() {
 		for(int i = 1; i <= LEVEL; i++) {
 			lists[i] = new BlockList(i);
 		}
 		lists[LEVEL].add(0);
 	}
 	
+	//methods for manipulating the block headers
+	private static const int LEVEL_BITS = 5;
+	private static const int LEVEL_MASK = (1 << LEVEL_BITS) - 1;
+	private static const int OTHER_BITS = 32 - LEVEL_BITS;
+	private static const int OTHER_MASK = (1 << OTHER_BITS) - 1;
+	
+	static int level(int index) {
+		return (array[index] >> OTHER_BITS) & LEVEL_MASK;
+	}
+	
+	static int prev(int index) {
+		return array[index] & OTHER_MASK;
+	}
+	
+	static int next(int index) {
+		return array[index + 1];
+	}
+	
+	static void setHeader(int index, int level, int prev, int next) {
+		array[index] = (level << OTHER_BITS) | prev;
+		array[index + 1] = next;
+	}
+	
+	static void setPrev(int index, int prev) {
+		array[index] = (array[index] & ~OTHER_MASK) | prev;
+	}
+	
+	static void setNext(int index, int next) {
+		array[index + 1] = next;
+	}
+
 	/**
-	 * @return log_2(size) rounded down.
+	 * Switches the level'th bit of index.
 	 */
-	public static int log2(int size) {
-		int level = 0;
-		while(size != 0) {
+	//static int buddy(int level, int index) {return index ^ (1 << level);}
+	private static int buddy(int level, int index) {
+		if((index & (1 << level)) == 0) return index | (1 << level);
+		else return index & ~(1 << level);
+	}
+	
+	/**
+	 * The minimum level at which size can be stored.
+	 * @return 1 + log_2(size) rounded down.
+	 */
+	public static int minLevel(int size) {
+		int level = 1;
+		while(size != 1) {
 			size = size >> 1;
 			level++;
 		}
@@ -92,32 +105,29 @@ public static class Heap {
 	
 	/**
 	 * The maximum size that can be stored at a level.
-	 * @return 2^level
+	 * @return (2 ^ level) - 1
 	 */
-	public static int size(int level) {
+	public static int maxSize(int level) {
 		return (1 << level) - 1;
 	}
 	
 	/**
 	 * Rounds up to the next level.
+	 * @return maxSize(minLevel(size))
 	 */
 	public static int round(int size) {
-		return size(log2(size));
+		return maxSize(minLevel(size));
 	}
-	
+
 	/**
-	 * Attempts to allocate an block of the specified size.
-	 * @return A header describing block, or NULL = 0 if unsuccessful.<BR/>
-	 * The index of the block is the last OTHER_BITS bits.
-	 * The first LEVEL_BITS bits represent the level of the block.
-	 * You can use the level and index functions to access these values,
-	 * and the size fuction to get the size of the level.
+	 * Attempts to allocate a block of the specified size.
+	 * @return The index of the block, or ERROR = -1 if unsuccessful.
 	 */
 	public static int alloc(int size) {
-		if(size <= 0) return NULL;
+		if(size <= 0) return ERROR;
 		
 		//the minimum level needed to hold this size
-		int level = log2(size);
+		int level = minLevel(size);
 
 		//finds the next free block large enough
 		int i = level;
@@ -126,7 +136,7 @@ public static class Heap {
 		//no block found
 		if(i > LEVEL) {
 			System.error("Could not allocate memory in Heap.");
-			return NULL;
+			return ERROR;
 		}
 		
 		//starts splitting blocks until until one of the right level is created
@@ -136,11 +146,11 @@ public static class Heap {
 			int right = buddy(i, index);
 			lists[i].add(right);
 		}
-		//marks the block as taken and stores level
+		//marks the block as taken (upper LEVEL_BITS bits are 0) and stores level
 		array[index] = level;
 		
-		//returns combined level and index info
-		return header(level, index + 1);
+		//returns the index
+		return index + 1;
 	}
 	
 	/**
@@ -157,8 +167,9 @@ public static class Heap {
 			int buddy = buddy(level, index);
 			
 			//tests if the buddy is free and is of the same level
-			if(!isTaken(array[buddy]) && (level(array[buddy]) == level)) {
+			if(level(buddy) == level) {
 				lists[level].remove(buddy);
+				//merges blocks
 				if(buddy < index) index = buddy;
 				level++;
 			} else break;
@@ -170,22 +181,20 @@ public static class Heap {
 	
 	/**
 	 * Tries to reallocate the given data to block of the given size.
-	 * @return Same as alloc(size). NULL if unsuccessful.
+	 * @return Same as alloc(size). ERROR if unsuccessful.
 	 * If unsuccessful, the original data will remain unchanged.
 	 */
 	public static int realloc(int index, int size) {
-		int min = size(array[index - 1]);
-		
-		int header = alloc(size);
-		if(header != NULL) {
-			int index2 = index(header);
+		int index2 = alloc(size);
+		if(index2 != ERROR) {
+			int min = maxSize(array[index - 1]);
 			if(size < min) min = size;
 			for(int i = 0; i < min; i++) {
 				array[index2 + i] = array[index + i];
 			}
 			dealloc(index);
 		}
-		return header;
+		return index2;
 	}
 	
 	/**
@@ -209,33 +218,6 @@ public static class Heap {
  * Keeps track of the free blocks of a certain level.
  */
 private class BlockList [Heap.LEVEL] {
-	
-	//methods for manipulating the block headers
-	static int level(int index) {
-		return Heap.array[index] >> Heap.OTHER_BITS;
-	}
-	
-	static int prev(int index) {
-		return Heap.array[index] & Heap.OTHER_MASK;
-	}
-	
-	static int next(int index) {
-		return Heap.array[index + 1];
-	}
-	
-	static void setHeader(int index, int level, int prev, int next) {
-		Heap.array[index] = (level << Heap.OTHER_BITS) | prev;
-		Heap.array[index + 1] = next;
-	}
-	
-	static void setPrev(int index, int prev) {
-		Heap.array[index] = (Heap.array[index] & ~Heap.OTHER_MASK) | prev;
-	}
-	
-	static void setNext(int index, int next) {
-		Heap.array[index + 1] = next;
-	}
-	
 	//the level of the blocks in this list
 	int level;
 	//the head index of the doubly linked list
@@ -246,21 +228,23 @@ private class BlockList [Heap.LEVEL] {
 	BlockList(int level) {
 		this.level = level;
 		head = Heap.HEAP_SIZE + 2 * (level - 1);
-		setHeader(head, level, head, head);
+		Heap.setHeader(head, level, head, head);
 		size = 0;
 	}
 	
-	bool isEmpty() {return size==0;}
+	bool isEmpty() {
+		return size == 0;
+	}
 	
 	/**
 	 * Adds a block to the front of the list.
 	 * Sets headers as appropriate.
 	 */
 	void add(int index) {
-		int next = next(head);
-		setNext(head, index);
-		setPrev(next, index);
-		setHeader(index, level, head, next);
+		int next = Heap.next(head);
+		Heap.setNext(head, index);
+		Heap.setPrev(next, index);
+		Heap.setHeader(index, level, head, next);
 		size++;
 	}
 	
@@ -270,7 +254,7 @@ private class BlockList [Heap.LEVEL] {
 	 * @return prev
 	 */
 	int remove() {
-		int prev = prev(head);
+		int prev = Heap.prev(head);
 		remove(prev);
 		return prev;
 	}
@@ -281,16 +265,16 @@ private class BlockList [Heap.LEVEL] {
 	 * Used when merging blocks.
 	 */
 	void remove(int index) {
-		int prev = prev(index);
-		int next = next(index);
+		int prev = Heap.prev(index);
+		int next = Heap.next(index);
 		
-		setNext(prev, next);
-		setPrev(next, prev);
+		Heap.setNext(prev, next);
+		Heap.setPrev(next, prev);
 		size--;
 	}
 	
 	void debug() {
-		for(int next = next(head); next != head; next = next(next)) {
+		for(int next = Heap.next(head); next != head; next = Heap.next(next)) {
 			System.debug(IntToString(next));
 		}
 	}

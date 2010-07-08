@@ -1,31 +1,16 @@
 package a.util;
 
+import a.util.Heap;
+import a.util.HeapUtil;
+
 /**
- * ArrayList implementation that uses a Heap as storage.
+ * ArrayList implementation that uses the Heap as storage.
  * @author XPilot
  */
 public class ArrayList<E> [256] {
 	
 	public static const int DEFAULT_CAPACITY = 7;
-	
-	/**
-	 * Creates a new ArrayList with the default capacity.
-	 * @return The new ArrayList, or null if cannot allocate.
-	 */
-	public static ArrayList<E> create() {
-		return create(DEFAULT_CAPACITY);
-	}
-	
-	/**
-	 * Creates a new ArrayList with the specified capacity.
-	 * @return The new ArrayList, or null if cannot allocate.
-	 */
-	public static ArrayList<E> create(int capacity) {
-		int header = Heap.alloc(capacity);
-		if(header == Heap.NULL) return null;
-		else return new ArrayList<E>(Heap.level(header), Heap.index(header));
-	}
-	
+
 	/**
 	 * The ArrayList's capacity.
 	 */
@@ -39,9 +24,20 @@ public class ArrayList<E> [256] {
 	 */
 	private int size;
 	
-	private ArrayList(int level, int index) {
-		capacity = Heap.size(level);
-		this.index = index;
+	/**
+	 * ArrayList with capacity DEFAULT_CAPACITY.
+	 */
+	public ArrayList() {
+		this(DEFAULT_CAPACITY);
+	}
+
+	/**
+	 * ArrayList with specified capacity.
+	 * @param capacity Must be positive.
+	 */
+	public ArrayList(int capacity) {
+		index = Heap.alloc(capacity);
+		this.capacity = Heap.round(capacity);
 		size = 0;
 	}
 	
@@ -81,14 +77,24 @@ public class ArrayList<E> [256] {
 	}
 	
 	/**
+	 * @return A shallow copy of this ArrayList.
+	 */
+	public ArrayList<E> clone() {
+		ArrayList<E> clone = new ArrayList<E>(capacity);
+		HeapUtil.copy(index, clone.index, size);
+		clone.size = size;
+		return clone;
+	}
+	
+	/**
 	 * Tries to set the capacity to a specified amount.
 	 * @return Whether successful.
 	 */
 	public bool setCapacity(int capacity) {
-		int header = Heap.realloc(index, capacity);
-		if(header == Heap.NULL) return false;
-		capacity = Heap.size(Heap.level(header));
-		index = Heap.index(header);
+		int index = Heap.realloc(index, capacity);
+		if(index == Heap.ERROR) return false;
+		this.index = index;
+		this.capacity = Heap.round(capacity);
 		return true;
 	}
 	
@@ -128,14 +134,17 @@ public class ArrayList<E> [256] {
 	
 	/**
 	 * Sets the element at index.
+	 * @return Whether successful.
 	 */
-	public void setIndex(int index, E element) {
-		if(index < 0 || index >= size) return;
+	public bool setIndex(int index, E element) {
+		if(index < 0 || index >= size) return false;
 		Heap.array[this.index + index] = element;
+		return true;
 	}
 	
 	/**
 	 * Adds an element to the end of this list.
+	 * @return Whether successful.
 	 */
 	public bool addLast(E element) {
 		if(size == capacity)
@@ -148,16 +157,14 @@ public class ArrayList<E> [256] {
 	
 	/**
 	 * Adds an element at index.
-	* @return Whether successful.
-	*/
+	 * @return Whether successful.
+	 */
 	public bool addIndex(int index, E element) {
 		if(index < 0 || index > size) return false;
 		if(size == capacity)
 			if(!ensureCapacity(size + 1)) return false;
 		
-		for(int i = size - 1; i >= index; i--) {
-			Heap.array[this.index + i + 1] = Heap.array[this.index + i];
-		}
+		HeapUtil.copy(index, index + 1, size - index);
 		Heap.array[this.index + index] = element;
 		size++;
 		return true;
@@ -181,9 +188,7 @@ public class ArrayList<E> [256] {
 	public E removeIndex(int index) {
 		if(index < 0 || index > size) return null;
 		E element = Heap.array[this.index + index];
-		for(int i = index + 1; i < size; i++) {
-			Heap.array[this.index + i - 1] = Heap.array[this.index + i];
-		}
+		HeapUtil.copy(index + 1, index, size - index - 1);
 		size--;
 		return element;
 	}
@@ -196,12 +201,34 @@ public class ArrayList<E> [256] {
 	}
 	
 	public Array<E> toArray() {
-		Array<E> array = Array.create(size);
-		if(array == null) return null;
-		for(int i = 0; i < size; i++) {
-			array.setIndex(i, getIndex(i));
-		}
+		Array<E> array = new Array<E>(size);
+		HeapUtil.copy(index, array.index, size);
 		return array;
+	}
+
+	/**
+	 * @return Whether this ArrayList contains element.
+	 */
+	public bool contains(E element) {
+		for(int i = 0; i < size; i++) {
+			if(getIndex(i) == element) return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Sorts this ArrayList in ascending order.
+	 */
+	public void sort(Comparator<E> comparator) {
+		HeapSort.heapSort(index, size, comparator);
+	}
+	
+	/**
+	 * Searches for element assuming that the list is in ascending order.
+	 * @return The index of the element, or -1 if not found.
+	 */
+	public int binarySearch(E element, Comparator<E> comparator) {
+		return HeapUtil.binarySearch(index, size, element, comparator);
 	}
 }
 

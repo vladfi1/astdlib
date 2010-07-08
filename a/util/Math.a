@@ -1,7 +1,9 @@
 package a.util;
 
 /**
- * Useful math functions.
+ * Useful math functions.<BR/>
+ * Testing shows that they are somewhat slower (2x) than their
+ * native counterparts. This is simply due to extra function calls.
  * @author XPilot
  */
 public static class Math {
@@ -53,13 +55,19 @@ public static class Math {
 	}
 	
 	public static int round(fixed f) {
-		return floor(f + 0.5);
+		return (int)(f + 0.5);
 	}
 	
+	/**
+	 * @return The integer part of f.
+	 */
 	public static fixed integer(fixed f) {
 		return (fixed)((int)f);
 	}
 	
+	/**
+	 * @return The fractional part of f.
+	 */
 	public static fixed fraction(fixed f) {
 		return f - integer(f);
 	}
@@ -106,29 +114,35 @@ public static class Math {
 		else return f2;
 	}
 	
+	/**
+	 * The positive residue of i modulo mod.
+	 */
 	public static int mod(int i, int mod) {
-		i -= mod * (i / mod);
+		i = ModI(i, mod);
 		if(i < 0) return i + mod;
 		else return i;
 	}
 	
+	/**
+	 * The positive residue of f modulo mod.
+	 */
 	public static fixed mod(fixed f, fixed mod) {
-		f -= mod * (fixed)((int)(f / mod));
+		f = ModF(f, mod);
 		if(f < 0.0) return f + mod;
 		else return f;
 	}
 	
-	//TODO: faster implementation
+	//TODO: faster implementation?
 	public static fixed sqrt(fixed f) {
 		return SquareRoot(f);
 	}
 	
-	//TODO: faster implementation
+	//TODO: faster implementation?
 	public static fixed exp(fixed exponent) {
 		return Pow(E, exponent);
 	}
 	
-	//TODO: faster implementation
+	//TODO: faster implementation?
 	public static fixed pow(fixed base, fixed exponent) {
 		return Pow(base, exponent);
 	}

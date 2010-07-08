@@ -1,7 +1,7 @@
 package a.util;
 
 /**
- * Implemntation of a doubly linked list.
+ * Implentation of a doubly linked list.
  * @author XPilot
  */
 public class LinkedList<E> {
