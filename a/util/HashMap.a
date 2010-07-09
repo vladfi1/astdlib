@@ -1,0 +1,9 @@
+package a.util;
+
+import a.util.Heap;
+import a.util.HeapUtil;
+
+public class HashMap<K, V> {
+	private Hasher<K> hasher;
+	private int index;
+}

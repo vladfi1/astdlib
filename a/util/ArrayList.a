@@ -12,13 +12,13 @@ public class ArrayList<E> [256] {
 	public static const int DEFAULT_CAPACITY = 7;
 
 	/**
+	 * The index in the Heap.
+	 */
+	private int ptr;
+	/**
 	 * The ArrayList's capacity.
 	 */
 	private int capacity;
-	/**
-	 * The index in the Heap.
-	 */
-	private int index;
 	/**
 	 * The current size.
 	 */
@@ -36,13 +36,13 @@ public class ArrayList<E> [256] {
 	 * @param capacity Must be positive.
 	 */
 	public ArrayList(int capacity) {
-		index = Heap.alloc(capacity);
 		this.capacity = Heap.round(capacity);
+		ptr = Heap.malloc(this.capacity);
 		size = 0;
 	}
 	
 	~ArrayList() {
-		Heap.dealloc(index);
+		Heap.free(ptr);
 	}
 	
 	/**
@@ -68,20 +68,11 @@ public class ArrayList<E> [256] {
 	}
 	
 	/**
-	 * Deletes all elements.
-	 */
-	public void deleteAll() {
-		for(int i = 0; i < size; i++)
-			delete getIndex(i);
-		size = 0;
-	}
-	
-	/**
 	 * @return A shallow copy of this ArrayList.
 	 */
 	public ArrayList<E> clone() {
 		ArrayList<E> clone = new ArrayList<E>(capacity);
-		HeapUtil.copy(index, clone.index, size);
+		HeapUtil.copy(ptr, clone.ptr, size);
 		clone.size = size;
 		return clone;
 	}
@@ -91,10 +82,11 @@ public class ArrayList<E> [256] {
 	 * @return Whether successful.
 	 */
 	public bool setCapacity(int capacity) {
-		int index = Heap.realloc(index, capacity);
-		if(index == Heap.ERROR) return false;
-		this.index = index;
-		this.capacity = Heap.round(capacity);
+		capacity = Heap.round(capacity);
+		int ptr = Heap.realloc(ptr, capacity);
+		if(ptr == Heap.ERROR) return false;
+		this.ptr = ptr;
+		this.capacity = capacity;
 		return true;
 	}
 	
@@ -129,7 +121,7 @@ public class ArrayList<E> [256] {
 	 */
 	public E getIndex(int index) {
 		if(index < 0 || index >= size) return null;
-		return (E)Heap.array[this.index + index];
+		return (E)Heap.array[this.ptr + index];
 	}
 	
 	/**
@@ -138,7 +130,7 @@ public class ArrayList<E> [256] {
 	 */
 	public bool setIndex(int index, E element) {
 		if(index < 0 || index >= size) return false;
-		Heap.array[this.index + index] = element;
+		Heap.array[this.ptr + index] = element;
 		return true;
 	}
 	
@@ -150,7 +142,7 @@ public class ArrayList<E> [256] {
 		if(size == capacity)
 			if(!ensureCapacity(size + 1)) return false;
 		
-		Heap.array[this.index + size] = element;
+		Heap.array[this.ptr + size] = element;
 		size++;
 		return true;
 	}
@@ -164,8 +156,8 @@ public class ArrayList<E> [256] {
 		if(size == capacity)
 			if(!ensureCapacity(size + 1)) return false;
 		
-		HeapUtil.copy(index, index + 1, size - index);
-		Heap.array[this.index + index] = element;
+		HeapUtil.copy(ptr, ptr + 1, size - index);
+		Heap.array[this.ptr + index] = element;
 		size++;
 		return true;
 	}
@@ -177,7 +169,7 @@ public class ArrayList<E> [256] {
 	public E removeLast() {
 		if(isEmpty()) return null;
 		size--;
-		E element = Heap.array[this.index + size];
+		E element = Heap.array[this.ptr + size];
 		return element;
 	}
 	
@@ -187,8 +179,8 @@ public class ArrayList<E> [256] {
 	 */
 	public E removeIndex(int index) {
 		if(index < 0 || index > size) return null;
-		E element = Heap.array[this.index + index];
-		HeapUtil.copy(index + 1, index, size - index - 1);
+		E element = (E)Heap.array[this.ptr + index];
+		HeapUtil.copy(ptr + 1, ptr, size - index - 1);
 		size--;
 		return element;
 	}
@@ -202,7 +194,7 @@ public class ArrayList<E> [256] {
 	
 	public Array<E> toArray() {
 		Array<E> array = new Array<E>(size);
-		HeapUtil.copy(index, array.index, size);
+		HeapUtil.copy(ptr, array.ptr, size);
 		return array;
 	}
 
@@ -218,18 +210,19 @@ public class ArrayList<E> [256] {
 	
 	/**
 	 * Sorts this ArrayList in ascending order.
-	 */
+	 *
 	public void sort(Comparator<E> comparator) {
-		HeapSort.heapSort(index, size, comparator);
+		HeapSort.heapSort(ptr, size, comparator);
 	}
 	
 	/**
 	 * Searches for element assuming that the list is in ascending order.
 	 * @return The index of the element, or -1 if not found.
-	 */
+	 *
 	public int binarySearch(E element, Comparator<E> comparator) {
-		return HeapUtil.binarySearch(index, size, element, comparator);
+		return HeapUtil.binarySearch(ptr, size, element, comparator);
 	}
+	*/
 }
 
 /**

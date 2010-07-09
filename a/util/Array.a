@@ -12,29 +12,30 @@ public class Array<E> [512] {
 	
 	/**
 	 * Index in the Heap.
+	 * Package visibility.
 	 */
-	private int index;
+	/* final */ int ptr;
 	/**
 	 * Length of the array.
 	 */
 	public /* final */ int length;
 	
 	public Array(int length) {
-		if(length == 0) index = -1;
-		else index = Heap.alloc(length);
+		if(length == 0) ptr = -1;
+		else ptr = Heap.malloc(length);
 		this.length = length;
 	}
 	
 	~Array() {
-		Heap.dealloc(index);
+		Heap.free(ptr);
 	}
 	
 	/**
-	 * Stores a value at index.
+	 * Stores a value at ptr.
 	 * Does not perform bounds checks.
 	 */
 	public void setIndex(int index, E value) {
-		Heap.array[this.index + index] = (int)value;
+		Heap.array[this.ptr + index] = (int)value;
 	}
 	
 	/**
@@ -42,7 +43,7 @@ public class Array<E> [512] {
 	 * Does not perform bounds checks.
 	 */
 	public E getIndex(int index) {
-		return (E)Heap.array[this.index + index];
+		return (E)Heap.array[this.ptr + index];
 	}
 	
 	/**
@@ -50,7 +51,7 @@ public class Array<E> [512] {
 	 */
 	public Array<E> clone() {
 		Array<E> clone = new Array<E>(length);
-		HeapUtil.copy(index, clone.index, length);
+		HeapUtil.copy(ptr, clone.ptr, length);
 		return clone;
 	}
 	
@@ -73,18 +74,19 @@ public class Array<E> [512] {
 	
 	/**
 	 * Sorts this ArrayList in ascending order.
-	 */
+	 *
 	public void sort(Comparator<E> comparator) {
-		HeapSort.heapSort(index, size, comparator);
+		HeapSort.heapSort(ptr, size, comparator);
 	}
 	
 	/**
 	 * Searches for element assuming that the list is in ascending order.
 	 * @return The index of the element, or -1 if not found.
-	 */
+	 *
 	public int binarySearch(E element, Comparator<E> comparator) {
-		return HeapUtil.binarySearch(index, size, element, comparator);
+		return HeapUtil.binarySearch(ptr, size, element, comparator);
 	}
+	*/
 }
 
 /**

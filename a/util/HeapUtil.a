@@ -9,10 +9,10 @@ import a.util.Comparator;
  */
 public static class HeapUtil {
 
-	public static void swap(int index1, int index2) {
-		int temp = Heap.array[index1];
-		Heap.array[index1] = Heap.array[index2];
-		Heap.array[index2] = temp;
+	public static void swap(int ptr1, int ptr2) {
+		int temp = Heap.array[ptr1];
+		Heap.array[ptr1] = Heap.array[ptr2];
+		Heap.array[ptr2] = temp;
 	}
 
 	public static void copy(int src, int dest, int len) {
@@ -28,6 +28,7 @@ public static class HeapUtil {
 	}
 	
 	//HeapSort implementation
+	/*
 	private static int left(int i) {
 		return (i << 1) | 1;
 	}
@@ -36,54 +37,54 @@ public static class HeapUtil {
 		return (i << 1) + 2;
 	}
 	
-	private static void maintainHeap(int index, int i, int length, Comparator<E> c) {
+	private static <E> void maintainHeap(int ptr, int i, int length, Comparator<E> c) {
 		while(i < length) {
 			int max = i;
 			
 			int left = left(i);
-			if(left < length && c.compare((E)Heap.array[index + left], (E)Heap.array[index + max]) > 0) {
+			if(left < length && c.compare((E)Heap.array[ptr + left], (E)Heap.array[ptr + max]) > 0) {
 				max = left;
 			}
-			int right = right(i)
-			if(right < length && c.compare((E)Heap.array[index + right(i)], (E)Heap.array[index + max]) > 0) {
+			int right = right(i);
+			if(right < length && c.compare((E)Heap.array[ptr + right(i)], (E)Heap.array[ptr + max]) > 0) {
 				max = right;
 			}
 			
 			if(max != i) {
-				swap(index + max, index + i);
+				swap(ptr + max, ptr + i);
 				i = max;
 			} else break;
 		}
 	}
 	
-	private static void buildHeap(int index, int length, Comparator<E> c) {
-		for(int i = 0; i < (length >> 1), i++) {
-			maintainHeap(index, i, length, c);
+	private static <E> void buildHeap(int ptr, int length, Comparator<E> c) {
+		for(int i = 0; i < (length >> 1); i++) {
+			maintainHeap(ptr, i, length, c);
 		}
 	}
 	
 	/**
-	 * Sorts the array starting at index with the specified length
+	 * Sorts the array starting at ptr with the specified length
 	 * in ascending order.
-	 */
-	public void heapSort(int index, int length, Comparator<E> c) {
-		buildHeap(index, length, c);
+	 *
+	public static <E> void heapSort(int ptr, int length, Comparator<E> c) {
+		buildHeap(ptr, length, c);
 		while(length > 0) {
 			length--;
-			swap(index, index + length);
-			maintainHeap(index, 0, length, c);
+			swap(ptr, ptr + length);
+			maintainHeap(ptr, 0, length, c);
 		}
 	}
 	
 	/**
-	 * Searches for search, assuming that the subarray is ordered according to the comparator.
+	 * Searches for an element, assuming that the subarray is in ascending order.
 	 * @return The index of the desired object, or -1 if not found.
-	 */
-	public static int binarySearch(int index, int length, E search, Comparator<E> c) {
+	 *
+	public static <E> int binarySearch(int ptr, int length, E search, Comparator<E> c) {
 		int i = 0;
 		while(length > 0) {
 			int half = length >> 1;
-			int comp = c.compare(search, (E)Heap.array[index + i + half]);
+			int comp = c.compare(search, (E)Heap.array[ptr + i + half]);
 			if(comp > 0) {
 				i += half + 1;
 				length -= half + 1;
@@ -93,4 +94,5 @@ public static class HeapUtil {
 		}
 		return -1;
 	}
+	*/
 }
