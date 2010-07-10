@@ -1,0 +1,115 @@
+package geom;
+
+/**
+ * Represents the combination of a translation and a rotation.
+ * Rotation comes before translation.
+ * @author XPilot
+ */
+public class XForm2D {
+	/**
+	 * Position relative to origin.
+	 */
+	public Vector2D position;
+	
+	/**
+	 * Rotation matrix.
+	 */
+	public Matrix2D rotation;
+	
+	/**
+	 * The identity transform.
+	 */
+	private static XForm2D identity;
+
+	static {
+		identity = new XForm2D();
+		identity.setIdentity();
+	}
+
+	/**
+	 * The default constructor.
+	*/
+	public XForm2D() {
+		position = new Vector2D();
+		rotation = new Matrix2D();
+	}
+
+	/**
+	 * Initialize as a copy of another transform.
+	 */
+	public XForm2D(XForm2D xf) {
+		position = xf.position.clone();
+		rotation = xf.rotation.clone();
+	}
+
+	/**
+	 * Initialize using a position vector and a rotation matrix.
+	 */
+	public XForm2D(Vector2D position, Matrix2D rotation) {
+		this.position = position.clone();
+		this.rotation = rotation.clone();
+	}
+
+	/**
+	 * Set this to equal another transform.
+	 */
+	public XForm2D setXF(XForm2D xf) {
+		position.setVector(xf.position);
+		rotation.setMatrix(xf.rotation);
+		return this;
+	}
+
+	/**
+	 * Set this to the identity transform.
+	 */
+	public void setIdentity() {
+		position.setZero();
+		rotation.setIdentity();
+	}
+
+	/**
+	 * Applies xf to v and returns the result.
+	 */
+	public static Vector2D apply(XForm2D xf, Vector2D v) {
+		return Matrix2D.multiply(xf.rotation, v).add(xf.position);
+	}
+
+	/**
+	 * Applies xf to v and stores the result in result.
+	 * @return result
+	 */
+	public static Vector2D apply(XForm2D xf, Vector2D v, Vector2D result) {
+		return Matrix2D.multiply(xf.rotation, v, result).add(xf.position);
+	}
+
+	/**
+	 * Applies this transform to v.
+	 * @return v
+	 */
+	public Vector2D apply(Vector2D v) {
+		return rotation.multiply(v).add(position);
+	}
+	
+	/**
+	 * Applies the inverse of xf to v and returns the resultult.
+	 */
+	public static Vector2D applyInverse(XForm2D xf, Vector2D v) {
+		return Matrix2D.multiplyTrans(xf.rotation, v.subtract(xf.position));
+	}
+
+	/**
+	 * Applies the inverse of xf to v and stores the result in result.
+	 * @return result
+	 */
+	public static Vector2D applyInverse(XForm2D xf, Vector2D v, Vector2D result) {
+		return xf.rotation.multiplyTrans(Vector2D.difference(v, xf.position, result));
+	}
+
+	/**
+	 * Applies the inverse of this transform to v.
+	 * @return v
+	 */
+	public Vector2D applyInverse(Vector2D v) {
+		return rotation.multiplyTrans(v.subtract(position));
+	}
+}

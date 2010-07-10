@@ -1,0 +1,12 @@
+package geom;
+
+import util.LinkedList;
+
+import geom.Shape2D;
+
+/**
+ * A rigid body made up of several shapes.
+ */
+public class Body2D {
+	private LinkedList<Shape2D> shapes;
+}

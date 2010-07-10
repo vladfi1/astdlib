@@ -1,0 +1,93 @@
+package geom;
+
+import a.util.Array;
+import a.util.ArrayList;
+
+import geom.Shape2D;
+import geom.Vector2D;
+import geom.Matrix2D;
+import geom.XForm2D;
+import geom.AABB2D;
+
+/**
+ * A polygon shape.
+ */
+public class Polygon2D extends Shape2D {
+	
+	protected Array<Vector2D> vertices;
+	protected Array<Vector2D> normals;
+	
+	/**
+	 * Shallow copies the vertices.
+	 * Vertices should be in counter clockwise order?
+	 */
+	public Polygon2D(ArrayList<Vector2D> vertices) {
+		this.vertices = vertices.toArray();
+		normals = new Array<Vector2D>(this.vertices.length);
+		
+		for(int i = 0; i < this.vertices.length; i++) {
+			int next = i+1;
+			if(next == vertices.length) next = 0;
+			normals.setIndex(Vector2D.difference(vertices.getIndex(next), vertices.getIndex(i)).rotClock90());
+		}
+	}
+	
+	public Vector2D getVertex(int index) {
+		return vertices.getIndex(index);
+	}
+	
+	public override fixed computeRadius(Vector2D center) {
+		fixed max = 0.0;
+		for(int i = 0; i < vertices.length; i++) {
+			fixed dist = Vector2D.distance2(vertices.getIndex(i), center);
+			if(max < dist) max = dist;
+		}
+		return SquareRoot(max);
+	}
+	
+	public override void computeAABB(XForm2D xf, AABB2D result) {
+		//TODO: implementation
+	}
+	
+	public static Vector2D computeCentroid(Array<Vector2D> vertices) {
+		//find a point inside the polygon
+		Vector2D ref = new Vector2D();
+		for(int i = 0; i < vertices.length; i++) {
+			ref.add(vertices.getIndex(i));
+		}
+		ref.divide((fixed)vertices.length);
+		
+		fixed area = 0.0;
+		Vector2D centroid = new Vector2D(), temp = new Vector2D(),
+			v1 = new Vector2D(), v2 = new Vector2D();
+		
+		for(int i = 0; i < vertices.length; i++) {
+			v1.setVector(vertices.getIndex(i));
+			if(i < vertices.length) v2.setVector(vertices.getIndex(i));
+			else v2.setVector(vertices.getIndex(0));
+			
+			temp.setVector(ref).add(v1).add(v2);
+			
+			v1.subtract(ref);
+			v2.subtract(ref);
+			
+			fixed a = Vector2D.cross(v1, v2);
+			
+			temp.multiply(a);
+			
+			centroid.add(temp);
+			area += a;
+		}
+		
+		delete ref;
+		delete temp;
+		delete v1;
+		delete v2;
+		
+		return centroid.divide(3.0 * area);
+	}
+	
+	public override void computeMass(Mass2D result) {
+		//TODO: implementation
+	}
+}

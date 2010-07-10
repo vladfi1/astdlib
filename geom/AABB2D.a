@@ -1,0 +1,15 @@
+package geom;
+
+/**
+ * An 2-dimensional axis-aligned bounding box.
+ */
+public class AABB2D {
+	public fixed x1, y1, x2, y2;
+	
+	public AABB2D() {
+		x1 = 0.0;
+		y1 = 0.0;
+		x2 = 0.0;
+		y2 = 0.0;
+	}	
+}
