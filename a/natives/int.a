@@ -26,7 +26,7 @@ public enrich int
 		fixed f_exp = IntToFixed(exp);
 		fixed result;
 		
-		result = Pow(f_base, f_exp)
+		result = Pow(f_base, f_exp);
 		return FixedToInt(result);
 		
 		/*

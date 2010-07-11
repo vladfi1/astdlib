@@ -1,4 +1,4 @@
-package a.natives
+package a.natives;
 /**  
 *   	 Enrichment for type bool
 *   	 @author Belphegor
