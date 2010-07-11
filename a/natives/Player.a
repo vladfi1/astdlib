@@ -1,5 +1,7 @@
 package a.natives;
+
 import a.natives.Difficulty;
+import a.natives.color;
 
 /**  
 *	Definition and enrichment for player type.
@@ -328,21 +330,39 @@ public enrich Player
 			return PlayerStartLocation((int)this);
 		}
 	}
+	
+	/*
+	*	The current colour for this player.
+	*	@return the current colour of this player as a color object.
+	*/
+	public color getColor()
+	{
+		return color.diffuse(this.getColorIndex());
+	}
 
 	/**
 	*	The current colour for this player. 
 	*	@return the colour in an index notation, where 0 is white, 1 is red etc.
 	*/
-	public int getColor()
+	public int getColorIndex()
 	{
 		return PlayerGetColorIndex((int)this, false); 
+	}
+	
+	/**
+	*	The default colour for this player. 
+	*	@return the deafult colour of this player as a color object.
+	*/
+	public color getDefaultColor()
+	{
+		return color.diffuse(this.getDefaultColor());
 	}
 
 	/**
 	*	The default colour for this player. 
 	*	@return the colour in an index notation, where 0 is white, 1 is red etc.
 	*/
-	public int getDefaultColor()
+	public int getDefaultColorIndex()
 	{
 		return PlayerGetColorIndex((int)this, true); 
 	}
