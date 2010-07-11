@@ -54,7 +54,7 @@ public enrich playergroup
 	*	Add the given player to this playergroup.
 	*	@param p the player to add.
 	*/
-	public void add(player p)
+	public void add(Player p)
 	{
 		PlayerGroupAdd(this, (int)p);
 	}
@@ -74,7 +74,7 @@ public enrich playergroup
 	*	Remove the given player from this player group.
 	*	@param p the player to remove.
 	*/
-	public void remove(player p)
+	public void remove(Player p)
 	{
 		PlayerGroupRemove(this, (int)p);
 	}
@@ -104,9 +104,9 @@ public enrich playergroup
 	*	@param index the index for the desired player.
 	*	@return the player at the specified index.
 	*/
-	public player getPlayer(int index)
+	public Player getPlayer(int index)
 	{
-		return (player)PlayerGroupPlayer(this, index);
+		return (Player)PlayerGroupPlayer(this, index);
 	}
 
 	/**
@@ -114,8 +114,48 @@ public enrich playergroup
 	*	@param p the player to search for.
 	*	@return true if this player group contains the specified player, false otherwise.
 	*/
-	public bool containsPlayer(player p)
+	public bool containsPlayer(Player p)
 	{
 		return PlayerGroupHasPlayer(this, (int)p);
+	}
+	
+	/**
+	*	Modify the volume for sounds playing through the specified channel for this group of players.
+	*	@param channel the sound channel for which the volume will be modified.
+	*	@param volume the new volume for the channel as a percentage value (0-100).
+	*	@param duration the duration for which this modification should persist.
+	*/
+	public void setVolume(Soundchannel channel, fixed volume, fixed duration)
+	{
+		 SoundChannelSetVolume(this, (int)channel, volume, duration);
+	}
+	
+	/**
+	*	Set the muted state for the specified sound channel of these players.
+	*	@param channel the sound channel which will be muted or unmuted.
+	*	@param muted the mute parameter for the channel; true is muted, false is unmuted.
+	*/
+	public void setMuted(Soundchannel channel, bool muted)
+	{
+		SoundChannelMute(this, (int)channel, muted);
+	}
+	
+	/**
+	*	Set the pause state for all sounds in the specified sound channel for these players.
+	*	@param channel the sound channel which will be paused or unpaused.
+	*	@param paused the pause parameter for the channel; true is paused, false is unpaused.
+	*/
+	public void setPaused(Soundchannel channel, bool paused)
+	{
+		SoundChannelPause(this, (int)channel, paused);
+	}
+	
+	/**
+	*	Stops all sounds in the specified sound channel for these players.
+	*	@param channel the sound channel for which all sounds will be stopped.
+	*/
+	public void stop(Soundchannel channel)
+	{
+		SoundChannelStop(this, (int)channel);
 	}
 }
