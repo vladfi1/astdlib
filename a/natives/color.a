@@ -8,7 +8,7 @@ public enrich color
 {
 	/**
 	*	Create a color object with the specified channel values. Each value shoudl be given as a percentage (0-100).
-	*	@param red	the value for the red channel.
+	*	@param red the value for the red channel.
 	*	@param green the value for the green channel.
 	*	@param blue the value for the blue channel.
 	*	@param alpha the value for the alpha channel.
@@ -16,7 +16,7 @@ public enrich color
 	*/
 	public static color create(fixed red, fixed green, fixed blue, fixed alpha)
 	{
-		return ColorWithAlpha(red, green, blue);
+		return ColorWithAlpha(red, green, blue, alpha);
 	}
 	
 	/**
