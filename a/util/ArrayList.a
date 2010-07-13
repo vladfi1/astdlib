@@ -1,5 +1,7 @@
 package a.util;
 
+import a.util.List;
+import a.util.Iterator;
 import a.util.Heap;
 import a.util.HeapUtil;
 
@@ -7,7 +9,7 @@ import a.util.HeapUtil;
  * ArrayList implementation that uses the Heap as storage.
  * @author XPilot
  */
-public class ArrayList<E> [256] {
+public class ArrayList<E> extends List<E> {
 	
 	public static const int DEFAULT_CAPACITY = 7;
 
@@ -45,25 +47,15 @@ public class ArrayList<E> [256] {
 		Heap.free(ptr);
 	}
 	
-	/**
-	 * @return The number of elements in this ArrayList.
-	 */
-	public int size() {
+	public override int size() {
 		return size;
 	}
 	
-	/**
-	 * @return Whether this ArrayList is empty.
-	 */
-	public bool isEmpty() {
+	public override bool isEmpty() {
 		return size == 0;
 	}
 	
-	/**
-	 * Clears this ArrayList.
-	 * Does not delete the elements.
-	 */
-	public void clear() {
+	public override void clear() {
 		size = 0;
 	}
 	
@@ -116,19 +108,12 @@ public class ArrayList<E> [256] {
 		return decreaseCapacity(size);
 	}
 	
-	/**
-	 * @return The element at index.
-	 */
-	public E getIndex(int index) {
+	public override E getIndex(int index) {
 		if(index < 0 || index >= size) return null;
 		return (E)Heap.array[this.ptr + index];
 	}
 	
-	/**
-	 * Sets the element at index.
-	 * @return Whether successful.
-	 */
-	public bool setIndex(int index, E element) {
+	public override bool setIndex(int index, E element) {
 		if(index < 0 || index >= size) return false;
 		Heap.array[this.ptr + index] = element;
 		return true;
@@ -147,11 +132,7 @@ public class ArrayList<E> [256] {
 		return true;
 	}
 	
-	/**
-	 * Adds an element at index.
-	 * @return Whether successful.
-	 */
-	public bool addIndex(int index, E element) {
+	public override bool addIndex(int index, E element) {
 		if(index < 0 || index > size) return false;
 		if(size == capacity)
 			if(!ensureCapacity(size + 1)) return false;
@@ -173,11 +154,7 @@ public class ArrayList<E> [256] {
 		return element;
 	}
 	
-	/**
-	 * Removes the element at index.
-	 * @return The element removed.
-	 */
-	public E removeIndex(int index) {
+	public override E removeIndex(int index) {
 		if(index < 0 || index > size) return null;
 		E element = (E)Heap.array[this.ptr + index];
 		HeapUtil.copy(ptr + 1, ptr, size - index - 1);
@@ -198,6 +175,17 @@ public class ArrayList<E> [256] {
 		return array;
 	}
 
+	/**
+	 * The index element in this ArrayList.
+	 * @return -1 if not found.
+	 */
+	public int indexOf(E element) {
+		for(int i = 0; i < size; i++) {
+			if(getIndex(i) == element) i;
+		}
+		return -1;
+	}
+	
 	/**
 	 * @return Whether this ArrayList contains element.
 	 */
@@ -228,7 +216,7 @@ public class ArrayList<E> [256] {
 /**
  * Iterator for ArrayList.
  */
-private class ArrayListIterator<E> [64] {
+private class ArrayListIterator<E> extends Iterator<E> {
 	private ArrayList<E> list;
 	private int index;
 	

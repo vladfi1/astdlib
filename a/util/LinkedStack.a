@@ -1,10 +1,13 @@
 package a.util;
 
+import a.util.Iterable;
+import a.util.Iterator;
+
 /**
  * Stack implementation using a singly linked list.
  * @author XPilot
  */
-public class LinkedStack<E> {
+public class LinkedStack<E> implements Iterable<E> {
 	/**
 	 * The size of the stack.
 	 */
@@ -87,7 +90,7 @@ public class LinkedStack<E> {
 	/**
 	 * @return An iterator for this LinkedStack.
 	 */
-public LinkedStackIterator<E> getIterator() {
+	public Iterator<E> getIterator() {
 		return new LinkedStackIterator(this);
 	}
 }
@@ -114,7 +117,7 @@ private class Link<E> [256] {
 /**
  * Iterator for LinkedStack.
  */
-private class LinkedStackIterator<E> [64] {
+private class LinkedStackIterator<E> extends Iterator<E> {
 	private Link<E> current;
 	
 	LinkedStackIterator(LinkedStack<E> stack) {

@@ -1,10 +1,13 @@
 package a.util;
 
+import a.util.List;
+import a.util.Iterator;
+
 /**
  * Implentation of a doubly linked list.
  * @author XPilot
  */
-public class LinkedList<E> {
+public class LinkedList<E> extends List<E> {
 	
 	/**
 	 * Head of the list. Contains no data.
@@ -23,20 +26,15 @@ public class LinkedList<E> {
 		size = 0;
 	}
 	
-	/**
-	 * @return The list's size.
-	 */
-	public int getSize() {return size;}
+	public override int size() {
+		return size;
+	}
 	
-	/**
-	 * @return Whether this list is empty.
-	 */
-	public bool isEmpty() {return size==0;}
+	public override bool isEmpty() {
+		return size==0;
+	}
 	
-	/**
-	 * Clears all elements from this list.
-	 */
-	public void clear() {
+	public override void clear() {
 		Link<E> link = head.next;
 		for(int i = 0; i < size; i++) {
 			link = link.next;
@@ -82,10 +80,7 @@ public class LinkedList<E> {
 		size++;
 	}
 	
-	/**
-	 * Adds an element at index.
-	 */
-	public void addIndex(int index, E element) {
+	public override void addIndex(int index, E element) {
 		Link<E> link = getLink(index);
 		new Link(element, link.previous, link);
 		size++;
@@ -105,10 +100,7 @@ public class LinkedList<E> {
 		return head.previous.element;
 	}
 	
-	/**
-	 * @return The element at index.
-	 */
-	public E getIndex(int index) {
+	public override E getIndex(int index) {
 		return getLink(index).element;
 	}
 	
@@ -126,10 +118,7 @@ public class LinkedList<E> {
 		head.previous.element = element;
 	}
 	
-	/**
-	 * Sets the element at index.
-	 */
-	public void setIndex(int index, E element) {
+	public override void setIndex(int index, E element) {
 		getLink(index).element = element;
 	}
 	
@@ -161,11 +150,7 @@ public class LinkedList<E> {
 		return element;
 	}
 	
-	/**
-	 * Removes the element at index.
-	 * @return The element removed.
-	 */
-	public E removeIndex(int index) {
+	public override E removeIndex(int index) {
 		Link<E> link = getLink(index);
 		link.previous.next = link.next;
 		link.next.previous = link.previous;
@@ -204,7 +189,7 @@ private class Link<E> [512] {
 /**
  * Iterator for LinkedList.
  */
-private class LinkedListIterator<E> [64] {
+private class LinkedListIterator<E> extends Iterator<E> {
 	private LinkedList<E> list;
 	private Link<E> current;
 	
