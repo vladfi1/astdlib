@@ -43,7 +43,7 @@ public class ArrayList<E> extends List<E> {
 		size = 0;
 	}
 	
-	~ArrayList() {
+	public ~ArrayList() {
 		Heap.free(ptr);
 	}
 	

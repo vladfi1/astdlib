@@ -26,7 +26,7 @@ public class Array<E> [512] {
 		this.length = length;
 	}
 	
-	~Array() {
+	public ~Array() {
 		Heap.free(ptr);
 	}
 	

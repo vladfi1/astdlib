@@ -26,6 +26,13 @@ public class LinkedList<E> extends List<E> {
 		size = 0;
 	}
 	
+	/**
+	 * Deletes all links.
+	 */
+	public ~LinkedList() {
+		clear();
+	}
+	
 	public override int size() {
 		return size;
 	}
