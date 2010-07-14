@@ -12,7 +12,7 @@ import a.util.KeyModifierState;
 public static class Keyboard
 {
     private static const int KEY_COUNT=99;
-    private static bool[16][KEY_COUNT] keyDown;
+    private static bool[Player.MAX_PLAYERS][KEY_COUNT] keyDown;
     private static trigger keyDownTrigger=trigger.create(onKeyDown.name);
     private static trigger keyUpTrigger=trigger.create(onKeyUp.name);
     private static bool onKeyDown (bool testConditions, bool runActions)
@@ -35,7 +35,7 @@ public static class Keyboard
     }
     static
     {
-        for(int p=0;p<16;p++)
+        for(int p=0;p<Player.MAX_PLAYERS;p++)
         {
             for(int k=0;k<KEY_COUNT;k++)
             {

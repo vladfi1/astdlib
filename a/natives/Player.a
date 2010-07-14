@@ -14,6 +14,12 @@ public enrich Player
 	public static const Player ANY = (Player)(-1);
 
 	/**
+	*	The maximum number of players who can be in one game at the same time.
+	*	The int representation of a player is always lower than this value.
+	*/
+	public static const int MAX_PLAYERS=c_maxPlayers;
+
+	/**
 	*	The player's current credits.
 	*/
 	public int credits
@@ -355,7 +361,7 @@ public enrich Player
 	*/
 	public color getDefaultColor()
 	{
-		return color.diffuse(this.getDefaultColor());
+		return color.diffuse(this.getDefaultColorIndex());
 	}
 
 	/**
