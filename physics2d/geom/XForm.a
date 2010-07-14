@@ -1,0 +1,117 @@
+package physics2d.geom;
+
+import physics2d.geom.Vec2;
+import physics2d.geom.Mat22;
+
+/**
+ * Represents the combination of a translation and a rotation.
+ * Rotation comes before translation.
+ * @author XPilot
+ */
+public class XForm {
+	/**
+	 * Position relative to origin.
+	 */
+	private /* final */ Vec2 position;
+	
+	/**
+	 * Rotation matrix.
+	 */
+	private /* final */ Mat22 rotation;
+	
+	/**
+	 * The default constructor.
+	*/
+	public XForm() {
+		position = new Vec2();
+		rotation = new Mat22();
+	}
+
+	/**
+	 * Initialize as a copy of another transform.
+	 */
+	public XForm(XForm xf) {
+		position = xf.position.clone();
+		rotation = xf.rotation.clone();
+	}
+
+	/**
+	 * Initialize using a position vector and a rotation matrix.
+	 * Both position vector and matrix are cloned.
+	 */
+	public XForm(Vec2 position, Mat22 rotation) {
+		this.position = position.clone();
+		this.rotation = rotation.clone();
+	}
+
+	/**
+	 * Creates a transform using the specified position and rotation angle.
+	 */
+	public XForm(fixed x, fixed y, fixed angle) {
+		this.position = new Vec2(x, y);
+		this.rotation = Mat22.createRotationMatrix(angle);
+	}
+	
+	/**
+	 * Set this to equal another transform.
+	 */
+	public XForm setXForm(XForm xf) {
+		position.setVec(xf.position);
+		rotation.setMatrix(xf.rotation);
+		return this;
+	}
+
+	/**
+	 * Set this to the identity transform.
+	 */
+	public void setIdentity() {
+		position.setZero();
+		rotation.setIdentity();
+	}
+
+	/**
+	 * Applies xf to v and returns the result.
+	 */
+	public static Vec2 apply(XForm xf, Vec2 v) {
+		return Mat22.multiply(xf.rotation, v).add(xf.position);
+	}
+
+	/**
+	 * Applies xf to v and stores the result in result.
+	 * @return result
+	 */
+	public static Vec2 apply(XForm xf, Vec2 v, Vec2 result) {
+		return Mat22.multiply(xf.rotation, v, result).add(xf.position);
+	}
+
+	/**
+	 * Applies this transform to v.
+	 * @return v
+	 */
+	public Vec2 apply(Vec2 v) {
+		return rotation.multiply(v).add(position);
+	}
+	
+	/**
+	 * Applies the inverse of xf to v and returns the resultult.
+	 */
+	public static Vec2 applyInverse(XForm xf, Vec2 v) {
+		return Mat22.multiplyTrans(xf.rotation, v.subtract(xf.position));
+	}
+
+	/**
+	 * Applies the inverse of xf to v and stores the result in result.
+	 * @return result
+	 */
+	public static Vec2 applyInverse(XForm xf, Vec2 v, Vec2 result) {
+		return xf.rotation.multiplyTrans(Vec2.difference(v, xf.position, result));
+	}
+
+	/**
+	 * Applies the inverse of this transform to v.
+	 * @return v
+	 */
+	public Vec2 applyInverse(Vec2 v) {
+		return rotation.multiplyTrans(v.subtract(position));
+	}
+}

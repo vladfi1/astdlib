@@ -1,0 +1,131 @@
+package physics2d.geom;
+
+import a.util.ArrayList;
+import physics2d.geom.ShapeDef;
+import physics2d.geom.ShapeType;
+
+public class PolygonDef extends ShapeDef {
+	private /* final */ ArrayList<Vec2> vertices;
+	
+	public PolygonDef() {
+		super(ShapeType.POLYGON_SHAPE);
+		vertices = new ArrayList<Vec2>();
+	}
+	
+	public ~PolygonDef() {
+		clear();
+		delete vertices;
+	}
+	
+	/**
+	 * Clears the vertices.
+	 */
+	public void clear() {
+		for(int i = 0; i < vertices.size(); i++) {
+			delete vertices.getIndex(i);
+		}
+		vertices.clear();
+	}
+
+	/**
+	 * Adds a vertex.
+	 */
+	public void addVertex(Vec2 vertex) {
+		vertices.addLast(vertex);
+	}
+	
+	/**
+	 * Adds a vertex.
+	 */
+	public void addVertex(fixed x, fixed y) {
+		addVertex(new Vec2(x, y));
+	}
+	
+	/**
+	 * @return Return the number of vertices.
+	 */
+	public int getVertexCount() {
+		return vertices.size();
+	}
+	
+	/**
+	 * Transforms all of the vertices using the specified transform.
+	 */
+	public void transform(XForm xf) {
+		for(int i = 0; i < vertices.size(); i++) {
+			xf.apply(vertices.getIndex(i));
+		}
+	}
+	
+	/**
+	 * Translates all vertices by <x, y>.
+	 */
+	public void translate(fixed x, fixed y) {
+		for(int i = 0; i < vertices.size(); i++) {
+			vertices.getIndex(i).add(x, y);
+		}
+	}
+	
+	public void rotate(fixed angle) {
+		Mat22 m = Mat22.createRotationMatrix(angle);
+		for(int i = 0; i < vertices.size(); i++) {
+			vertices.getIndex(i);
+		}
+		delete m;
+	}
+	
+	/**
+	 * Build vertices to represent an axis-aligned box, centered at the origin.
+	 * @param hx the half-width.
+	 * @param hy the half-height.
+	 */
+	public void setAsBox(fixed hx, fixed hy) {
+		clear();
+		vertices.addLast(new Vec2(-hx, -hy));
+		vertices.addLast(new Vec2(hx, -hy));
+		vertices.addLast(new Vec2(hx, hy));
+		vertices.addLast(new Vec2(-hx, hy));
+	}
+
+	/**
+	 * Build vertices to represent an oriented box.
+	 * @param hx The half-width.
+	 * @param hy The half-height.
+	 * @param center The center of the box in local coordinates.
+	 * @param angle The rotation of the box in local coordinates.
+	 */
+	public void setAsBox(fixed hx, fixed hy, Vec2 center, fixed angle) {
+		setAsBox(hx, hy);
+		XForm xf = new XForm(center, angle);
+		transform(xf);
+		delete xf;
+	}
+	
+	/**
+	 * Build vertices to represent a regular polygon.
+	 * Centered at the origin and first vertex points in the positive X direction.
+	 */
+	public void setAsRegularPolygon(int sides, int radius) {
+		clear();
+		vertices.ensureCapacity(sides);
+		for(int i = 0; i < sides; i++) {
+			vertices.addIndex(i, new Vec2().setPolar(radius, (i * 360.0) / sides));
+		}
+	}
+	
+	/**
+	 * Build vertices to represent a regular polygon.
+	 * @param sides The number of sides.
+	 * @param radius The radius.
+	 * @param center The center.
+	 * @param angle The orientation, in degrees.
+	 */
+	public void setAsRegularPolygon(int sides, int radius, Vec2 center, fixed angle) {
+		clear();
+		vertices.ensureCapacity(sides);
+		for(int i = 0; i < sides; i++) {
+			vertices.addIndex(i, new Vec2().setPolar(radius, angle + ((i * 360.0) / sides)).add(center));
+		}
+	}
+
+}

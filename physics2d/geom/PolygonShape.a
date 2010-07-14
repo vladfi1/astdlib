@@ -1,0 +1,113 @@
+package physics2d.geom;
+
+import a.util.Array;
+import a.util.ArrayList;
+
+import physics2d.geom.Shape;
+import physics2d.geom.Vec2;
+import physics2d.geom.Mat22;
+import physics2d.geom.XForm;
+import physics2d.geom.AABB;
+
+/**
+ * A polygon shape.
+ */
+public class PolygonShape extends Shape {
+	
+	private Array<Vec2> vertices;
+	private Array<Vec2> normals;
+	
+	/**
+	 * Creates a new polygon shape.
+	 * Vertices should be in counter clockwise order?
+	 */
+	public PolygonShape(PolygonDef def) {
+		super(def);
+	
+		vertices = new Array<Vec2>(def.getVertexCount());
+		for(int i = 0; i < vertices.length; i++) {
+			vertices.setIndex(i, def.getVertex(i));
+		}
+		
+		normals = new Array<Vec2>(this.vertices.length);
+		
+		for(int i = 0; i < this.vertices.length; i++) {
+			int next = i+1;
+			if(next == vertices.length) next = 0;
+			normals.setIndex(Vec2.difference(vertices.getIndex(next), vertices.getIndex(i)).rotClock90());
+		}
+	}
+	
+	public ~PolygonShape() {
+		for(int i = 0; i < vertices.length; i++) {
+			delete vertices.getIndex(i);
+			delete normals.getIndex(i);
+		}
+		delete vertices;
+		delete normals;
+	}
+	
+	public Vec2 getVertex(int index) {
+		return vertices.getIndex(index);
+	}
+	
+	public override fixed computeRadius(Vec2 center) {
+		fixed max = 0.0;
+		for(int i = 0; i < vertices.length; i++) {
+			fixed dist = Vec2.distance2(vertices.getIndex(i), center);
+			if(max < dist) max = dist;
+		}
+		return SquareRoot(max);
+	}
+	
+	public override void computeAABB(XForm xf, AABB result) {
+		//TODO: implementation
+	}
+	
+	public static Vec2 computeCentroid(Array<Vec2> vertices) {
+		//find a point inside the polygon
+		Vec2 ref = new Vec2();
+		for(int i = 0; i < vertices.length; i++) {
+			ref.add(vertices.getIndex(i));
+		}
+		ref.divide((fixed)vertices.length);
+		
+		fixed area = 0.0;
+		Vec2 centroid = new Vec2(), temp = new Vec2(),
+			v1 = new Vec2(), v2 = new Vec2();
+		
+		for(int i = 0; i < vertices.length; i++) {
+			v1.setVec(vertices.getIndex(i));
+			if(i < vertices.length) v2.setVec(vertices.getIndex(i));
+			else v2.setVec(vertices.getIndex(0));
+			
+			temp.setVec(ref).add(v1).add(v2);
+			
+			v1.subtract(ref);
+			v2.subtract(ref);
+			
+			fixed a = Vec2.cross(v1, v2);
+			
+			temp.multiply(a);
+			
+			centroid.add(temp);
+			area += a;
+		}
+		
+		delete ref;
+		delete temp;
+		delete v1;
+		delete v2;
+		
+		return centroid.divide(3.0 * area);
+	}
+	
+	public override void computeMass(MassData result) {
+		//find a point inside the polygon
+		Vec2 ref = new Vec2();
+		for(int i = 0; i < vertices.length; i++) {
+			ref.add(vertices.getIndex(i));
+		}
+		ref.divide((fixed)vertices.length);
+	}
+}

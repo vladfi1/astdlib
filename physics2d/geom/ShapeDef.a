@@ -1,0 +1,18 @@
+package physics2d.geom;
+
+import physics2d.geom.ShapeType;
+
+public abstract class ShapeDef {
+	/* final */ ShapeType type;
+	
+	public fixed density;
+	public fixed restitution;
+	public fixed friction;
+	
+	ShapeDef(ShapeType type) {
+		this.type = type;
+		density = 1.0;
+		restitution = 1.0;
+		friction = 0.0;
+	}
+}

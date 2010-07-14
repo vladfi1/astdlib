@@ -1,0 +1,64 @@
+package physics2d.geom;
+
+/**
+ * A shape used for collision detection.
+ */
+public abstract class Shape {
+	/**
+	 * This shape's type.
+	 */
+	/* final */ ShapeType type;
+
+	/* final */ fixed density;
+	/* final */ fixed restitution;
+	/* final */ fixed friction;
+	
+	/* final */ Body body;
+	
+	public Shape(ShapeDef def) {
+		type = def.type;
+		density = def.density;
+		restitution = def.restitution;
+		friction = def.friction;
+		body = null;
+	}
+	
+	/**
+	 * @return The minimal radius that will contain the shape.
+	 */
+	public abstract fixed computeRadius(Vec2 center);
+	
+	/**
+	 * Given a transform, compute the axis aligned bounding box for this shape.
+	 * @param xf the world transform of the shape.
+	 * @param result Stores the axis aligned box.
+	 */
+	public abstract void computeAABB(XForm xf, AABB result);
+	
+	/**
+	 * Compute the mass properties of this shape using its dimensions and density.
+	 * The inertia tensor is computed about the local origin, not the centroid.
+	 * @param result Stores the mass data for this shape.
+	 */
+	public abstract void computeMass(MassData result);
+	
+	public ShapeType getType() {
+		return type;
+	}
+	
+	public fixed getDensity() {
+		return density;
+	}
+	
+	public fixed getRestitution() {
+		return restitution;
+	}
+	
+	public fixed getFriction() {
+		return friction;
+	}
+	
+	public Body getBody() {
+		return body;
+	}
+}
