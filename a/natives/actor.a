@@ -1,130 +1,169 @@
 package a.natives;
 /*
 *	Enrichment for native type 'actor'
-*	@author Still needs one!
+*	@author NewName
 */
 
 public enrich actor
 {
 	/**
-	*	Description here.
-	*	@return Returns a actorscope.
+	*	Creates an actor.  The Scope parameter can be null if you do not want to create the actor in an existing scope.  
+	*	The Content parameters are optional, and allow you to specify additional properties for the actor being created.
+	*	@param scope the scope this actor will belong to.
+	*	@param name the string ID of the actor you are creating.
+	*	@param content1 optional actor property.
+	*	@param content2 optional actor property.
+	*	@param content3 optional actor property.
+	*	@return the newly created actor object.
 	*/
-	public actorscope scopeFromActor()
+	public static actor create(actorscope scope, string name, string content1, string content2, string content3)
 	{
-		return ActorScopeFromActor(this);
+		return ActorCreate (scope, name, content1, content2, content3);
+	}
+	
+	/**
+	*	Returns an actor from the specified actor reference.
+	*	@param name the reference for the sought actor.
+	*	@return the sought actor.
+	*/
+	public static actor fetch(string name)
+	{
+		return ActorFrom (name);
+	}
+	
+	/**
+	*	Returns this actor's scope.
+	*	@return this actor's scope.
+	*/
+	public actorscope getScope()
+	{
+		return ActorScopeFromActor (this);
 	}
 
 	/**
-	*	Description here.
-	*	@param p2 Unknown string.
+	*	Returns the actor connected to this actor with the given name.
+	*	@param name either the actor ID or the actor reference for the sought actor, typically the actor reference.
+	*	@return the sought actor.
+	*/
+	public actor getChild(string name)
+	{
+		return ActorFromActor (this, name);
+	}
+
+	/**
+	*	Returns the debug information for this actor.
+	*	@return the debug information as a text object.
+	*/
+	public text getDebug()
+	{
+		return ActorGetText (this);
+	}
+
+	/**
+	*	No idea what this does. No documentation available.
+	*	@param refNameUnknown string.
 	*	@return Returns a actor.
 	*/
-	public actor fromActor(string p2)
+	public actor getRef(string refName)
 	{
-		return ActorFromActor(this, p2);
+		return ActorRefGet(this, refName);
+	}
+
+	/**
+	*	No idea what this does. No documentation available.
+	*	@param refName Unknown string.
+	*	@param value Unknown actor.
+	*/
+	public void setRef(string refName, actor value)
+	{
+		ActorRefSet(this, refName, value);
+	}
+
+	/**
+	*	Sends an actor message to this actor.  An actor message will perform an action and/or trigger an event on the actor it is sent to.
+	*	@param message the actor message to send.
+	*/
+	public void send(string message)
+	{
+		ActorSend(this, message);
+	}
+
+	/**
+	*	Sends an actor message to an actor that is related to this actor.  The Name parameter is used to specify a reference (such as ::Host) that will derive a secondary actor from this actor.
+	*	The message gets sent to the secondary actor.  An actor message will perform an action and/or trigger an event on the actor it is sent to.
+	*	@param refName the reference for the secondary actor relative to this actor.
+	*	@param message the actor message to send to the secondary actor.
+	*/
+	public void sendTo(string refName, string message)
+	{
+		ActorSendTo(this, refName, message);
+	}
+
+	/**
+	*	Makes this actor look at another actor.  The parameters of this action allow you more control over the look.
+	*	@param group Unknown string.
+	*	@param weight Unknown int.
+	*	@param time Unknown fixed.
+	*	@param target Unknown actor.
+	*/
+	public void lookAt(string group, int weight, fixed time, actor target)
+	{
+		ActorLookAtStart(this, group, weight, time, target);
+	}
+
+	/**
+	*	Clears the look at target for this actor.  The parameters of this action allow you more control over the look.
+	*	@param group Unknown string.
+	*	@param weight Unknown int.
+	*	@param time Unknown fixed.
+	*/
+	public void stopLooking(string group, int weight, fixed time)
+	{
+		ActorLookAtStop(this, group, weight, time);
 	}
 
 	/**
 	*	Description here.
-	*	@return Returns a text.
+	*	@param type Unknown string.
+	*	@param target Unknown actor.
 	*/
-	public text getText()
+	public void lookAt(string type, actor target)
 	{
-		return ActorGetText(this);
+		ActorLookAtTypeStart(this, type, target);
 	}
 
 	/**
 	*	Description here.
-	*	@param p2 Unknown string.
-	*	@return Returns a actor.
+	*	@param type Unknown string.
 	*/
-	public actor refGet(string p2)
+	public void stopLooking(string type)
 	{
-		return ActorRefGet(this, p2);
+		ActorLookAtTypeStop(this, type);
 	}
 
 	/**
-	*	Description here.
-	*	@param p2 Unknown string.
-	*	@param p3 Unknown actor.
+	*	This will destroy all of the active particles on the map for all players.  Models that emit particles will still continue to do so, this will just kill the existing particles.
 	*/
-	public void refSet(string p2, actor p3)
+	public static void killAllParticles()
 	{
-		ActorRefSet(this, p2, p3);
+		ActorWorldParticleFXDestroy ();
 	}
-
+	
 	/**
-	*	Description here.
-	*	@param p2 Unknown string.
+	*	Applies texture props globally.  If a model's data is configured for texture swapping, and there is a texture available to the model with the global props, then that texture will be used.
+	*	@param textureProps
 	*/
-	public void send(string p2)
+	public static void applyGlobalTextureGroup(string textureProps)
 	{
-		ActorSend(this, p2);
+		ActorTextureGroupApplyGlobal (textureProps);
 	}
-
+	
 	/**
-	*	Description here.
-	*	@param p2 Unknown string.
-	*	@param p3 Unknown string.
+	*	Removes global texture props.
+	*	@param textureProps
 	*/
-	public void sendTo(string p2, string p3)
+	public static void removeGlobalTextureGroup(string textureProps)
 	{
-		ActorSendTo(this, p2, p3);
+		ActorTextureGroupRemoveGlobal (textureProps);
 	}
-
-	/**
-	*	Description here.
-	*	@param p2 Unknown string.
-	*	@param p3 Unknown int.
-	*	@param p4 Unknown fixed.
-	*	@param p5 Unknown actor.
-	*/
-	public void lookAtStart(string p2, int p3, fixed p4, actor p5)
-	{
-		ActorLookAtStart(this, p2, p3, p4, p5);
-	}
-
-	/**
-	*	Description here.
-	*	@param p2 Unknown string.
-	*	@param p3 Unknown int.
-	*	@param p4 Unknown fixed.
-	*/
-	public void lookAtStop(string p2, int p3, fixed p4)
-	{
-		ActorLookAtStop(this, p2, p3, p4);
-	}
-
-	/**
-	*	Description here.
-	*	@param p2 Unknown string.
-	*	@param p3 Unknown actor.
-	*/
-	public void lookAtTypeStart(string p2, actor p3)
-	{
-		ActorLookAtTypeStart(this, p2, p3);
-	}
-
-	/**
-	*	Description here.
-	*	@param p2 Unknown string.
-	*/
-	public void lookAtTypeStop(string p2)
-	{
-		ActorLookAtTypeStop(this, p2);
-	}
-
-	/**
-	*	Description here.
-	*	@param p2 Unknown int.
-	*	@param p3 Unknown string.
-	*	@param p4 Unknown string.
-	*	@param p5 Unknown string.
-	*/
-	public void regionSend(int p2, string p3, string p4, string p5)
-	{
-		ActorRegionSend(this, p2, p3, p4, p5);
-	}
-
 }
