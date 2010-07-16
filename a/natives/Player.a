@@ -803,4 +803,12 @@ public enrich Player
 	{
 		return PlayerGroupSingle((int)this);
 	}
+	
+	/**
+	*	Disable the earning of achievements for this player.
+	*/
+	public void disableAchievements()
+	{
+		AchievementsDisable ((int)this);
+	}
 }

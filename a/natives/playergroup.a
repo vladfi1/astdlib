@@ -4,6 +4,8 @@ package a.natives;
 *	@author NewName
 */
 
+import a.natives.Soundchannel;
+
 public enrich playergroup
 {
 	/**
@@ -157,5 +159,14 @@ public enrich playergroup
 	public void stop(Soundchannel channel)
 	{
 		SoundChannelStop(this, (int)channel);
+	}
+	
+	/**
+	*	Shows or hides the achievement panel for these players.
+	*	@param value whether the achievement panel should be visible.
+	*/
+	public void setAchievementPanelVisible(bool value)
+	{
+		AchievementPanelSetVisible (this, value);
 	}
 }
