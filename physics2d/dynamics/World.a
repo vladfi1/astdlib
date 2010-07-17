@@ -1,0 +1,8 @@
+package physics2d.dynamics;
+
+/**
+ * Physics simulation world.
+ */
+public class World {
+
+}
