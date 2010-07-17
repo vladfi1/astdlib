@@ -18,20 +18,26 @@ public class MassData {
     public fixed inertia;
 
     /**
-     * Blank mass data
+     * Blank mass data.
+	 * mass = inertia = 0
+	 * centroid = origin
      */
     public MassData() {
         mass = inertia = 0.0;
-        center = new Vec2();
+        centroid = new Vec2();
     }
 
+	public ~MassData() {
+		delete centroid;
+	}
+	
     /**
      * Copies the given mass data.
      */
     public MassData(MassData m) {
     	mass = m.mass;
     	inertia = m.inertia;
-    	center = m.center.clone();
+    	centroid = m.centroid.clone();
     }
     
 	/**

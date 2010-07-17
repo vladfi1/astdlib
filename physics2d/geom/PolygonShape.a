@@ -1,7 +1,6 @@
 package physics2d.geom;
 
 import a.util.Array;
-import a.util.ArrayList;
 
 import physics2d.geom.Shape;
 import physics2d.geom.Vec2;
@@ -34,7 +33,9 @@ public class PolygonShape extends Shape {
 		for(int i = 0; i < this.vertices.length; i++) {
 			int next = i+1;
 			if(next == vertices.length) next = 0;
-			normals.setIndex(Vec2.difference(vertices.getIndex(next), vertices.getIndex(i)).rotClock90());
+			Vec2 n = Vec2.difference(vertices.getIndex(next), vertices.getIndex(i)).rotClock90();
+			n.normalize();
+			normals.setIndex(n);
 		}
 	}
 	
@@ -45,6 +46,10 @@ public class PolygonShape extends Shape {
 		}
 		delete vertices;
 		delete normals;
+	}
+	
+	public int getVertexCount() {
+		return vertices.length;
 	}
 	
 	public Vec2 getVertex(int index) {
@@ -61,7 +66,13 @@ public class PolygonShape extends Shape {
 	}
 	
 	public override void computeAABB(XForm xf, AABB result) {
-		//TODO: implementation
+		//TODO: better implementation
+		result.reset();
+		Vec2 v = new Vec2();
+		for(int i = 0; i < vertices.length; i++) {
+			v.setVec(vertices.getIndex(i));
+			result.addPoint(xf.apply(v));
+		}
 	}
 	
 	public static Vec2 computeCentroid(Array<Vec2> vertices) {

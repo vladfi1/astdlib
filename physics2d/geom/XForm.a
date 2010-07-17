@@ -43,24 +43,67 @@ public class XForm {
 		this.position = position.clone();
 		this.rotation = rotation.clone();
 	}
-
+	
 	/**
 	 * Creates a transform using the specified position and rotation angle.
 	 */
-	public XForm(fixed x, fixed y, fixed angle) {
-		this.position = new Vec2(x, y);
+	public XForm(Vec2 position, fixed angle) {
+		this.position = position.clone();
 		this.rotation = Mat22.createRotationMatrix(angle);
+	}
+	
+	/**
+	 * Deletes position vector and rotation matrix.
+	 */
+	public ~XForm() {
+		delete position;
+		delete rotation;
+	}
+	
+	/**
+	 * The position vector.
+	 */
+	public Vec2 getPosition() {
+		return position;
+	}
+	
+	/**
+	 * The rotation matrix.
+	 */
+	public Mat22 getRotation() {
+		return rotation;
 	}
 	
 	/**
 	 * Set this to equal another transform.
 	 */
-	public XForm setXForm(XForm xf) {
+	public void setXForm(XForm xf) {
 		position.setVec(xf.position);
 		rotation.setMatrix(xf.rotation);
-		return this;
 	}
 
+	/**
+	 * Sets this XForm's position.
+	 */
+	public void setPosition(Vec2 position) {
+		position.setVec(position);
+	}
+	
+	/**
+	 * Sets this transform's rotation angle.
+	 */
+	public void setRotation(fixed angle) {
+		rotation.setRotationMatrix(angle);
+	}
+	
+	/**
+	 * Sets this transform's position and rotation angle.
+	 */
+	public void setXForm(Vec2 position, fixed angle) {
+		position.setVec(position);
+		rotation.setRotationMatrix(angle);
+	}
+	
 	/**
 	 * Set this to the identity transform.
 	 */
@@ -93,7 +136,7 @@ public class XForm {
 	}
 	
 	/**
-	 * Applies the inverse of xf to v and returns the resultult.
+	 * Applies the inverse of xf to v and returns the result.
 	 */
 	public static Vec2 applyInverse(XForm xf, Vec2 v) {
 		return Mat22.multiplyTrans(xf.rotation, v.subtract(xf.position));

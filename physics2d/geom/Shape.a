@@ -13,6 +13,9 @@ public abstract class Shape {
 	/* final */ fixed restitution;
 	/* final */ fixed friction;
 	
+	/**
+	 * The parent body.
+	 */
 	/* final */ Body body;
 	
 	public Shape(ShapeDef def) {
@@ -29,8 +32,8 @@ public abstract class Shape {
 	public abstract fixed computeRadius(Vec2 center);
 	
 	/**
-	 * Given a transform, compute the axis aligned bounding box for this shape.
-	 * @param xf the world transform of the shape.
+	 * Given a transform, computes the axis aligned bounding box for this shape.
+	 * @param xf the World transform of the shape.
 	 * @param result Stores the axis aligned box.
 	 */
 	public abstract void computeAABB(XForm xf, AABB result);
