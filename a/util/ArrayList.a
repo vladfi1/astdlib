@@ -1,7 +1,6 @@
 package a.util;
 
-import a.util.List;
-import a.util.Iterator;
+import a.util.AbstractList;
 import a.util.Heap;
 import a.util.HeapUtil;
 
@@ -9,7 +8,7 @@ import a.util.HeapUtil;
  * ArrayList implementation that uses the Heap as storage.
  * @author XPilot
  */
-public class ArrayList<E> extends List<E> {
+public class ArrayList<E> extends AbstractList<E> {
 	
 	public static const int DEFAULT_CAPACITY = 7;
 
@@ -27,7 +26,7 @@ public class ArrayList<E> extends List<E> {
 	private int size;
 	
 	/**
-	 * ArrayList with capacity DEFAULT_CAPACITY.
+	 * ArrayList with capacity DEFAULT_CAPACITY = 7.
 	 */
 	public ArrayList() {
 		this(DEFAULT_CAPACITY);
@@ -162,74 +161,9 @@ public class ArrayList<E> extends List<E> {
 		return element;
 	}
 	
-	/**
-	 * @return An iterator for this ArrayList.
-	 */
-	public ArrayListIterator<E> getIterator() {
-		return new ArrayIterator(this);
-	}
-	
 	public Array<E> toArray() {
 		Array<E> array = new Array<E>(size);
 		HeapUtil.copy(ptr, array.ptr, size);
 		return array;
-	}
-
-	/**
-	 * The index element in this ArrayList.
-	 * @return -1 if not found.
-	 */
-	public int indexOf(E element) {
-		for(int i = 0; i < size; i++) {
-			if(getIndex(i) == element) i;
-		}
-		return -1;
-	}
-	
-	/**
-	 * @return Whether this ArrayList contains element.
-	 */
-	public bool contains(E element) {
-		for(int i = 0; i < size; i++) {
-			if(getIndex(i) == element) return true;
-		}
-		return false;
-	}
-	
-	/**
-	 * Sorts this ArrayList in ascending order.
-	 *
-	public void sort(Comparator<E> comparator) {
-		HeapSort.heapSort(ptr, size, comparator);
-	}
-	
-	/**
-	 * Searches for element assuming that the list is in ascending order.
-	 * @return The index of the element, or -1 if not found.
-	 *
-	public int binarySearch(E element, Comparator<E> comparator) {
-		return HeapUtil.binarySearch(ptr, size, element, comparator);
-	}
-	*/
-}
-
-/**
- * Iterator for ArrayList.
- */
-private class ArrayListIterator<E> extends Iterator<E> {
-	private ArrayList<E> list;
-	private int index;
-	
-	ArrayListIterator(ArrayList<E> list) {
-		this.list = list;
-		index = 0;
-	}
-	
-	public bool hasNext() {return index < list.size();}
-	
-	public E next() {
-		E temp = list.getIndex(index);
-		index++;
-		return temp;
 	}
 }

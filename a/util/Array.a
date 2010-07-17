@@ -1,18 +1,18 @@
 package a.util;
 
+import a.util.AbstractList;
 import a.util.Heap;
 import a.util.HeapUtil;
 
 /**
- * Simple array built on the Heap.
+ * Array built on the Heap.
  * Does not perform bounds checks.
  * @author XPilot
  */
-public class Array<E> [512] {
+public class Array<E> extends AbstractList<E> {
 	
 	/**
 	 * Index in the Heap.
-	 * Package visibility.
 	 */
 	/* final */ int ptr;
 	/**
@@ -30,20 +30,51 @@ public class Array<E> [512] {
 		Heap.free(ptr);
 	}
 	
+	public override int size() {
+		return length;
+	}
+	
 	/**
-	 * Stores a value at ptr.
 	 * Does not perform bounds checks.
 	 */
-	public void setIndex(int index, E value) {
+	public override void setIndex(int index, E value) {
 		Heap.array[this.ptr + index] = (int)value;
 	}
 	
 	/**
-	 * Retrieves the value at index.
 	 * Does not perform bounds checks.
 	 */
-	public E getIndex(int index) {
+	public override E getIndex(int index) {
 		return (E)Heap.array[this.ptr + index];
+	}
+	
+	/**
+	 * Unsupported operation.
+	 */
+	public override void clear() {}
+	
+	/**
+	 * Unsupported operation.
+	 * @return true
+	 */
+	public override bool isEmpty() {
+		return true;
+	}
+	
+	/**
+	 * Unsupported operation.
+	 * @return false
+	 */
+	public override bool addIndex(int index, E element) {
+		return false;
+	}
+	
+	/**
+	 * Unsupported operation.
+	 * @return null
+	 */
+	public override E removeIndex(int index) {
+		return null;
 	}
 	
 	/**
@@ -53,61 +84,5 @@ public class Array<E> [512] {
 		Array<E> clone = new Array<E>(length);
 		HeapUtil.copy(ptr, clone.ptr, length);
 		return clone;
-	}
-	
-	/**
-	 * @return An iterator for this Array.
-	 */
-	public ArrayIterator<E> getIterator() {
-		return new ArrayIterator(this);
-	}
-	
-	/**
-	 * @return Whether this ArrayList contains element.
-	 */
-	public bool contains(E element) {
-		for(int i = 0; i < size; i++) {
-			if(getIndex(i) == element) return true;
-		}
-		return false;
-	}
-	
-	/**
-	 * Sorts this ArrayList in ascending order.
-	 *
-	public void sort(Comparator<E> comparator) {
-		HeapSort.heapSort(ptr, size, comparator);
-	}
-	
-	/**
-	 * Searches for element assuming that the list is in ascending order.
-	 * @return The index of the element, or -1 if not found.
-	 *
-	public int binarySearch(E element, Comparator<E> comparator) {
-		return HeapUtil.binarySearch(ptr, size, element, comparator);
-	}
-	*/
-}
-
-/**
- * Iterator for Array.
- */
-private class ArrayIterator<E> [64] {
-	private Array<E> array;
-	private int index;
-	
-	ArrayIterator(Array<E> array) {
-		this.array = array;
-		index = 0;
-	}
-	
-	public bool hasNext() {
-		return index < array.length;
-	}
-	
-	public E next() {
-		E temp = array.getIndex(index);
-		index++;
-		return temp;
 	}
 }

@@ -15,45 +15,45 @@ public abstract class List<E> extends Iterable<E> {
 	/**
 	 * Whether this list is empty.
 	 */
-	public bool isEmpty();
+	public abstract bool isEmpty();
 	
 	/**
 	 * Removes all elements from this list.
 	 */
-	public void clear();
+	public abstract void clear();
 	
 	/**
 	 * Gets the element at index.
 	 * @param index The index.
 	 * @return The element at index.
 	 */
-	public E getIndex(int index);
+	public abstract E getIndex(int index);
 	
 	/**
 	 * Sets the element at index.
 	 * @param index The index.
 	 * @param element The new element.
 	 */
-	 public void setIndex(int index, E element);
-	 
-	 /**
-	  * Inserts an element at index.
-	  * @param index The index.
-	  * @param element The new element.
-	  * @return Whether successful.
-	  */
-	 public bool addIndex(int index, E element);
-	 
-	 /**
-	  * Removes the element at index.
-	  * @param index The index.
-	  * @return The element removed.
-	  */
-	 public E removeIndex(int index);
-	 
-	 /**
-	  * Creates an iterator for this list.
-	  * @return An iterator for this list.
-	  */
-	 public Iterator<E> getIterator();
+	public abstract void setIndex(int index, E element);
+	
+	/**
+	 * Inserts an element at index.
+	 * @param index The index.
+	 * @param element The new element.
+	 * @return Whether successful.
+	 */
+	public abstract bool addIndex(int index, E element);
+	
+	/**
+	 * Removes the element at index.
+	 * @param index The index.
+	 * @return The element removed.
+	 */
+	public abstract E removeIndex(int index);
+	
+	/**
+	 * Creates an iterator for this list.
+	 * @return An iterator for this list.
+	 */
+	public Iterator<E> getIterator();
 }

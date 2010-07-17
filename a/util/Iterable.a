@@ -6,5 +6,5 @@ import a.util.Iterator;
  * Can be the target of a "for each" loop.
  */
 public abstract class Iterable<E> {
-	public Iterator<E> getIterator();
+	public abstract Iterator<E> getIterator();
 }
