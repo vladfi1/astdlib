@@ -4,7 +4,7 @@ import physics2d.geom.Vec2;
 import physics2d.geom.Mat22;
 
 /**
- * Represents the combination of a translation and a rotation.
+ * Represents the combination of a translation and a rotation (an affine transform).
  * Rotation comes before translation.
  * @author XPilot
  */

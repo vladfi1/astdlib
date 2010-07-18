@@ -2,6 +2,7 @@ package physics2d.dynamics;
 
 /**
  * Physics simulation world.
+ * @author XPilot
  */
 public class World {
 

@@ -2,6 +2,10 @@ package physics2d.geom;
 
 import physics2d.geom.ShapeType;
 
+/**
+ * Definition of a shape.
+ * @author XPilot
+ */
 public abstract class ShapeDef {
 	/* final */ ShapeType type;
 	

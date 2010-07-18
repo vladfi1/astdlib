@@ -2,6 +2,7 @@ package physics2d.geom;
 
 /**
  * A shape used for collision detection.
+ * @author XPilot
  */
 public abstract class Shape {
 	/**

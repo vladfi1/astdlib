@@ -4,6 +4,7 @@ import a.util.Math;
 
 /**
  * An 2-dimensional axis-aligned bounding box.
+ * @author XPilot
  */
 public class AABB {
 	/**

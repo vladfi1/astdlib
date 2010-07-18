@@ -4,6 +4,10 @@ import a.util.ArrayList;
 import physics2d.geom.ShapeDef;
 import physics2d.geom.ShapeType;
 
+/**
+ * Definiiton of a polygon shape.
+ * @author XPilot
+ */
 public class PolygonDef extends ShapeDef {
 	private /* final */ ArrayList<Vec2> vertices;
 	

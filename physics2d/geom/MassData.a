@@ -2,6 +2,7 @@ package physics2d.geom;
 
 /**
  * Holds the mass data for a 2-dimensional shape.
+ * @author XPilot
  */
 public class MassData {
 	/**

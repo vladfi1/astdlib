@@ -10,6 +10,7 @@ import physics2d.geom.AABB;
 
 /**
  * A polygon shape.
+ * @author XPilot
  */
 public class PolygonShape extends Shape {
 	

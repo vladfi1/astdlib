@@ -5,6 +5,7 @@ import physics2d.geom.Vec2;
 
 /**
  * Definition of a body.
+ * @author XPilot
  */
 public class BodyDef {
 		

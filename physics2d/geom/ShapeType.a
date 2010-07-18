@@ -2,6 +2,7 @@ package physics2d.geom;
 
 /**
  * Enum of all possible shape types.
+ * @author XPilot
  */
 public final class ShapeType [NUM_TYPES] {
 	public static const int NUM_TYPES = 2;

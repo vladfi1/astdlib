@@ -9,6 +9,7 @@ import physics2d.geom.Sweep;
 
 /**
  * A rigid body made up of several shapes.
+ * @author XPilot
  */
 public class Body {
 	
