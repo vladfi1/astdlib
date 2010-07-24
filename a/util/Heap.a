@@ -25,31 +25,26 @@ public static class Heap {
 	/**
 	 * The backing array. The last 2*LEVEL indexes are for header information.
 	 */
-	//public static int[HEAP_SIZE + 2 * LEVEL] array;
-	public static int[16412] array;
+	public static int[HEAP_SIZE + 2 * LEVEL] array;
 	
 	/**
 	 * Head nodes of the free lists.
 	 */
-	//private static int[LEVEL + 1] head;
-	private static int[15] head;
+	private static int[LEVEL + 1] head;
 	
 	/**
 	 * Sizes of free lists. Mainly for debugging.
 	 */
-	//private static int[LEVEL + 1] count;
-	private static int[15] count;
+	private static int[LEVEL + 1] count;
 	
-	/*
 	static {
-		initHeap();
+		Heap.initHeap();
 	}
-	*/
-	
+
 	/**
-	 * Initializes the Heap. Should be done in the static init block.
+	 * Initializes the Heap.
 	 */
-	public static void initHeap() {
+	private static void initHeap() {
 		for(int i = 1; i <= LEVEL; i++) {
 			initLevel(i);
 		}

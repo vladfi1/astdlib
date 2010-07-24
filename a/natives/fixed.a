@@ -8,6 +8,8 @@ import a.util.Math;
 */
 public enrich fixed
 {
+	public static const int ANY_PRECISION = c_fixedPrecisionAny;
+
 	/**
 	* 	Returns a new fixed which is an absolute value of this fixed number.
 	* 	Absolute value represents distance from the 0.
@@ -101,7 +103,7 @@ public enrich fixed
 	{
 		//NOTE: Untested I assume the angle is between -180° (excluded) and 180°.
 
-		return tan(this);
+		return Tan(this);
 	}
 	
 	
@@ -166,9 +168,9 @@ public enrich fixed
 	*/
 	public fixed compareTo(fixed that)
 	{
-		if (this <  that) return -1;
-		if (this == that) return 0;
-		if (this >  that) return 1;
+		if (this < that) return -1;
+		else if (this > that) return 1;
+		return 0;
 	}
 	
 	/**
@@ -202,11 +204,13 @@ public enrich fixed
 	*	Returns a string representation of this fixed
 	*	@return string representation of this fixed
 	*/
-	public string toString()
-	{
-		return (string) this;
+	public string toString() {
+		return FixedToString(this, ANY_PRECISION);
 	}
 	
+	public string toString(int precision) {
+		return FixedToString(this, precision);
+	}
 	
 	/**
 	*	Returns a text representation of this fixed

@@ -3,7 +3,8 @@ package a.util;
 /**
  * Useful math functions.<BR/>
  * Testing shows that they are somewhat slower (2x) than their
- * native counterparts. This is simply due to extra function calls.
+ * native counterparts. This is simply due to extra function calls,
+ * and will disapear once inlining works.
  * @author XPilot
  */
 public static class Math {
@@ -12,22 +13,22 @@ public static class Math {
 	 */
 	public static const int FRACTION_BITS = 12;
 	public static const int FRACTION_MASK = (1 << FRACTION_BITS) - 1;
-	public static /* const */ fixed FRACTION_FACTOR = 4096.0;
+	public static const fixed FRACTION_FACTOR = (fixed)(1 << FRACTION_BITS);
 	
 	/**
 	 * Closest fixed value to pi = 3.14159.
 	 */
-	public static /* const */ fixed PI = 12868.0 / FRACTION_FACTOR;
+	public static const fixed PI = 12868.0 / FRACTION_FACTOR;
 	
 	/**
 	 * Closest fixed value to e = 2.71828.
 	 */
-	public static /* const */ fixed E = 11134.0 / FRACTION_FACTOR;
+	public static const fixed E = 11134.0 / FRACTION_FACTOR;
 	
 	/**
 	 * Smallest possible positive fixed value.
 	 */
-	public static /* const */ fixed EPSILON = 1.0 / FRACTION_FACTOR;
+	public static const fixed EPSILON = 1.0 / FRACTION_FACTOR;
 	
 	public static const int MIN_INT = 1 << 32;
 	public static const int MAX_INT = ~MIN_INT;

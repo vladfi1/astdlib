@@ -13,7 +13,6 @@ enrich Key
     */
     public static const Key KEY_ANY = (Key)c_keyNone;
 
-
     //TODO: Find the codes for the keys Starcraft 2 detects, but are not listed in the constants-
     //TODO: Think about the naming of multiple word keys like NUMPAD0,PRINTSCREEN,NEXTTRACK,...
     public static const Key KEY_NONE = (Key)c_keyNone;
@@ -193,7 +192,7 @@ enrich Key
         displayText[(int)KEY_MINUS]="-";
         displayText[(int)KEY_BRACKETOPEN]="(";
         displayText[(int)KEY_BRACKETCLOSE]=")";
-        displayText[(int)KEY_BACKSLASH]="\\\\"; //TODO: Change this as soon as the andromeda bug is fixed
+        displayText[(int)KEY_BACKSLASH]="\\";
         displayText[(int)KEY_SEMICOLON]=";";
         displayText[(int)KEY_APOSTROPHE]="'";
         displayText[(int)KEY_COMMA]=",";
@@ -201,9 +200,9 @@ enrich Key
         displayText[(int)KEY_SLASH]="/";
 
         displayText[(int)KEY_ESCAPE]="ESC";
-        displayText[(int)KEY_ENTER]="ENTER";
+        displayText[(int)KEY_ENTER]="\n";
         displayText[(int)KEY_BACKSPACE]="BACKSPACE";
-        displayText[(int)KEY_TAB]="TAB";
+        displayText[(int)KEY_TAB]="\t";
 
         displayText[(int)KEY_LEFT]="LEFT";
         displayText[(int)KEY_UP]="UP";
