@@ -273,7 +273,7 @@ public static class Heap {
 		int ptr2 = malloc(size);
 		if(ptr2 != ERROR) {
 			int min = maxSize(array[ptr - 1]);
-			if(size < min) min = size;
+			if(min > size) min = size;
 			for(int i = 0; i < min; i++) {
 				array[ptr2 + i] = array[ptr + i];
 			}

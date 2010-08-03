@@ -38,14 +38,14 @@ public class Array<E> extends AbstractList<E> {
 	 * Does not perform bounds checks.
 	 */
 	public override void setIndex(int index, E value) {
-		Heap.array[this.ptr + index] = (int)value;
+		Heap.array[ptr + index] = (int)value;
 	}
 	
 	/**
 	 * Does not perform bounds checks.
 	 */
 	public override E getIndex(int index) {
-		return (E)Heap.array[this.ptr + index];
+		return (E)Heap.array[ptr + index];
 	}
 	
 	/**
@@ -66,6 +66,7 @@ public class Array<E> extends AbstractList<E> {
 	 * @return false
 	 */
 	public override bool addIndex(int index, E element) {
+		System.error("Unsupported Operation: Array.addIndex(int, E)");
 		return false;
 	}
 	
@@ -74,6 +75,7 @@ public class Array<E> extends AbstractList<E> {
 	 * @return null
 	 */
 	public override E removeIndex(int index) {
+		System.error("Unsupported Operation: Array.removeIndex(int)");
 		return null;
 	}
 	

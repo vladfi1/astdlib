@@ -9,10 +9,10 @@ import a.util.Hasher;
  * @author XPilot
  */
 public class Integer {
-	public static final const MIN_VALUE = 1 << 32;
-	public static final const MAX_VALUE = ~MIN_VALUE;
+	public static const int MIN_VALUE = 1 << 32;
+	public static const int MAX_VALUE = ~MIN_VALUE;
 	
-	private int value;
+	private /* final */ int value;
 	
 	public Integer() {
 		value = 0;
@@ -48,6 +48,14 @@ public class Integer {
 	
 	public string toString() {
 		return (string)value;
+	}
+	
+	public static Integer randomInteger(int min, int max) {
+		return new Integer(RandomInt(min, max));
+	}
+	
+	public static Integer randomInteger() {
+		return randomInteger(MIN_VALUE, MAX_VALUE);
 	}
 	
 	private static /* final */ Comparator<Integer> comparator;

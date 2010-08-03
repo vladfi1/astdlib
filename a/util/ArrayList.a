@@ -3,6 +3,7 @@ package a.util;
 import a.util.AbstractList;
 import a.util.Heap;
 import a.util.HeapUtil;
+import a.util.Array;
 
 /**
  * ArrayList implementation that uses the Heap as storage.
@@ -74,7 +75,7 @@ public class ArrayList<E> extends AbstractList<E> {
 	 */
 	public bool setCapacity(int capacity) {
 		capacity = Heap.round(capacity);
-		int ptr = Heap.realloc(ptr, capacity);
+		int ptr = Heap.realloc(this.ptr, capacity);
 		if(ptr == Heap.ERROR) return false;
 		this.ptr = ptr;
 		this.capacity = capacity;
@@ -109,13 +110,12 @@ public class ArrayList<E> extends AbstractList<E> {
 	
 	public override E getIndex(int index) {
 		if(index < 0 || index >= size) return null;
-		return (E)Heap.array[this.ptr + index];
+		return (E)Heap.array[ptr + index];
 	}
 	
-	public override bool setIndex(int index, E element) {
-		if(index < 0 || index >= size) return false;
-		Heap.array[this.ptr + index] = element;
-		return true;
+	public override void setIndex(int index, E element) {
+		if(index < 0 || index >= size) return;//should somehow signal error here
+		Heap.array[ptr + index] = (int)element;
 	}
 	
 	/**
@@ -126,18 +126,21 @@ public class ArrayList<E> extends AbstractList<E> {
 		if(size == capacity)
 			if(!ensureCapacity(size + 1)) return false;
 		
-		Heap.array[this.ptr + size] = element;
+		Heap.array[ptr + size] = (int)element;
 		size++;
 		return true;
 	}
 	
 	public override bool addIndex(int index, E element) {
-		if(index < 0 || index > size) return false;
+		if(index < 0 || index > size) {
+			System.error("ArrayList.addIndex: index = " + index + ", size = " + size);
+			return false;
+		}
 		if(size == capacity)
 			if(!ensureCapacity(size + 1)) return false;
 		
 		HeapUtil.copy(ptr, ptr + 1, size - index);
-		Heap.array[this.ptr + index] = element;
+		Heap.array[ptr + index] = (int)element;
 		size++;
 		return true;
 	}
@@ -149,13 +152,13 @@ public class ArrayList<E> extends AbstractList<E> {
 	public E removeLast() {
 		if(isEmpty()) return null;
 		size--;
-		E element = Heap.array[this.ptr + size];
+		E element = (E)Heap.array[ptr + size];
 		return element;
 	}
 	
 	public override E removeIndex(int index) {
 		if(index < 0 || index > size) return null;
-		E element = (E)Heap.array[this.ptr + index];
+		E element = (E)Heap.array[ptr + index];
 		HeapUtil.copy(ptr + 1, ptr, size - index - 1);
 		size--;
 		return element;

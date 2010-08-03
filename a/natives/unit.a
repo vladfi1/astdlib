@@ -143,12 +143,12 @@ public enrich unit
 
 	/**
 	*	Changes the units position.
-	*	@param p2 The point to move the unit to.
-	*	@param p3 Whether or not to "blend" the unit, which makes the unit not instantly teleport the point, but slide.
+	*	@param position The point to move the unit to.
+	*	@param blend Whether or not to "blend" the unit, which makes the unit not instantly teleport the point, but slide.
 	*/
-	public void setPosition(point p2, bool p3)
+	public void setPosition(point position, bool blend)
 	{
-		UnitSetPosition(this, p2, p3);
+		UnitSetPosition(this, position, blend);
 	}
 	
 	/**
@@ -179,6 +179,14 @@ public enrich unit
 		UnitSetHeight(this, p2, p3);
 	}
 
+	/**
+	 *	Sets the unit's height.
+	 *	@param height The height to which the unit should be set.
+	 */
+	public void setHeight(fixed height) {
+		UnitSetHeight(this, height, 0.0);
+	}	
+	
 	/**
 	*	Gets the current facing of the unit.
 	*	@return The facing of the unit, in degrees.
@@ -1446,4 +1454,11 @@ public enrich unit
 		UnitFlashSelection(this, p2);
 	}
 
+	/**
+	 * Gets this unit's main actor.
+	 * @return This unit's main actor.
+	 */
+	public actor getMainActor() {
+		return ActorFromScope(ActorScopeFromUnit(this), "::Main");
+	}
 }

@@ -1,11 +1,9 @@
 package a.natives;
-/*
-*	Enrichment for native type 'actor'
-*	@author NewName
-*/
-
-public enrich actor
-{
+/**
+ *	Enrichment for native type 'actor'
+ *	@author NewName, XPilot
+ */
+public enrich actor {
 	/**
 	*	Creates an actor.  The Scope parameter can be null if you do not want to create the actor in an existing scope.  
 	*	The Content parameters are optional, and allow you to specify additional properties for the actor being created.
@@ -165,5 +163,63 @@ public enrich actor
 	public static void removeGlobalTextureGroup(string textureProps)
 	{
 		ActorTextureGroupRemoveGlobal (textureProps);
+	}
+	
+	//*****XPilot: actor message utilities*****
+	
+	/**
+	 * Sets the 2D facing of this actor. 
+	 * @param facing The direction, in degrees.
+	 */
+	public void setFacing(fixed facing) {
+		ActorSend(this, "SetFacing " + facing);
+	}
+	
+	/**
+	 * Sets the 3D position of this actor.
+	 * @param x, y, z Cartesian coordinates of the position.
+	 */
+	public void setPosition(fixed x, fixed y, fixed z) {
+		ActorSend(this, "SetPosition " + x + "," + y + "," + z);
+	}
+
+	/**
+	 * Sets the 2D position of this actor. 
+	 * @param x, y Cartesian coordinates of the position.
+	 */
+	public void setPosition2D(fixed x, fixed y) {
+		ActorSend(this, "SetPosition2D " + x + "," + y);
+	}
+	
+	/**
+	 * Sets the 2D position of this actor while preserving the current height value. 
+	 * @param x, y Cartesian coordinates of the position.
+	 */
+	public void setPosition2DH(fixed x, fixed y) {
+		ActorSend(this, "SetPosition2DH " + x + "," + y);
+	}
+	
+	/**
+	 * Sets the 2-dimensional position of an actor while adjusting its height relative to the terrain.
+	 * @param x, y Cartesian coordinates of the position.
+	 * @param h The height relative to the ground.
+	 */
+	public void setPositionH(fixed x, fixed y, fixed h) {
+		ActorSend(this, "SetPositionH " + x + "," + y + " " + h);
+	}
+	
+	/**
+	 * Sets this actor at a height relative to the terrain.
+	 * @param height Height relative to the terrain.
+	 */
+	public void setHeight(fixed height) {
+		ActorSend(this, "SetHeight " + height);
+	}
+	/**
+	 * Sets the absolute height of the actor.
+	 * @param z The absolute height.
+	 */
+	public void setZ(fixed z) {
+		ActorSend(this, "SetZ " + z);
 	}
 }

@@ -158,8 +158,7 @@ public class Char [NUM_CHARS] {
 	 */
 	public static Char getChar(string str) {
 		for(int i = 0; i < NUM_CHARS; i++) {
-			if(chars[i] == null) continue;
-			if(StringEqual(str, chars[i].str, true))
+			if(chars[i] != null && StringEqual(str, chars[i].str, true))
 				return chars[i];
 		}
 		return null;
@@ -245,10 +244,10 @@ private class CharComparator extends Comparator<Char> {
 }
 
 private class CharHasher extends Hasher<Char> {
-	public override int hashCode(Char s) {
-		return s.hashCode();
+	public override int hashCode(Char c) {
+		return c.hashCode();
 	}
 	public override bool equal(Char c1, Char c2) {
-		return c1.equals(c2);
+		return c1 == c2;
 	}
 }

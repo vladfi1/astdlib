@@ -1,4 +1,7 @@
 package a.natives;
+
+import a.util.Math;
+
 /**  
 *        Enrichment for type Point
 *        @author Belphegor
@@ -238,8 +241,11 @@ public enrich point
 		public int hash()
 		{
 			//NOTE: I assume that Ints are at least 8 bit and that << and ^ are the fastest available operations 
-
-                        return (FixedToInt(PointGetX(this)) ^ (FixedToInt(PointGetY(this)) << 4));
+			return (FixedToInt(PointGetX(this)) ^ (FixedToInt(PointGetY(this)) << 4));
+		}
+		
+		public int hashCode() {
+			return Math.fixedToIntBits(PointGetX(this)) ^ Math.fixedToIntBits(PointGetY(this));
 		}
 
 		/**

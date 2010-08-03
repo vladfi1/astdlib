@@ -55,5 +55,5 @@ public abstract class List<E> extends Iterable<E> {
 	 * Creates an iterator for this list.
 	 * @return An iterator for this list.
 	 */
-	public Iterator<E> getIterator();
+	public abstract Iterator<E> getIterator();
 }
