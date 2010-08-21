@@ -1,4 +1,5 @@
 package a.natives;
+
 /**
  *	Enrichment for native type 'actor'
  *	@author NewName, XPilot
@@ -166,6 +167,21 @@ public enrich actor {
 	}
 	
 	//*****XPilot: actor message utilities*****
+	
+	/**
+	 * Gets the last created actor.
+	 * @return The last created actor.
+	 */
+	public static actor getLastCreated() {
+		return ActorFrom("::LastCreated");
+	}
+	
+	/**
+	 * Destroys this actor.
+	 */
+	public void destroy() {
+		ActorSend(this, "Destroy");
+	}
 	
 	/**
 	 * Sets the 2D facing of this actor. 

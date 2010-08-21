@@ -2,7 +2,6 @@ package a.util;
 
 import a.util.AbstractList;
 import a.util.Heap;
-import a.util.HeapUtil;
 
 /**
  * Array built on the Heap.
@@ -84,7 +83,7 @@ public class Array<E> extends AbstractList<E> {
 	 */
 	public Array<E> clone() {
 		Array<E> clone = new Array<E>(length);
-		HeapUtil.copy(ptr, clone.ptr, length);
+		Heap.copy(ptr, clone.ptr, length);
 		return clone;
 	}
 }

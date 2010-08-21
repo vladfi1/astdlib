@@ -3,6 +3,7 @@ package a.util;
 /**
  * Manages the Heap, which can dynamically allocate arrays.
  * Uses a buddy system to minimize internal fragmentation.
+ * All entries are integers (4 bytes).
  * @author XPilot
  */
 public static class Heap {
@@ -38,7 +39,7 @@ public static class Heap {
 	private static int[LEVEL + 1] count;
 	
 	static {
-		Heap.initHeap();
+		initHeap();
 	}
 
 	/**
@@ -200,7 +201,6 @@ public static class Heap {
 
 		//finds the next free block large enough
 		int i = level;
-		//while(i <= LEVEL && lists[i].isEmpty()) i++;
 		while(i <= LEVEL && isEmpty(i)) i++;
 		
 		//no block found
@@ -210,12 +210,10 @@ public static class Heap {
 		}
 		
 		//starts splitting blocks until until one of the right level is created
-		//int ptr = lists[i].remove();
 		int ptr = remove(i);
 		while(i > level) {
 			i--;
 			int right = buddy(i, ptr);
-			//lists[i].add(right);
 			add(i, right);
 		}
 		//marks the block as taken (upper LEVEL_BITS bits are 0) and stores level
@@ -335,5 +333,33 @@ public static class Heap {
 	public static void stats(int level) {
 		for(int ptr = next(head[level]); ptr != head[level]; ptr = next(ptr))
 			System.debug(IntToString(ptr));
+	}
+	
+	/**
+	 * Swaps the values of two pointers.
+	 * @param ptr1, ptr2 The two pointers.
+	 */
+	public static void swap(int ptr1, int ptr2) {
+		int temp = array[ptr1];
+		array[ptr1] = array[ptr2];
+		array[ptr2] = temp;
+	}
+
+	/**
+	 * Copies a block of memory.
+	 * @param src The source pointer.
+	 * @param dest The destination pointer.
+	 * @param len The length of the block.
+	 */
+	public static void copy(int src, int dest, int len) {
+		if(dest > src && dest - src < len) {
+			for(int i = len - 1; i >= 0; i--) {
+				array[dest + i] = array[src + i];
+			}
+		} else {
+			for(int i = 0; i < len; i++) {
+				array[dest + i] = array[src + i];
+			}
+		}
 	}
 }

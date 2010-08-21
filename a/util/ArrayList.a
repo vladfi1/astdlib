@@ -2,7 +2,6 @@ package a.util;
 
 import a.util.AbstractList;
 import a.util.Heap;
-import a.util.HeapUtil;
 import a.util.Array;
 
 /**
@@ -64,7 +63,7 @@ public class ArrayList<E> extends AbstractList<E> {
 	 */
 	public ArrayList<E> clone() {
 		ArrayList<E> clone = new ArrayList<E>(capacity);
-		HeapUtil.copy(ptr, clone.ptr, size);
+		Heap.copy(ptr, clone.ptr, size);
 		clone.size = size;
 		return clone;
 	}
@@ -139,7 +138,7 @@ public class ArrayList<E> extends AbstractList<E> {
 		if(size == capacity)
 			if(!ensureCapacity(size + 1)) return false;
 		
-		HeapUtil.copy(ptr, ptr + 1, size - index);
+		Heap.copy(ptr, ptr + 1, size - index);
 		Heap.array[ptr + index] = (int)element;
 		size++;
 		return true;
@@ -159,14 +158,14 @@ public class ArrayList<E> extends AbstractList<E> {
 	public override E removeIndex(int index) {
 		if(index < 0 || index > size) return null;
 		E element = (E)Heap.array[ptr + index];
-		HeapUtil.copy(ptr + 1, ptr, size - index - 1);
+		Heap.copy(ptr + 1, ptr, size - index - 1);
 		size--;
 		return element;
 	}
 	
 	public Array<E> toArray() {
 		Array<E> array = new Array<E>(size);
-		HeapUtil.copy(ptr, array.ptr, size);
+		Heap.copy(ptr, array.ptr, size);
 		return array;
 	}
 }

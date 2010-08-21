@@ -139,8 +139,8 @@ public enrich string{
 	*	@param whether to perform a case sensitive match
 	*	@return starting position of first occurence or string.NOT_FOUND
 	*/
-	public int find(string toFind, boolean caseSensitive){
-		return StringFind(this,toFind);
+	public int find(string toFind, bool caseSensitive){
+		return StringFind(this,toFind,caseSensitive);
 	}
 	
 	/**
@@ -169,7 +169,7 @@ public enrich string{
 	*	@param caseSensitive whether the matching should be done case sensitive
 	*	@return whether <code>prefix</code> is a prefix of this string
 	*/
-	public bool startsWith(string prefix, boolean caseSensitive){
+	public bool startsWith(string prefix, bool caseSensitive){
 		return StringContains(this,prefix,c_stringBegin,caseSensitive);
 	}
 	
@@ -179,7 +179,7 @@ public enrich string{
 	*	@param caseSensitive whether the matching should be done case sensitive
 	*	@return whether <code>suffix</code> is a suffix of this string
 	*/
-	public bool endsWith(string suffix, boolean caseSensitive){
+	public bool endsWith(string suffix, bool caseSensitive){
 		return StringContains(this,suffix,c_stringEnd,caseSensitive);
 	}
 	
@@ -251,7 +251,7 @@ public enrich string{
 	*	@param caseSens if the search should be case sensitive
 	*	@return the result of the replacement
 	*/
-	public string replaceAll(string searchFor, string replaceBy, boolean caseSens){
+	public string replaceAll(string searchFor, string replaceBy, bool caseSens){
 		return StringReplaceWord(this,searchFor, replaceBy, c_stringReplaceAll, caseSens);
 	}
 	
@@ -275,7 +275,7 @@ public enrich string{
 	*	@param caseSens if the search should be case sensitive
 	*	@return the result of the replacement
 	*/
-	public string replaceFirst(string searchFor, string replaceBy, boolean caseSens){
+	public string replaceFirst(string searchFor, string replaceBy, bool caseSens){
 		return StringReplaceWord(this,searchFor, replaceBy, 1, caseSens);
 	}
 	
@@ -300,7 +300,7 @@ public enrich string{
 	*	@param caseSens if the search should be case sensitive
 	*	@return the result of the replacement
 	*/
-	public string replace(string searchFor, string replaceBy, int maxReplacements, boolean caseSens){
+	public string replace(string searchFor, string replaceBy, int maxReplacements, bool caseSens){
 		return StringReplaceWord(this,searchFor, replaceBy, maxReplacements, caseSens);
 	}
 	
