@@ -1,6 +1,7 @@
 package physics2d.dynamics;
 
 import physics2d.geom.Vec2;
+import physics2d.geom.Mat22;
 import physics2d.geom.XForm;
 
 /**

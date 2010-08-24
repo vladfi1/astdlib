@@ -1,0 +1,57 @@
+package physics2d.geom;
+
+import physics2d.geom.Shape;
+import physics2d.geom.PointDef;
+
+/**
+ * A point shape.
+ * @author XPilot
+ */
+public class PointShape extends Shape {
+	
+	private fixed mass;
+	private Vec2 position;
+	
+	public PointShape(PointDef def) {
+		super(def);
+		mass = def.mass;
+		position = new Vec2(def.position);
+	}
+	
+	public ~PointShape() {
+		delete position;
+	}
+	
+	public fixed getMass() {
+		return mass;
+	}
+	
+	public Vec2 getPosition() {
+		return position;
+	}
+	
+	public void computeMass(MassData result) {
+		result.mass = mass;
+		result.centroid.setVec(position);
+		result.inertia = mass * position.magnitude2();
+	}
+	
+	public fixed computeRadius(Vec2 center) {
+		return Vec2.distance(position, center);
+	}
+	
+	/**
+	 * Given a transform, computes the axis aligned bounding box for this shape.
+	 * @param xf the World transform of the shape.
+	 * @param result Stores the axis aligned box.
+	 */
+	public abstract void computeAABB(XForm xf, AABB result);
+	
+	/**
+	 * Given two transforms, compute the associated swept axis aligned bounding box for this shape.
+	 * @param xf1 the starting shape world transform.
+	 * @param xf2 the ending shape world transform.
+	 * @param result Stores the axis aligned box. (return parameter)
+	 */
+	public abstract void computeSweptAABB(XForm xf1, XForm xf2, AABB result);
+}

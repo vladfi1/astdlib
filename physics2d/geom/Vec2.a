@@ -216,7 +216,7 @@ public class Vec2 {
 	 * Subtracts scale * v from this vector;
 	 * @return This vector.
 	 */
-	public Vec2 add(Vec2 v, fixed scale) {
+	public Vec2 subtract(Vec2 v, fixed scale) {
 		x -= v.x * scale;
 		y -= v.y * scale;
 		return this;
@@ -226,7 +226,7 @@ public class Vec2 {
 	 * Subtracts <x, y> from this vector.
 	 * @return This vector.
 	 */
-	public Vec2 add(fixed x, fixed y) {
+	public Vec2 subtract(fixed x, fixed y) {
 		this.x -= x;
 		this.y -= y;
 		return this;

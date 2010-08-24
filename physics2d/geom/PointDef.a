@@ -1,0 +1,37 @@
+package physics2d.geom;
+
+import physics2d.geom.Vec2;
+import physics2d.geom.ShapeDef;
+import physics2d.geom.ShapeType;
+
+/**
+ * Definition of a point shape.
+ * @author XPilot
+ */
+public class PointDef extends ShapeDef {
+	public fixed mass;
+	/* final */ Vec2 position;
+	
+	public PointDef() {
+		super(ShapeType.POINT_SHAPE);
+		position = new Vec2();
+	}
+	
+	public PointDef(fixed mass, fixed x, fixed y) {
+		super(ShapeType.POINT_SHAPE);
+		this.mass = mass;
+		position = new Vec2(x, y);
+	}
+	
+	public ~PointDef() {
+		delete position;
+	}
+	
+	public void setPosition(fixed x, fixed y) {
+		position.setVec(x, y);
+	}
+	
+	public Vec2 getPosition() {
+		return position;
+	}
+}

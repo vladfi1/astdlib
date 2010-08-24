@@ -64,8 +64,8 @@ public class BodyDef {
 		massData = new MassData();
 		position = new Vec2();
 		angle = 0.0;
-		linearDamping = 0;
-		angularDamping = 0;
+		linearDamping = 0.0;
+		angularDamping = 0.0;
 	}
 	
 	/**

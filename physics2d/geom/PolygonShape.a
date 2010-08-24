@@ -1,8 +1,8 @@
 package physics2d.geom;
 
 import a.util.Array;
-
 import physics2d.geom.Shape;
+import physics2d.geom.PolygonDef;
 import physics2d.geom.Vec2;
 import physics2d.geom.Mat22;
 import physics2d.geom.XForm;
@@ -14,6 +14,7 @@ import physics2d.geom.AABB;
  */
 public class PolygonShape extends Shape {
 	
+	private fixed density;
 	private Array<Vec2> vertices;
 	private Array<Vec2> normals;
 	
@@ -23,7 +24,9 @@ public class PolygonShape extends Shape {
 	 */
 	public PolygonShape(PolygonDef def) {
 		super(def);
-	
+		
+		density = def.density;
+		
 		vertices = new Array<Vec2>(def.getVertexCount());
 		for(int i = 0; i < vertices.length; i++) {
 			vertices.setIndex(i, def.getVertex(i));
@@ -36,7 +39,7 @@ public class PolygonShape extends Shape {
 			if(next == vertices.length) next = 0;
 			Vec2 n = Vec2.difference(vertices.getIndex(next), vertices.getIndex(i)).rotClock90();
 			n.normalize();
-			normals.setIndex(n);
+			normals.setIndex(i, n);
 		}
 	}
 	
@@ -57,6 +60,10 @@ public class PolygonShape extends Shape {
 		return vertices.getIndex(index);
 	}
 	
+	public fixed getDensity() {
+		return density;
+	}
+	
 	public override fixed computeRadius(Vec2 center) {
 		fixed max = 0.0;
 		for(int i = 0; i < vertices.length; i++) {
@@ -74,8 +81,23 @@ public class PolygonShape extends Shape {
 			v.setVec(vertices.getIndex(i));
 			result.addPoint(xf.apply(v));
 		}
+		delete v;
 	}
 	
+	public override void computeSweptAABB(XForm xf1, XForm xf2, AABB result) {
+		//TODO: better implementation
+		result.reset();
+		Vec2 v = new Vec2();
+		for(int i = 0; i < vertices.length; i++) {
+			v.setVec(vertices.getIndex(i));
+			result.addPoint(xf1.apply(v));
+			v.setVec(vertices.getIndex(i));
+			result.addPoint(xf2.apply(v));
+		}
+		delete v;
+	}
+	
+	/*
 	public static Vec2 computeCentroid(Array<Vec2> vertices) {
 		//find a point inside the polygon
 		Vec2 ref = new Vec2();
@@ -113,13 +135,41 @@ public class PolygonShape extends Shape {
 		
 		return centroid.divide(3.0 * area);
 	}
+	*/
 	
 	public override void computeMass(MassData result) {
-		//find a point inside the polygon
-		Vec2 ref = new Vec2();
-		for(int i = 0; i < vertices.length; i++) {
-			ref.add(vertices.getIndex(i));
+		computeMass(result, density);
+	}
+	
+	public void computeMass(MassData result, fixed density) {
+		Vec2 temp = new Vec2(), v1 = new Vec2(), v2 = new Vec2();
+		fixed area = 0.0;
+		result.centroid.setZero();
+		result.inertia = 0.0;
+		
+		for(int i = 0; i < vertices.length;) {
+			v1.setVec(vertices.getIndex(i));
+			i++;
+			if(i < vertices.length) v2.setVec(vertices.getIndex(i));
+			else v2.setVec(vertices.getIndex(0));
+			
+			temp.setZero().add(v1).add(v2);
+			
+			fixed a = Vec2.cross(v1, v2);
+			temp.multiply(a);
+			
+			result.centroid.add(temp);
+			area += a;
+			
+			result.inertia += a * (v1.magnitude2() + Vec2.dot(v1, v2) + v2.magnitude2());
 		}
-		ref.divide((fixed)vertices.length);
+		
+		result.mass = density * area / 2.0;
+		result.centroid.divide(3.0 * area);
+		result.inertia = result.inertia = result.inertia * density / 12.0;
+		
+		delete temp;
+		delete v1;
+		delete v2;
 	}
 }

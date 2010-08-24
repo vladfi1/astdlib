@@ -1,4 +1,7 @@
 package a.natives;
+
+import a.util.Math;
+
 /**  
 *        Enrichment for type fixed
 *        @author Belphegor
@@ -79,7 +82,6 @@ public enrich int
 		return MinI(this, that);
 	}
 	
-	
 	/**
 	*	Return if this integer is not evenly divisible by two
 	*	@return whether the integer is odd
@@ -111,6 +113,13 @@ public enrich int
 		return RandomInt(min,max);
 	}
 	
+	/**
+	 * Returns a random integer.
+	 * @return a random integer.
+	 */
+	public static int random() {
+		return RandomInt(Math.MIN_INT, Math.MAX_INT);
+	}
 	
 	/**
 	*	Compares this int to that int and negative, zero or a positive integer

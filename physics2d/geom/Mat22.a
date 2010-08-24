@@ -180,7 +180,6 @@ public class Mat22 {
 		return adjugate(m).divide(m.determinant());
 	}
 	
-	
 	/**
 	 * Calculates the inverse of m and stores the result in result.
 	 * @return result

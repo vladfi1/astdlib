@@ -86,7 +86,7 @@ public class XForm {
 	 * Sets this XForm's position.
 	 */
 	public void setPosition(Vec2 position) {
-		position.setVec(position);
+		this.position.setVec(position);
 	}
 	
 	/**
@@ -100,7 +100,7 @@ public class XForm {
 	 * Sets this transform's position and rotation angle.
 	 */
 	public void setXForm(Vec2 position, fixed angle) {
-		position.setVec(position);
+		this.position.setVec(position);
 		rotation.setRotationMatrix(angle);
 	}
 	
@@ -156,5 +156,12 @@ public class XForm {
 	 */
 	public Vec2 applyInverse(Vec2 v) {
 		return rotation.multiplyTrans(v.subtract(position));
+	}
+	
+	/**
+	 * @return A string representation of this XForm.
+	 */
+	public string toString() {
+		return "XForm[position: " + position.toString() + " rotation: " + rotation.toString() + "]";
 	}
 }

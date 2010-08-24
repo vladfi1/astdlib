@@ -1,11 +1,11 @@
 package physics2d.dynamics;
 
 import a.util.ArrayList;
-
 import physics2d.geom.Vec2;
 import physics2d.geom.Shape;
 import physics2d.geom.XForm;
-import physics2d.geom.Sweep;
+import physics2d.dynamics.Sweep;
+import physics2d.dynamics.BodyDef;
 
 /**
  * A rigid body made up of several shapes.
@@ -51,8 +51,8 @@ public class Body {
 	private Vec2 force;
 	private fixed torque;
 	
-	public fixed linearDamping;
-	public fixed angularDamping;
+	private fixed linearDamping;
+	private fixed angularDamping;
 	
 	public Body(BodyDef def) {
 		flags = 0;
@@ -139,6 +139,39 @@ public class Body {
 	
 	public ArrayList<Shape> getShapes() {
 		return shapes;
+	}
+	
+	public void addShape(Shape shape) {
+		shape.body = this;
+		shapes.addLast(shape);
+	}
+	
+	public void setMass(MassData massData) {
+		mass = massData.mass;
+		centroid.setVec(massData.centroid);
+		inertia = massData.inertia;
+	}
+	
+	public void setMassFromShapes() {
+		mass = 0.0;
+		centroid.setZero();
+		inertia = 0.0;
+		
+		MassData massData = new MassData();
+		
+		for(int i = 0; i < shapes.size(); i++) {
+			shapes.getIndex(i).computeMass(massData);
+			
+			mass += massData.mass;
+			centroid.add(massData.centroid, massData.mass);
+			inertia += massData.inertia;
+		}
+		
+		centroid.divide(mass);
+		//center moment of inertia about centroid, not origin
+		inertia -= mass * centroid.magnitude2();
+		
+		delete massData;
 	}
 	
 	public Vec2 getPosition() {
@@ -267,7 +300,7 @@ public class Body {
 	 * @param worldPoint a point in world coordinates.
 	 * @param result Stores the corresponding local point relative to the body's origin.
 	 */
-	public Vec2 getLocalPoint(Vec2 worldPoint, Vec2 result){
+	public Vec2 getLocalPoint(Vec2 worldPoint, Vec2 result) {
 		return XForm.applyInverse(transform, worldPoint, result);
 	}
 
@@ -276,7 +309,7 @@ public class Body {
 	 * @param worldVector a vector in world coordinates.
 	 * @return the corresponding local vector.
 	 */
-	public Vec2 getLocalVector(Vec2 worldVector){
+	public Vec2 getLocalVector(Vec2 worldVector) {
 		return Mat22.multiplyTrans(transform.getRotation(), worldVector);
 	}
 
@@ -285,7 +318,7 @@ public class Body {
 	 * @param worldVector a vector in world coordinates.
 	 * @param result Stores the corresponding local vector.
 	 */
-	public Vec2 getLocalVector(Vec2 worldVector, Vec2 result){
-		return Mat22.multiply(transform, worldVector, result);
+	public Vec2 getLocalVector(Vec2 worldVector, Vec2 result) {
+		return Mat22.multiplyTrans(transform.getRotation(), worldVector, result);
 	}
 }

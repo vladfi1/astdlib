@@ -1,5 +1,8 @@
 package physics2d.geom;
 
+import physics2d.geom.Vec2;
+import a.natives.fixed;
+
 /**
  * Holds the mass data for a 2-dimensional shape.
  * @author XPilot
@@ -47,4 +50,13 @@ public class MassData {
     public MassData clone() {
     	return new MassData(this);
     }
+	
+	/**
+	 * Prints data to debug window.
+	 */
+	public void debug() {
+		System.debug("mass = " + mass.toString());
+		System.debug("centroid = " + centroid.toString());
+		System.debug("inertia = " + inertia.toString());
+	}
 }

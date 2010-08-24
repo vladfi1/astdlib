@@ -1,18 +1,21 @@
 package physics2d.geom;
 
 import a.util.ArrayList;
+import physics2d.geom.Vec2;
 import physics2d.geom.ShapeDef;
 import physics2d.geom.ShapeType;
 
 /**
- * Definiiton of a polygon shape.
+ * Definition of a polygon shape.
  * @author XPilot
  */
 public class PolygonDef extends ShapeDef {
+	public fixed density;
 	private /* final */ ArrayList<Vec2> vertices;
 	
 	public PolygonDef() {
 		super(ShapeType.POLYGON_SHAPE);
+		density = 1.0;
 		vertices = new ArrayList<Vec2>();
 	}
 	
@@ -52,6 +55,10 @@ public class PolygonDef extends ShapeDef {
 		return vertices.size();
 	}
 	
+	public Vec2 getVertex(int index) {
+		return vertices.getIndex(index);
+	}
+	
 	/**
 	 * Transforms all of the vertices using the specified transform.
 	 */
@@ -70,6 +77,10 @@ public class PolygonDef extends ShapeDef {
 		}
 	}
 	
+	/**
+	 * Rotates the vertices about the origin.
+	 * @param angle The angle CCW in degrees.
+	 */
 	public void rotate(fixed angle) {
 		Mat22 m = Mat22.createRotationMatrix(angle);
 		for(int i = 0; i < vertices.size(); i++) {
