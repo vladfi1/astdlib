@@ -147,4 +147,34 @@ public static class Math {
 	public static fixed pow(fixed base, fixed exponent) {
 		return Pow(base, exponent);
 	}
+	
+	/**
+	 * Calculates the natural logarithm of f.
+	 */
+	public static fixed log(fixed f) {
+		fixed ans = 0.0;
+		
+		// get f in the interval [0.5, 1.5] by multiplying/dividing by e
+		while (f > 1.5) {
+			f /= E;
+			ans += 1;
+		}
+		while (f < 0.5) {
+			f *= E;
+			ans -= 1;
+		}
+		
+		// take advantage of the fact that the maclaurin series ln(1+x) = -(sigma_(k=1 -> inf) (-x)^k/k)
+		// converges exponentially (the error term is bounded from above by 2^-n, where n is the 
+		// number of terms of the series calculated) in the interval x in [-0.5, 0.5]
+		f--;
+		fixed s = 0;
+		int sign = -1;
+		for (int i = 1; i <= FRACTION_BITS; i++) {
+			s += sign * (Math.pow(f, i) / i);
+			sign *= -1;
+		}
+		
+		return ans - s;
+	}
 }
