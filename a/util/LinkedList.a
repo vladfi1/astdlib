@@ -12,7 +12,7 @@ public class LinkedList<E> extends List<E> {
 	/**
 	 * Head of the list. Contains no data.
 	 */
-	private Link<E> head;
+	Link<E> head;
 	/**
 	 * Current size of the list.
 	 */
@@ -75,7 +75,7 @@ public class LinkedList<E> extends List<E> {
 	 * Adds an element to the front of this list.
 	 */
 	public void addFirst(E element) {
-		new Link(element, head.next, head);
+		new Link<E>(element, head.next, head);
 		size++;
 	}
 	
@@ -83,14 +83,15 @@ public class LinkedList<E> extends List<E> {
 	 * Adds an element to the end of this list.
 	 */
 	public void addLast(E element) {
-		new Link(element, head, head.previous);
+		new Link<E>(element, head, head.previous);
 		size++;
 	}
 	
-	public override void addIndex(int index, E element) {
+	public override bool addIndex(int index, E element) {
 		Link<E> link = getLink(index);
-		new Link(element, link.previous, link);
+		new Link<E>(element, link.previous, link);
 		size++;
+		return true;
 	}
 	
 	/**
@@ -170,8 +171,8 @@ public class LinkedList<E> extends List<E> {
 	/**
 	 * @return An iterator for this LinkedList.
 	 */
-	public LinkedListIterator<E> getIterator() {
-		return new LinkedListIterator(this);
+	public Iterator<E> getIterator() {
+		return new LinkedListIterator<E>(this);
 	}
 }
 
