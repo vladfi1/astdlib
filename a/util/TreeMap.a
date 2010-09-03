@@ -348,6 +348,7 @@ public class TreeMap<K,V> extends Map<K,V> {
 		clear();
 		delete LEFT_LEAF;
 		delete RIGHT_LEAF;
+		delete FORE;
 		delete AFT;
 	}
 }
