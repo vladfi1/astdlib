@@ -263,7 +263,7 @@ public static class Heap {
 	}
 	
 	/**
-	 * Tries to reallocate the given data to block of the given size.
+	 * Tries to reallocate the given data to a block of the given size.
 	 * @return Same as malloc(size). ERROR if unsuccessful.
 	 * If unsuccessful, the original data will remain unchanged.
 	 */

@@ -52,7 +52,7 @@ public class LinkedList<E> extends List<E> {
 	}
 	
 	/**
-	 * Runs in O(index) time.
+	 * Runs in O(size) time.
 	 * @return The link at index.
 	 */
 	private Link<E> getLink(int index) {
@@ -63,8 +63,8 @@ public class LinkedList<E> extends List<E> {
 			}
 			return link;
 		} else {
-			Link<E> link = head.previous;
-			for(int i = size-1; i > index; i--) {
+			Link<E> link = head;
+			for(int i = size; i > index; i--) {
 				link = link.previous;
 			}
 			return link;
@@ -185,7 +185,7 @@ private class Link<E> [512] {
 		next = previous = this;
 	}
 	
-	Link(E element, Link<E> next, Link<E> previous) {
+	Link(E element, Link<E> previous, Link<E> next) {
 		this.element = element;
 		this.next = next;
 		this.previous = previous;

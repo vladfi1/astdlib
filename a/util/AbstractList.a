@@ -6,6 +6,7 @@ import a.util.Comparator;
 
 /**
  * List that supports random access.
+ * @author XPilot
  */
 public abstract class AbstractList<E> extends List<E> {
 	//utility methods
