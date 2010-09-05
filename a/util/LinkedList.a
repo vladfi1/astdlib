@@ -75,7 +75,7 @@ public class LinkedList<E> extends List<E> {
 	 * Adds an element to the front of this list.
 	 */
 	public void addFirst(E element) {
-		new Link<E>(element, head.next, head);
+		new Link<E>(element, head, head.next);
 		size++;
 	}
 	
@@ -83,7 +83,7 @@ public class LinkedList<E> extends List<E> {
 	 * Adds an element to the end of this list.
 	 */
 	public void addLast(E element) {
-		new Link<E>(element, head, head.previous);
+		new Link<E>(element, head.previous, head);
 		size++;
 	}
 	
