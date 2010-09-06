@@ -11,7 +11,15 @@ public enrich point {
 	/**
 	 * A constant used to calculate angle and radius
 	 */
-	protected static const point ORIGIN_POINT = Point(0,0);
+	protected static point ORIGIN_POINT = point.create(0,0);
+	
+	public static point create(fixed x, fixed y) {
+		return Point(x, y);
+	}
+	
+	public static point fromId(int id) {
+		return PointFromId(id);
+	}
 
 	/**
 	 *   Accessors for the x-coordinate of the point. 
@@ -28,7 +36,7 @@ public enrich point {
 		{
 			//NOTE: UNTESTED. API seems to indicate it does this.
 
-			Point newPoint = Point(value, PointGetY(this));
+			point newPoint = Point(value, PointGetY(this));
 			//NOTE: API isn't clear whether p1 becomes p2 or vice versa
 
 			PointSet(this, newPoint);
@@ -262,7 +270,7 @@ public enrich point {
 	 */
 	public bool equals(point par)
 	{
-		return (this==that);
+		return (this==par);
 	}
 
 	/**
