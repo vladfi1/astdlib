@@ -20,11 +20,11 @@ public class XForm {
 	private /* final */ Mat22 rotation;
 	
 	/**
-	 * The default constructor.
+	 * The identity transform.
 	*/
 	public XForm() {
 		position = new Vec2();
-		rotation = new Mat22();
+		rotation = new Mat22().setIdentity();
 	}
 
 	/**

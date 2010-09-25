@@ -14,6 +14,7 @@ public class PointDef extends ShapeDef {
 	
 	public PointDef() {
 		super(ShapeType.POINT_SHAPE);
+		mass = 0.0;
 		position = new Vec2();
 	}
 	
@@ -27,8 +28,9 @@ public class PointDef extends ShapeDef {
 		delete position;
 	}
 	
-	public void setPosition(fixed x, fixed y) {
+	public PointDef setPosition(fixed x, fixed y) {
 		position.setVec(x, y);
+		return this;
 	}
 	
 	public Vec2 getPosition() {

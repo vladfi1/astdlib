@@ -6,6 +6,7 @@ import physics2d.geom.XForm;
 
 /**
  * Represents a body's motion in a time frame.
+ * @author XPilot
  */
 class Sweep {
 	/**
@@ -17,7 +18,7 @@ class Sweep {
 	 */
 	/* final */ Vec2 center0, center1;
 	/**
-	 * Start and end rotation angles (about the center of mass), in degrees.
+	 * Start and end rotation angles (about the centroid), in degrees.
 	 */
 	fixed angle0, angle1;
 	

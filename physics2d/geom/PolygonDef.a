@@ -37,15 +37,17 @@ public class PolygonDef extends ShapeDef {
 	/**
 	 * Adds a vertex.
 	 */
-	public void addVertex(Vec2 vertex) {
+	public PolygonDef addVertex(Vec2 vertex) {
 		vertices.addLast(vertex);
+		return this;
 	}
 	
 	/**
 	 * Adds a vertex.
 	 */
-	public void addVertex(fixed x, fixed y) {
+	public PolygonDef addVertex(fixed x, fixed y) {
 		addVertex(new Vec2(x, y));
+		return this;
 	}
 	
 	/**
@@ -62,31 +64,34 @@ public class PolygonDef extends ShapeDef {
 	/**
 	 * Transforms all of the vertices using the specified transform.
 	 */
-	public void transform(XForm xf) {
+	public PolygonDef transform(XForm xf) {
 		for(int i = 0; i < vertices.size(); i++) {
 			xf.apply(vertices.getIndex(i));
 		}
+		return this;
 	}
 	
 	/**
 	 * Translates all vertices by <x, y>.
 	 */
-	public void translate(fixed x, fixed y) {
+	public PolygonDef translate(fixed x, fixed y) {
 		for(int i = 0; i < vertices.size(); i++) {
 			vertices.getIndex(i).add(x, y);
 		}
+		return this;
 	}
 	
 	/**
 	 * Rotates the vertices about the origin.
 	 * @param angle The angle CCW in degrees.
 	 */
-	public void rotate(fixed angle) {
+	public PolygonDef rotate(fixed angle) {
 		Mat22 m = Mat22.createRotationMatrix(angle);
 		for(int i = 0; i < vertices.size(); i++) {
 			vertices.getIndex(i);
 		}
 		delete m;
+		return this;
 	}
 	
 	/**
@@ -94,12 +99,13 @@ public class PolygonDef extends ShapeDef {
 	 * @param hx the half-width.
 	 * @param hy the half-height.
 	 */
-	public void setAsBox(fixed hx, fixed hy) {
+	public PolygonDef setAsBox(fixed hx, fixed hy) {
 		clear();
 		vertices.addLast(new Vec2(-hx, -hy));
 		vertices.addLast(new Vec2(hx, -hy));
 		vertices.addLast(new Vec2(hx, hy));
 		vertices.addLast(new Vec2(-hx, hy));
+		return this;
 	}
 
 	/**
@@ -109,23 +115,25 @@ public class PolygonDef extends ShapeDef {
 	 * @param center The center of the box in local coordinates.
 	 * @param angle The rotation of the box in local coordinates.
 	 */
-	public void setAsBox(fixed hx, fixed hy, Vec2 center, fixed angle) {
+	public PolygonDef setAsBox(fixed hx, fixed hy, Vec2 center, fixed angle) {
 		setAsBox(hx, hy);
 		XForm xf = new XForm(center, angle);
 		transform(xf);
 		delete xf;
+		return this;
 	}
 	
 	/**
 	 * Build vertices to represent a regular polygon.
 	 * Centered at the origin and first vertex points in the positive X direction.
 	 */
-	public void setAsRegularPolygon(int sides, int radius) {
+	public PolygonDef setAsRegularPolygon(int sides, int radius) {
 		clear();
 		vertices.ensureCapacity(sides);
 		for(int i = 0; i < sides; i++) {
 			vertices.addIndex(i, new Vec2().setPolar(radius, (i * 360.0) / sides));
 		}
+		return this;
 	}
 	
 	/**
@@ -135,12 +143,13 @@ public class PolygonDef extends ShapeDef {
 	 * @param center The center.
 	 * @param angle The orientation, in degrees.
 	 */
-	public void setAsRegularPolygon(int sides, int radius, Vec2 center, fixed angle) {
+	public PolygonDef setAsRegularPolygon(int sides, int radius, Vec2 center, fixed angle) {
 		clear();
 		vertices.ensureCapacity(sides);
 		for(int i = 0; i < sides; i++) {
 			vertices.addIndex(i, new Vec2().setPolar(radius, angle + ((i * 360.0) / sides)).add(center));
 		}
+		return this;
 	}
 
 }

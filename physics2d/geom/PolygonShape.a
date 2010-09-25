@@ -7,6 +7,7 @@ import physics2d.geom.Vec2;
 import physics2d.geom.Mat22;
 import physics2d.geom.XForm;
 import physics2d.geom.AABB;
+import physics2d.geom.Edge;
 
 /**
  * A polygon shape.
@@ -16,7 +17,7 @@ public class PolygonShape extends Shape {
 	
 	private fixed density;
 	private Array<Vec2> vertices;
-	private Array<Vec2> normals;
+	private Array<Edge> edges;
 	
 	/**
 	 * Creates a new polygon shape.
@@ -29,35 +30,44 @@ public class PolygonShape extends Shape {
 		
 		vertices = new Array<Vec2>(def.getVertexCount());
 		for(int i = 0; i < vertices.length; i++) {
-			vertices.setIndex(i, def.getVertex(i));
+			vertices.setIndex(i, def.getVertex(i).clone());
 		}
 		
-		normals = new Array<Vec2>(this.vertices.length);
-		
-		for(int i = 0; i < this.vertices.length; i++) {
+		edges = new Array<Edge>(vertices.length);
+		for(int i = 0; i < vertices.length; i++) {
 			int next = i+1;
 			if(next == vertices.length) next = 0;
-			Vec2 n = Vec2.difference(vertices.getIndex(next), vertices.getIndex(i)).rotClock90();
-			n.normalize();
-			normals.setIndex(i, n);
+			edges.setIndex(i, new Edge(vertices.getIndex(next), vertices.getIndex(i)));
 		}
 	}
 	
 	public ~PolygonShape() {
 		for(int i = 0; i < vertices.length; i++) {
 			delete vertices.getIndex(i);
-			delete normals.getIndex(i);
+			delete edges.getIndex(i);
 		}
 		delete vertices;
-		delete normals;
+		delete edges;
 	}
 	
 	public int getVertexCount() {
 		return vertices.length;
 	}
 	
+	/**
+	 * Index is taken modulo the vertex count.
+	 */
 	public Vec2 getVertex(int index) {
+		if(index >= vertices.length) index -= vertices.length;
 		return vertices.getIndex(index);
+	}
+	
+	/**
+	 * Index is taken modulo the vertex count.
+	 */
+	public Edge getEdge(int index) {
+		if(index >= edges.length) index -= edges.length;
+		return edges.getIndex(index);
 	}
 	
 	public fixed getDensity() {
@@ -171,5 +181,27 @@ public class PolygonShape extends Shape {
 		delete temp;
 		delete v1;
 		delete v2;
+	}
+	
+	//TODO: cache results for better performance
+	public override void support(XForm xf, Vec2 v, Vec2 result) {
+		result.setVec(v);
+		xf.getRotation().multiplyTrans(result);
+		
+		Vec2 best = vertices.getIndex(0);
+		fixed dot = best.dot(result);
+		for(int i = 1; i < vertices.length; i++) {
+			Vec2 next = vertices.getIndex(i);
+			fixed dot2 = next.dot(result);
+			if(dot2 > dot) {
+				best = next;
+				dot = dot2;
+			}
+		}
+		XForm.apply(xf, best, result);
+	}
+	
+	public override void getPoint(XForm xf, Vec2 result) {
+		XForm.apply(xf, vertices.getIndex(0), result);
 	}
 }

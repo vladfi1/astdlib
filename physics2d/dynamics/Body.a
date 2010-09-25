@@ -33,6 +33,11 @@ public class Body {
 	 */
 	protected ArrayList<Shape> shapes;
 	
+	/**
+	 * Body linked list.
+	 */
+	Body prev, next;
+	
 	//"dynamic" variables
 	
 	/**
@@ -53,6 +58,8 @@ public class Body {
 	
 	private fixed linearDamping;
 	private fixed angularDamping;
+	
+	Body() {}
 	
 	public Body(BodyDef def) {
 		flags = 0;
@@ -76,7 +83,7 @@ public class Body {
 		
 		sweep = new Sweep();
 		sweep.centroid = centroid;
-		XForm.apply(transform, sweep.center0);
+		XForm.apply(transform, centroid, sweep.center0);
 		sweep.center1.setVec(sweep.center0);
 		sweep.angle0 = sweep.angle1 = def.angle;
 		
@@ -237,7 +244,7 @@ public class Body {
 	/**
 	 * Applies a force at the specified point.
 	 * @param force The applied force.
-	 * @param place The point of application, in world coordinated.
+	 * @param place The point of application, in world coordinates.
 	 */
 	public void applyForce(Vec2 force, Vec2 place) {
 		this.force.add(force);

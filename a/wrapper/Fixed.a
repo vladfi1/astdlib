@@ -20,7 +20,7 @@ public class Fixed {
 	public Fixed(fixed value) {
 		this.value = value;
 	}
-		
+	
 	public fixed getValue() {
 		return value;
 	}

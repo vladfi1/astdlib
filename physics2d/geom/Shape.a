@@ -3,11 +3,12 @@ package physics2d.geom;
 import physics2d.dynamics.Body;
 import physics2d.geom.ShapeDef;
 import physics2d.geom.MassData;
+import physics2d.geom.Vec2;
 import physics2d.geom.AABB;
 import physics2d.geom.XForm;
 
 /**
- * A shape used for collision detection.
+ * A (convex) shape used for collision detection.
  * @author XPilot
  */
 public abstract class Shape {
@@ -75,4 +76,19 @@ public abstract class Shape {
 	 * @param result Stores the axis aligned box. (return parameter)
 	 */
 	public abstract void computeSweptAABB(XForm xf1, XForm xf2, AABB result);
+	
+	/**
+	 * Support mapping that maps each vector v to the farthest point in this shape along v.
+	 * @param xf The world transform.
+	 * @param v The desired direction.
+	 * @param result Stores the point furthest along v.
+	 */
+	public abstract void support(XForm xf, Vec2 v, Vec2 result);
+	
+	/**
+	 * Gets a point in this shape.
+	 * @param xf The world transform.
+	 * @param result Stores the point.
+	 */
+	public abstract void getPoint(XForm xf, Vec2 result);
 }
