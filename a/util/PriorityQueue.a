@@ -1,0 +1,130 @@
+package a.util;
+
+import a.util.Heap;
+import a.util.Iterable;
+import a.util.Iterator;
+
+/**
+ * Heap-based priority queue implementation.
+ * Maximum elements are first in the queue.
+ * @author XPilot
+ */
+public class PriorityQueue<E> extends Iterable<E> {
+	public static const int DEFAULT_CAPACITY = 7;
+	
+	int ptr;
+	private int size;
+	private int capacity;
+	private Comparator<E> comparator;
+	
+	public PriorityQueue(Comparator<E> comparator) {
+		this(DEFAULT_CAPACITY, comparator);
+	}
+	
+	public PriorityQueue(int capacity, Comparator<E> comparator) {
+		ptr = Heap.malloc(capacity);
+		this.comparator = comparator;
+	}
+	
+	public ~PriorityQueue() {
+		Heap.free(ptr);
+	}
+	
+	public int size() {
+		return size;
+	}
+	
+	public bool isEmpty() {
+		return size == 0;
+	}
+	
+	private static int left(int i) {
+		return (i << 1) + 1;
+	}
+	
+	private static int right(int i) {
+		return (i + 1) << 1;
+	}
+	
+	private static int parent(int i) {
+		return (i - 1) >> 1;
+	}
+	
+	public void offer(E element) {
+		if(size == capacity) {
+			ptr = Heap.realloc(ptr, size + 1);
+			capacity = Heap.round(size + 1);
+		}
+		
+		Heap.array[ptr + size] = (int)element;
+		int i = size;
+		size++;
+		
+		while(i > 0) {
+			int parent = parent(i);
+			
+			if(comparator.compare((E)Heap.array[ptr + i], (E)Heap.array[ptr + parent]) > 0) {
+				Heap.swap(ptr + i, ptr + parent);
+				i = parent;
+			} else break;
+		}
+	}
+	
+	public E poll() {
+		if(size == 0) return null;
+		E first = (E)Heap.array[ptr];
+		size--;
+		Heap.array[ptr] = Heap.array[ptr + size];
+		
+		int i = 0;
+		while(i < size) {
+			int max = i;
+			int child = left(i);
+			if(child < size) {
+				if(comparator.compare((E)Heap.array[ptr + child], (E)Heap.array[ptr + max]) > 0) {
+					max = child;
+				}
+				child++;
+				if(child < size)
+				if(comparator.compare((E)Heap.array[ptr + child], (E)Heap.array[ptr + max]) > 0) {
+					max = child;
+				}
+			}
+			
+			if(max == i) break;
+			
+			Heap.swap(ptr + i, ptr + max);
+			i = max;
+		}
+		
+		return first;
+	}
+	
+	public E peek() {
+		if(size == 0) return null;
+		return (E)Heap.array[ptr];
+	}
+	
+	public Iterator<E> getIterator() {
+		return new PriorityQueueIterator<E>(this);
+	}
+}
+
+private class PriorityQueueIterator<E> extends Iterator<E> {
+	PriorityQueue<E> queue;
+	int index;
+	
+	PriorityQueueIterator(PriorityQueue<E> queue) {
+		this.queue = queue;
+		index = 0;
+	}
+	
+	public override bool hasNext() {
+		return index < queue.size();
+	}
+	
+	public override E next() {
+		index++;
+		return (E)Heap.array[queue.ptr + index - 1];
+	}
+}

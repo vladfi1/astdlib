@@ -1,6 +1,8 @@
 package a.natives;
 
 import a.util.Math;
+import a.util.Comparator;
+import a.util.Hasher;
 
 /**  
 *        Enrichment for type fixed
@@ -186,5 +188,36 @@ public enrich int
 	public text toText()
 	{
 		return (text) this;
+	}
+	
+	private static /* final */ Comparator<int> intComparator;
+	private static /* final */ Hasher<int> intHasher;
+	
+	static {
+		intComparator = new IntComparator();
+		intHasher = new IntHasher();
+	}
+	
+	public static Comparator<int> getComparator() {
+		return intComparator;
+	}
+	
+	public static Hasher<int> getHasher() {
+		return intHasher;
+	}
+}
+
+private class IntComparator extends Comparator<int> {
+	public override int compare(int i1, int i2) {
+		return i1 - i2;
+	}
+}
+
+private class IntHasher extends Hasher<int> {
+	public override int hashCode(int i) {
+		return i;
+	}
+	public override bool equal(int i1, int i2) {
+		return i1 == i2;
 	}
 }
