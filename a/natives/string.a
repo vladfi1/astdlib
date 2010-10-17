@@ -21,7 +21,7 @@ public enrich string{
 	/**
 	*	The length of the string (readonly).
 	*/
-	public int Length{
+	public int length{
 		public get{
 			return StringLength(this);
 		}
