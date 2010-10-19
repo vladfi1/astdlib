@@ -1,0 +1,88 @@
+package a.wrapper;
+
+import a.util.Comparator;
+import a.natives.bool;
+
+/**
+ * Wrapper class for bool.
+ * @author Mooglefrooglian
+ */
+public class Boolean {
+	
+	private bool value;
+	
+	public Boolean() {
+		value = true;
+	}
+	
+	public Boolean(bool value) {
+		this.value = value;
+	}
+	
+	public bool getValue() {
+		return value;
+	}
+	
+	public Boolean clone() {
+		return new Boolean(value);
+	}
+	
+	public bool equals(Boolean other) {
+		return value == other.value;
+	}
+
+	public static int compare(Boolean b1, Boolean b2) {
+		if (b1.value == true && b2.value == false) return 1;
+		else if(b1.value == b2.value) return 0;
+		else return -1;
+	}
+	
+	public int compareTo(Boolean other) {
+		return compare(this, other);
+	}
+	
+	public int hashCode() {
+		return value.hashCode();
+	}
+	
+	public string toString() {
+		return value.toString();
+	}
+	
+	private static /* final */ Comparator<Boolean> comparator;
+	private static /* final */ Hasher<Boolean> hasher;
+	
+	static {
+		comparator = new BooleanComparator();
+		hasher = new BooleanHasher();
+	}
+	
+	/**
+	 * Uses Boolean.compare(Boolean, Boolean)
+	 */
+	public static Comparator<Boolean> getComparator() {
+		return comparator;
+	}
+	
+	/**
+	 * Uses Boolean.hashCode() and Fixed.equals(Boolean)
+	 */
+	public static Hasher<Boolean> getHasher() {
+		return hasher;
+	}
+}
+
+private class BooleanComparator extends Comparator<Boolean> {
+	public override int compare(Boolean b1, Boolean b2) {
+		return Boolean.compare(b1, b2);
+	}
+}
+
+private class BooleanHasher extends Hasher<Boolean> {
+	public override int hashCode(Boolean b) {
+		return b.hashCode();
+	}
+	public override bool equal(Boolean b1, Boolean b2) {
+		return b1.equals(b2);
+	}
+}
