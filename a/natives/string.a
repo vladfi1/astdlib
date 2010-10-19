@@ -74,14 +74,14 @@ public enrich string{
 	/**
 	*	Returns a substring of this string starting at index <code>start</code>
 	*	and ending the end of this string. 
-	*	(equivalent to subStr(start,this.Length)
+	*	(equivalent to subStr(start,this.length)
 	*	string will be end-start.
 	*	@param start start index
 	*	@param end end index
 	*	@return the substring ranging from start to end
 	*/
 	public string subStr(int start){
-		return StringSub(this, start, this.Length);
+		return StringSub(this, start, this.length);
 	}
 	
 	/**
