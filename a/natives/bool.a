@@ -89,6 +89,22 @@ public enrich bool
    			 return 13;
    		 }
    	 }
+	 
+	 /**
+   	 *	Creates a hash representation of the boolean 
+   	 *	@return two different prime numbers for use in hash
+   	 */
+   	 public int hashCode()
+   	 {
+   		 if (this)
+   		 {
+   			 return 173;
+   		 }
+   		 else
+   		 {
+   			 return 13;
+   		 }
+   	 }
 
    	 /**
    	 *	Returns a string representation of this boolean 
