@@ -85,6 +85,16 @@ public enrich string{
 	}
 	
 	/**
+	*	Returns the character (in a string) at the specified index.
+	*	Equivilent to subStr(index, index + 1).
+	*	@param index the index for the character
+	*	@return the character at the given index
+	*/
+	public string charAt(int index) {
+		return this.subStr(index, index + 1);
+	}
+	
+	/**
 	*	Returns true if and only if <code>str</code> has the same content as
 	*	this string.
 	*	@param str another string to compare to this one
