@@ -1,0 +1,40 @@
+package a.util;
+
+import a.util.Iterable;
+
+public abstract class Set<E> extends Iterable<E> {
+
+	/**
+	 * Returns whether this set is empty (contains no elements).
+	 */
+	public abstract bool isEmpty();
+	
+	/**
+	 * Returns the number of elements this set currently holds.
+	 */
+	public abstract int size();
+	
+	/**
+	 * Removes all elements from this set.
+	 */
+	public abstract void clear();
+	
+	/**
+	 * Adds an element to this set. If an equivalent element is already in the set, 
+	 * the element will not be added again and this method will return false.
+	 * @return true if the element was successfully added.
+	 */
+	public abstract bool add(E e);
+	
+	/**
+	 * Returns whether this set contains the specified element.
+	 */
+	public abstract bool contains(E e);
+	
+	/**
+	 * Removes the specified element in the set. If the element cannot be found, the 
+	 * set will remain unchanged and this method will return false.
+	 * @return true if the element was successfully removed.
+	 */
+	public abstract bool remove(E e);
+}
