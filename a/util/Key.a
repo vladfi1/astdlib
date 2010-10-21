@@ -168,7 +168,7 @@ enrich Key
         displayText[(int)KEY_Y]="Y";
         displayText[(int)KEY_Z]="Z";
 
-        displayText[(int)KEY_SPACE]="SPACE";
+        displayText[(int)KEY_SPACE]=" ";
         displayText[(int)KEY_GRAVE]="`";
 
         displayText[(int)KEY_NUMPAD0]="NUM0";
