@@ -127,8 +127,19 @@ private class LinkedStackIterator<E> extends Iterator<E> {
 	public bool hasNext() {return current != null;}
 	
 	public E next() {
-		E temp = current.element;
-		current = current.next;
-		return temp;
+		if (hasNext()) {
+			E temp = current.element;
+			current = current.next;
+			return temp;
+		} else {
+			System.error("No Such Element in a.util.LinkedStack.LinkedStackIterator.next() @" 
+					+ (int)this);
+			return null;
+		}
+	}
+	
+	public void remove() {
+		System.error("Unsupported Operation in a.util.LinkedStack.LinkedStackIterator.remove() @" 
+				+ (int)this);
 	}
 }

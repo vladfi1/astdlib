@@ -50,6 +50,55 @@ public class PriorityQueue<E> extends Iterable<E> {
 		return (i - 1) >> 1;
 	}
 	
+	private void fixUpward(int i) {
+		while ((i > 0) && comparator.compare((E)Heap.array[ptr + i], (E)Heap.array[ptr + parent(i)]) > 0) {
+			Heap.swap(i, parent(i));
+			i = parent(i);
+		}
+	}
+	
+	private void fixDownward(int i) {
+		int max = i;
+		while (true) {
+			int left = left(i);
+			int right = left + 1;
+			if (right > size) {
+				return;
+			} else if (right == size || 
+					comparator.compare((E)Heap.array[ptr + left], (E)Heap.array[ptr + right]) >= 0) {
+				max = left;
+			} else {
+				max = right;
+			}
+			if (comparator.compare((E)Heap.array[ptr + i], (E)Heap.array[ptr + max]) < 0) {
+				Heap.swap(i, max);
+				i = max;
+			} else {
+				return;
+			}
+		}
+	}
+	
+	protected void remove(int i) {
+		E removed = (E)Heap.array[ptr + i];
+		int lastPos = size - 1;
+		if (i == lastPos) {
+			--size;
+		} else {
+			Heap.swap(lastPos, i);
+			--size;
+			if (comparator.compare((E)Heap.array[ptr + i], removed) >= 0) {
+				fixUpward(i);
+			} else {
+				fixDownward(i);
+			}
+		}
+	}
+	
+	void removeRedirect(int i) {
+		remove(i);
+	}
+	
 	public void offer(E element) {
 		if(size == capacity) {
 			ptr = Heap.realloc(ptr, size + 1);
@@ -57,46 +106,14 @@ public class PriorityQueue<E> extends Iterable<E> {
 		}
 		
 		Heap.array[ptr + size] = (int)element;
-		int i = size;
-		size++;
-		
-		while(i > 0) {
-			int parent = parent(i);
-			
-			if(comparator.compare((E)Heap.array[ptr + i], (E)Heap.array[ptr + parent]) > 0) {
-				Heap.swap(ptr + i, ptr + parent);
-				i = parent;
-			} else break;
-		}
+		fixUpward(size++);
 	}
 	
 	public E poll() {
 		if(size == 0) return null;
 		E first = (E)Heap.array[ptr];
-		size--;
-		Heap.array[ptr] = Heap.array[ptr + size];
-		
-		int i = 0;
-		while(i < size) {
-			int max = i;
-			int child = left(i);
-			if(child < size) {
-				if(comparator.compare((E)Heap.array[ptr + child], (E)Heap.array[ptr + max]) > 0) {
-					max = child;
-				}
-				child++;
-				if(child < size)
-				if(comparator.compare((E)Heap.array[ptr + child], (E)Heap.array[ptr + max]) > 0) {
-					max = child;
-				}
-			}
-			
-			if(max == i) break;
-			
-			Heap.swap(ptr + i, ptr + max);
-			i = max;
-		}
-		
+		Heap.array[ptr] = Heap.array[ptr + --size];
+		fixDownward(0);
 		return first;
 	}
 	
@@ -116,7 +133,7 @@ private class PriorityQueueIterator<E> extends Iterator<E> {
 	
 	PriorityQueueIterator(PriorityQueue<E> queue) {
 		this.queue = queue;
-		index = 0;
+		this.index = 0;
 	}
 	
 	public override bool hasNext() {
@@ -124,7 +141,17 @@ private class PriorityQueueIterator<E> extends Iterator<E> {
 	}
 	
 	public override E next() {
-		index++;
-		return (E)Heap.array[queue.ptr + index - 1];
+		if (hasNext()) {
+			return (E)Heap.array[queue.ptr + index++];
+		} else {
+			System.error("No Such Element in a.util.PriorityQueue.PriorityQueueIterator.next() @" 
+					+ (int)this);
+			return null;
+		}
+	}
+	
+	public void remove() {
+		System.error("Unsupported Operation in a.util.PriorityQueue.PriorityQueueIterator.remove() @" 
+					+ (int)this);
 	}
 }

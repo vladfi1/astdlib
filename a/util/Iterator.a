@@ -14,4 +14,13 @@ public abstract class Iterator<E> {
 	 * @return The next element.
 	 */
 	public abstract E next();
+	
+	/**
+	 * Removes the last element returned by this iterator from the collection.
+	 * This method has no effect if this iterator has not returned any elements 
+	 * or if remove() has already been called since the last call to next(). 
+	 * This method is the only guaranteed safe way to remove elements from a 
+	 * collection while iterating over it.
+	 */
+	public abstract void remove();
 }

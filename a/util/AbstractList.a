@@ -1,7 +1,7 @@
 package a.util;
 
 import a.util.List;
-import a.util.Iterator;
+import a.util.ListIterator;
 import a.util.Comparator;
 
 /**
@@ -107,26 +107,103 @@ public abstract class AbstractList<E> extends List<E> {
 	}
 	
 	public override Iterator<E> getIterator() {
-		return new AbstractListIterator<E>(this);
+		return getListIteratorAt(0);
+	}
+	
+	public override ListIterator<E> getListIterator() {
+		return getListIteratorAt(0);
+	}
+	
+	public override ListIterator<E> getListIteratorAtEnd() {
+		return getListIteratorAt(size());
+	}
+	
+	public override ListIterator<E> getListIteratorAt(int index) {
+		if (index < 0 || index > size()) {
+			System.error("Index Out Of Bounds in a.util.AbstractList.getListIteratorAt(int) @" + (int)this + 
+					": " + index);
+			return null;
+		} else {
+			return new AbstractListIterator<E>(this, index);
+		}
 	}
 }
 
-private class AbstractListIterator<E> extends Iterator<E> {
+private class AbstractListIterator<E> extends ListIterator<E> {
 	private AbstractList<E> list;
-	private int index;
+	private int nextIndex;
+	private int prevIndex;
+	private int lastIndex;
 	
-	AbstractListIterator(AbstractList<E> list) {
+	AbstractListIterator(AbstractList<E> list, int pos) {
 		this.list = list;
-		index = 0;
+		this.nextIndex = pos;
+		this.prevIndex = pos - 1;
+		this.lastIndex = -1;
+	}
+	
+	public override int nextIndex() {
+		return nextIndex;
+	}
+	
+	public override int previousIndex() {
+		return prevIndex;
 	}
 	
 	public override bool hasNext() {
-		return index < list.size();
+		return nextIndex < list.size();
+	}
+	
+	public override bool hasPrevious() {
+		return prevIndex >= 0;
 	}
 	
 	public override E next() {
-		E temp = list.getIndex(index);
-		index++;
-		return temp;
+		if (hasNext()) {
+			lastIndex = nextIndex;
+			++nextIndex;
+			++prevIndex;
+			E temp = list.getIndex(lastIndex);
+			return temp;
+		} else {
+			System.error("No Such Element in a.util.AbstractList.AbstractListIterator.next() @" 
+					+ (int)this);
+			return null;
+		}
+	}
+	
+	public override E previous() {
+		if (hasPrevious()) {
+			lastIndex = prevIndex;
+			--nextIndex;
+			--prevIndex;
+			E temp = list.getIndex(lastIndex);
+			return temp;
+		} else {
+			System.error("No Such Element in a.util.AbstractList.AbstractListIterator.previous() @" 
+					+ (int)this);
+			return null;
+		}
+	}
+	
+	public void remove() {
+		if (lastIndex != -1) {
+			list.removeIndex(lastIndex);
+			nextIndex = lastIndex;
+			prevIndex = lastIndex - 1;
+			lastIndex = -1;
+		}
+	}
+	
+	public void setElement(E e) {
+		if (lastIndex != -1) {
+			list.setIndex(lastIndex, e);
+		}
+	}
+	
+	public void add(E e) {
+		list.addIndex(nextIndex, e);
+		prevIndex = nextIndex++;
+		lastIndex = -1;
 	}
 }

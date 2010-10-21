@@ -35,6 +35,14 @@ public class TreeMap<K,V> extends Map<K,V> {
 		this.size = 0;
 	}
 	
+	public ~TreeMap() {
+		clear();
+		delete LEFT_LEAF;
+		delete RIGHT_LEAF;
+		delete FORE;
+		delete AFT;
+	}
+	
 	/**
 	 * Performs a left tree rotation on the specified node.
 	 */
@@ -75,6 +83,16 @@ public class TreeMap<K,V> extends Map<K,V> {
 	RBNode<K,V> leftmost(RBNode<K,V> node) {
 		while (!node.getLeft().isLeaf()) {
 			node = node.getLeft();
+		}
+		return node;
+	}
+	
+	/**
+	 * Returns the rightmost non-leaf node in the specified node's subtree.
+	 */
+	RBNode<K,V> rightmost(RBNode<K,V> node) {
+		while (!node.getRight().isLeaf()) {
+			node = node.getRight();
 		}
 		return node;
 	}
@@ -176,6 +194,30 @@ public class TreeMap<K,V> extends Map<K,V> {
 	 * successor has the property that it is the least node in the tree that is 
 	 * greater than the specified node.
 	 */
+	protected RBNode<K,V> predecessor(RBNode<K,V> node) {
+		if (!node.isLeaf() && !node.getLeft().isLeaf()) {
+			return rightmost(node.getLeft());
+		}
+		RBNode<K,V> ptr = node;
+		while (ptr != root && !ptr.isRightChild()) {
+			ptr = ptr.parent;
+		}
+		if (ptr == root) {
+			return FORE;
+		} else {
+			return ptr.parent;
+		}
+	}
+	
+	RBNode<K,V> predecessorRedirect(RBNode<K,V> node) {
+		return predecessor(node);
+	}
+	
+	/**
+	 * Finds the in-order successor of the specified node. The in-order 
+	 * successor has the property that it is the least node in the tree that is 
+	 * greater than the specified node.
+	 */
 	protected RBNode<K,V> successor(RBNode<K,V> node) {
 		if (!node.isLeaf() && !node.getRight().isLeaf()) {
 			return leftmost(node.getRight());
@@ -225,6 +267,13 @@ public class TreeMap<K,V> extends Map<K,V> {
 		//toRemove.markDeleted();
 		delete toRemove;
 		size--;
+	}
+	
+	/**
+	 * Gives the iterators access to remove(RBNode<K,V>);
+	 */
+	void removeRedirect(RBNode<K,V> node) {
+		remove(node);
 	}
 	
 	/**
@@ -343,17 +392,9 @@ public class TreeMap<K,V> extends Map<K,V> {
 		}
 		return black + leftSide;
 	}
-	
-	public ~TreeMap() {
-		clear();
-		delete LEFT_LEAF;
-		delete RIGHT_LEAF;
-		delete FORE;
-		delete AFT;
-	}
 }
 
-private class RBNode<K,V> {
+private class RBNode<K,V> [512] {
 	static const bool RED = true;
 	static const bool BLACK = false;
 	
@@ -372,6 +413,12 @@ private class RBNode<K,V> {
 		this.parent = null;
 		setLeft(tree.LEFT_LEAF);
 		setRight(tree.RIGHT_LEAF);
+	}
+	
+	public ~RBNode() {
+		if (entry != null) {
+			delete entry;
+		}
 	}
 	
 	bool isLeftChild() {
@@ -497,12 +544,6 @@ private class RBNode<K,V> {
 		node.setRight(right);
 		node.c = this.c;
 	}
-	
-	public ~RBNode() {
-		if (entry != null) {
-			delete entry;
-		}
-	}
 }
 
 private class TreeMapKeySet<K,V> extends Set<K> {
@@ -525,12 +566,12 @@ private class TreeMapKeySet<K,V> extends Set<K> {
 	}
 	
 	public bool add(K key) {
-		System.error("Unsupported operation");
+		System.error("Unsupported operation in a.util.TreeMap.TreeMapKeySet.add(K) @" + (int)this);
 		return false;
 	}
 	
 	public bool remove(K key) {
-		return map.remove(key) == null;
+		return map.remove(key) != null;
 	}
 	
 	public void clear() {
@@ -543,12 +584,14 @@ private class TreeMapKeySet<K,V> extends Set<K> {
 }
 
 private class TreeMapKeySetIterator<K,V> extends Iterator<K> {
-	TreeMapKeySet<K,V> s;
-	RBNode<K,V> node;
+	private TreeMapKeySet<K,V> s;
+	private RBNode<K,V> node;
+	private bool removed;
 	
 	public TreeMapKeySetIterator(TreeMapKeySet<K,V> s) {
 		this.s = s;
 		this.node = s.map.FORE;
+		this.removed = true;
 	}
 	
 	private bool advance() {
@@ -564,6 +607,21 @@ private class TreeMapKeySetIterator<K,V> extends Iterator<K> {
 		return node != s.map.AFT;
 	}
 	
+	private bool retreat() {
+		if (node != s.map.FORE) {
+			if (node == s.map.AFT) {
+				if (s.map.isEmpty()) {
+					node = s.map.FORE;
+				} else {
+					node = s.map.rightmost(s.map.root);
+				}
+			} else {
+				node = s.map.predecessorRedirect(node);
+			}
+		}
+		return node != s.map.FORE;
+	}
+	
 	public bool hasNext() {
 		if (node == s.map.FORE) {
 			return !s.isEmpty();
@@ -576,9 +634,21 @@ private class TreeMapKeySetIterator<K,V> extends Iterator<K> {
 	
 	public K next() {
 		if (advance()) {
+			removed = false;
 			return node.entry.key;
 		} else {
+			System.error("No Such Element in a.util.TreeMap.TreeMapKeySet.TreeMapKeySetIterator.next() @" 
+					+ (int)this);
 			return null;
+		}
+	}
+	
+	public void remove() {
+		if (!removed) {
+			RBNode<K,V> old = node;
+			retreat();
+			s.map.removeRedirect(old);
+			removed = true;
 		}
 	}
 }

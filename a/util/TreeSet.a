@@ -23,6 +23,10 @@ public class TreeSet<E> extends Set<E> {
 		this.mapKeySet = map.keySet();
 	}
 	
+	public ~TreeSet() {
+		delete map;
+	}
+	
 	public bool isEmpty() {
 		return map.isEmpty();
 	}
@@ -53,10 +57,6 @@ public class TreeSet<E> extends Set<E> {
 	 */
 	public Iterator<E> getIterator() {
 		return mapKeySet.getIterator();
-	}
-	
-	public ~TreeSet() {
-		delete map;
 	}
 	
 	static {

@@ -1,6 +1,6 @@
 package a.util;
 
-import a.util.Iterator;
+import a.util.ListIterator;
 import a.util.Iterable;
 
 /**
@@ -56,4 +56,30 @@ public abstract class List<E> extends Iterable<E> {
 	 * @return An iterator for this list.
 	 */
 	public abstract Iterator<E> getIterator();
+	
+	/**
+	 * Creates a list iterator for this list initialized to just before the 
+	 * first element.
+	 * @return A list iterator for this list initialized to just before the 
+	 * first element.
+	 */
+	public abstract ListIterator<E> getListIterator();
+	
+	/**
+	 * Creates a list iterator for this list initialized to just after the 
+	 * last element.
+	 * @return A list iterator for this list initialized to just after the 
+	 * last element.
+	 */
+	public abstract ListIterator<E> getListIteratorAtEnd();
+	
+	/**
+	 * Creates a list iterator for this list initialized to just before the 
+	 * specified index. A call to the iterator's next() method immediately after 
+	 * it is returned will return the same element as getIndex(index).
+	 * @param index the position at which to initialize the iterator.
+	 * @return A list iterator for this list initialized to just before the 
+	 * specified element.
+	 */
+	public abstract ListIterator<E> getListIteratorAt(int index);
 }

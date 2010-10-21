@@ -1,7 +1,7 @@
 package a.util;
 
 import a.util.List;
-import a.util.Iterator;
+import a.util.ListIterator;
 
 /**
  * Implentation of a doubly linked list.
@@ -55,7 +55,7 @@ public class LinkedList<E> extends List<E> {
 	 * Runs in O(size) time.
 	 * @return The link at index.
 	 */
-	private Link<E> getLink(int index) {
+	protected Link<E> getLink(int index) {
 		if(index < (size >> 1)) {
 			Link<E> link = head.next;
 			for(int i = 0; i < index; i++) {
@@ -69,6 +69,40 @@ public class LinkedList<E> extends List<E> {
 			}
 			return link;
 		}
+	}
+	
+	/**
+	 * Adds a link to the list that contains the specified element. 
+	 * The new link will be added to the position just before the 
+	 * specified link such that after the operation, 
+	 * link.prev == newLink.
+	 * @param link the link immediately after the position at which the 
+	 * new link is to be inserted.
+	 */
+	protected void add(Link<E> link, E element) {
+		new Link<E>(element, link.previous, link);
+		size++;
+	}
+	
+	void addRedirect(Link<E> link, E element) {
+		add(link, element);
+	}
+	
+	/**
+	 * Removes a link from the list.
+	 * @return the element stored in the removed link.
+	 */
+	protected E remove(Link<E> link) {
+		link.previous.next = link.next;
+		link.next.previous = link.previous;
+		E e = link.element;
+		delete link;
+		size--;
+		return e;
+	}
+	
+	E removeRedirect(Link<E> link) {
+		return remove(link);
 	}
 	
 	/**
@@ -89,8 +123,7 @@ public class LinkedList<E> extends List<E> {
 	
 	public override bool addIndex(int index, E element) {
 		Link<E> link = getLink(index);
-		new Link<E>(element, link.previous, link);
-		size++;
+		add(link, element);
 		return true;
 	}
 	
@@ -135,13 +168,11 @@ public class LinkedList<E> extends List<E> {
 	 * @return The element removed.
 	 */
 	public E removeFirst() {
-		Link<E> first = head.next;
-		head.next = first.next;
-		first.next.previous = head;
-		E element = first.element;
-		delete first;
-		size--;
-		return element;
+		if (size > 0) {
+			return remove(head.next);
+		} else {
+			return null;
+		}
 	}
 	
 	/**
@@ -149,30 +180,50 @@ public class LinkedList<E> extends List<E> {
 	 * @return The element removed.
 	 */
 	public E removeLast() {
-		Link<E> last = head.previous;
-		head.previous = last.previous;
-		last.previous.next = head;
-		E element = last.element;
-		delete last;
-		size--;
-		return element;
+		if (size > 0) {
+			return remove(head.previous);
+		} else {
+			return null;
+		}
 	}
 	
 	public override E removeIndex(int index) {
-		Link<E> link = getLink(index);
-		link.previous.next = link.next;
-		link.next.previous = link.previous;
-		E element = link.element;
-		delete link;
-		size--;
-		return element;
+		if (index >= 0 && index < size) {
+			return remove(getLink(index));
+		} else {
+			return null;
+		}
 	}
 	
 	/**
 	 * @return An iterator for this LinkedList.
 	 */
 	public Iterator<E> getIterator() {
-		return new LinkedListIterator<E>(this);
+		return getListIterator();
+	}
+	
+	/**
+	 * @return An iterator for this LinkedList.
+	 */
+	public ListIterator<E> getListIterator() {
+		return new LinkedListIterator<E>(this, head.next, 0);
+	}
+	
+	/**
+	 * @return An iterator for this LinkedList.
+	 */
+	public ListIterator<E> getListIteratorAtEnd() {
+		return new LinkedListIterator<E>(this, head, size());
+	}
+	
+	public ListIterator<E> getListIteratorAt(int index) {
+		if (index < 0 || index > size()) {
+			System.error("Index Out Of Bounds in a.util.LinkedList.getListIteratorAt(int) @" + (int)this + 
+					": " + index);
+			return null;
+		} else {
+			return new LinkedListIterator<E>(this, getLink(index), index);
+		}
 	}
 }
 
@@ -197,19 +248,89 @@ private class Link<E> [512] {
 /**
  * Iterator for LinkedList.
  */
-private class LinkedListIterator<E> extends Iterator<E> {
+private class LinkedListIterator<E> extends ListIterator<E> {
 	private LinkedList<E> list;
-	private Link<E> current;
+	private Link<E> next;
+	private Link<E> prev;
+	private Link<E> last;
+	private int nextIndex;
+	private int lastIndex;
 	
-	LinkedListIterator(LinkedList<E> list) {
+	LinkedListIterator(LinkedList<E> list, Link<E> link, int index) {
 		this.list = list;
-		current = list.head;
+		this.next = link;
+		this.prev = link.previous;
+		this.last = null;
+		this.nextIndex = index;
+		this.lastIndex = -1;
 	}
 	
-	public bool hasNext() {return current.next != list.head;}
+	public int nextIndex() {
+		return nextIndex;
+	}
+	
+	public int previousIndex() {
+		return nextIndex - 1;
+	}
+	
+	public bool hasNext() {
+		return next != list.head;
+	}
+	
+	public bool hasPrevious() {
+		return prev != list.head;
+	}
 	
 	public E next() {
-		current = current.next;
-		return current.element;
+		if (hasNext()) {
+			last = next;
+			next = next.next;
+			prev = prev.next;
+			lastIndex = nextIndex++;
+			return last.element;
+		} else {
+			System.error("No Such Element in a.util.LinkedList.LinkedListIterator.next() @" 
+					+ (int)this);
+			return null;
+		}
+	}
+	
+	public E previous() {
+		if (hasNext()) {
+			last = prev;
+			next = next.previous;
+			prev = prev.previous;
+			lastIndex = --nextIndex;
+			return last.element;
+		} else {
+			System.error("No Such Element in a.util.LinkedList.LinkedListIterator.previous() @" 
+					+ (int)this);
+			return null;
+		}
+	}
+	
+	public void remove() {
+		if (last != null) {
+			next = last.next;
+			prev = last.previous;
+			list.removeRedirect(last);
+			last = null;
+			nextIndex = lastIndex;
+			lastIndex = -1;
+		}
+	}
+	
+	public void setElement(E e) {
+		if (last != null) {
+			last.element = e;
+		}
+	}
+	
+	public void add(E e) {
+		list.addRedirect(next, e);
+		prev = next.previous;
+		++nextIndex;
+		last = null;
+		lastIndex = -1;
 	}
 }
