@@ -1,0 +1,526 @@
+package a.util;
+
+import a.util.Heap;
+
+/**
+ * An ordered list collection. The methods add(), remove(), contains(), successor(), and predecessor() all 
+ * run in expected O(log n) time. min() and max() run in constant time and getIndex() runs in O(n) time. 
+ * This collection allows duplicate elements. Unlike TreeSet, SkipList does not guarantee logarithmic 
+ * performance for search operations, but it allows for more efficient iteration over the collection. 
+ * It is particularly well-suited to range searches, which can be done in expected O(log n + k) time, where 
+ * k is the number of elements in the desired range, compared to O(k log n) for TreeSet. SkipList 
+ * also uses SkipListIterator for iteration, which supports an expanded iterator functionality with the 
+ * ability to iterate both forwards and backwards through the list, much like a ListIterator.
+ *
+ * The default p-value for the skip list is 1/4, which is generally accepted to be the best general-purpose 
+ * compromise between storage and search cost. A value of p = 1/2 provides the same expected search cost 
+ * with less variance but a higher storage cost.
+ * @author wangbot
+ */
+public class SkipList<E> extends Iterable<E> {
+	private static const int DEFAULT_HEIGHT = 2;
+	private static const int MAX_HEIGHT = 32;
+	private static const fixed DEFAULT_P = 0.25;
+	
+	private Comparator<E> comp;
+	private int height;
+	private fixed p;
+	Tower head;
+	Tower tail;
+	private int size;
+	
+	/**
+	 * Constructs a new SkipList with the specified initial tower height, p value, and comparator.
+	 * @param height the initial tower height
+	 * @param p the value of p used by the new skip list. Must have a value in the range [0, 1). Note 
+	 * a p-value of 0 will make the skip list no different than an ordered linked list (with O(n) search 
+	 * costs).
+	 * @param comp the comparator to be used to determine the ordering of elements in the skip list.
+	 */
+	public SkipList(int height, fixed p, Comparator<E> comp) {
+		if (height < 1) {
+			height = DEFAULT_HEIGHT;
+		}
+		if (p < 0 || p >= 1) {
+			p = DEFAULT_P;
+		}
+		
+		this.comp = comp;
+		this.height = 0;
+		this.p = p;
+		this.size = 0;
+		this.head = new Tower(0, height);
+		this.tail = new Tower(0, height);
+		head.setPrev(0, head);
+		for (int i = 0; i < height; ++i) {
+			head.setNext(i, tail);
+		}
+	}
+	
+	public SkipList(int height, Comparator<E> comp) {
+		this(height, DEFAULT_P, comp);
+	}
+	
+	public SkipList(Comparator<E> comp) {
+		this(DEFAULT_HEIGHT, DEFAULT_P, comp);
+	}
+	
+	public ~SkipList() {
+		clear();
+		delete head;
+		delete tail;
+	}
+	
+	/**
+	 * Finds the first tower containing an element that is less than or equal to the specified target.
+	 */
+	private Tower findFirst(E target) {
+		Tower left = head;
+		Tower right = tail;
+		int level = height - 1;
+		while (level >= 0) {
+			Tower next = left.next(level);
+			if (right == next) {
+				--level;
+			} else {
+				if (comp.compare(target, (E)next.element) > 0) {
+					left = next;
+				} else {
+					right = next;
+					--level;
+				}
+			}
+		}
+		return right;
+	}
+	
+	/**
+	 * Finds the last tower containing an element that is greater than or equal to the specified target.
+	 */
+	private Tower findLast(E target) {
+		Tower left = head;
+		Tower right = tail;
+		int level = height - 1;
+		while (level >= 0) {
+			Tower next = left.next(level);
+			if (right == next) {
+				--level;
+			} else {
+				if (comp.compare(target, (E)next.element) >= 0) {
+					left = next;
+				} else {
+					right = next;
+					--level;
+				}
+			}
+		}
+		return left;
+	}
+	
+	/**
+	 * Resizes the head and tail towers to be at least as high but no more than twice the specified 
+	 * minimum acceptable height.
+	 */
+	private void resizeHeadTail(int minHeight) {
+		int oldHeight = head.getHeight();
+		int newHeight = oldHeight * 2;
+		while (newHeight < minHeight) {
+			newHeight *= 2;
+		}
+		
+		head.resize(newHeight);
+		tail.resize(newHeight);
+		for (int i = oldHeight; i < newHeight; ++i) {
+			head.setNext(i, tail);
+		}
+		head.setPrev(0, head);
+	}
+	
+	/**
+	 * Returns a boolean, with the probability of returning true equal to p.
+	 */
+	private bool coinFlip() {
+		return RandomFixed(0, 1) < p;
+	}
+	
+	/**
+	 * Randomly selects an integer between 1 and MAX_HEIGHT. The probability that the
+	 * method will return a given integer h is (1-p)*p^(h-1). Therefore the expected 
+	 * return value of this method is 1/(1-p).
+	 */
+	private int selectTowerHeight() {
+		int num = 1;
+		while (coinFlip() && num < MAX_HEIGHT) {
+			++num;
+		}
+		return num;
+	}
+	
+	/**
+	 * Inserts a new tower containing a given element into the list.
+	 */
+	Tower insert(E e) {
+		int height = selectTowerHeight();
+		int headHeight = head.getHeight();
+		if (height > this.height) {
+			this.height = height;
+			if (height > headHeight) {
+				resizeHeadTail(height);
+			}
+		}
+		Tower newTower = new Tower((int)e, height);
+		Tower left = head;
+		Tower right = tail;
+		int level = this.height - 1;
+		while (level >= 0) {
+			Tower next = left.next(level);
+			if (next != right && comp.compare(e, (E)next.element) > 0) {
+				left = next;
+			} else {
+				right = next;
+				if (level < height) {
+					left.setNext(level, newTower);
+					newTower.setNext(level, right);
+				}
+				--level;
+			}
+		}
+		++size;
+		return newTower;
+	}
+	
+	/**
+	 * Removes a tower from the list.
+	 */
+	void remove(Tower t) {
+		int height = t.getHeight();
+		for (int i = 0; i < height; ++i) {
+			t.prev(i).setNext(i, t.next(i));
+		}
+		if (this.height == height) {
+			while (this.height > 1 && head.next(this.height) == tail) {
+				--this.height;
+			}
+		}
+		delete t;
+		--size;
+	}
+	
+	/**
+	 * Returns the number of elements in the list.
+	 * @return the number of elements in this list.
+	 */
+	public int size() {
+		return size;
+	}
+	
+	/**
+	 * Checks if the list contains no elements.
+	 * @return true if this list contains no elements.
+	 */
+	public bool isEmpty() {
+		return size == 0;
+	}
+	
+	/**
+	 * Checks if an element is in the list.
+	 * @return true if at least there is at least one element equivalent to the query in this list.
+	 */
+	public bool contains(E e) {
+		Tower t = findFirst(e);
+		return t != tail && comp.compare((E)t.element, e) == 0;
+	}
+	
+	/**
+	 * Returns the ith element in this list, which is also the ith smallest element in the list.
+	 * @param the position from which to retrieve an element. Must be between 0, inclusive, and size(), 
+	 * exclusive.
+	 * @return the ith element in this list.
+	 */
+	public E getIndex(int i) {
+		if (i < 0 || i >= size()) {
+			System.error("Index Out Of Bounds in a.util.SkipList.getIndex(int) @" + (int)this);
+			return null;
+		} else {
+			Tower t = head.next(0);
+			for (int j = 0; j < i; ++j, t = t.next(0));
+			return (E)t.element;
+		}
+	}
+	
+	/**
+	 * Returns the least element in this list, or null if the list is empty.
+	 * @return the least element in this list, or null if the list is empty.
+	 */
+	public E min() {
+		return (E)head.next(0).element;
+	}
+	
+	/**
+	 * Returns the greatest element in this list, or null if the list is empty.
+	 * @return the greatest element in this list, or null if the list is empty.
+	 */
+	public E max() {
+		return (E)tail.prev(0).element;
+	}
+	
+	/**
+	 * Returns the greatest element in this list that is less than the given element, or null 
+	 * if no such element exists.
+	 * @return the greatest element in this list that is less than the given element, or null
+	 * if no such element exists.
+	 */
+	public E predecessor(E e) {
+		Tower t = findFirst(e);
+		if (t != head) {
+			t = t.prev(0);
+			return (E)t.element;
+		} else {
+			return null;
+		}
+	}
+	
+	/**
+	 * Returns the least element in this list that is greater than the given element, or null 
+	 * if no such element exists.
+	 * @return the least element in this list that is greater than the given element, or null
+	 * if no such element exists.
+	 */
+	public E successor(E e) {
+		Tower t = findLast(e);
+		if (t != tail) {
+			t = t.next(0);
+			return (E)t.element;
+		} else {
+			return null;
+		}
+	}
+	
+	/**
+	 * Clears this list, removing all elements.
+	 */
+	public void clear() {
+		Tower current = head.next(0);
+		while (current != tail) {
+			Tower old = current;
+			current = current.next(0);
+			delete old;
+		}
+		for (int i = 0; i < head.getHeight(); ++i) {
+			head.setNext(i, tail);
+		}
+		head.setPrev(0, head);
+		height = 0;
+		size = 0;
+	}
+	
+	/**
+	 * Inserts an element into the list. Any element e will be inserted into a position such that 
+	 * all elements before e are less than or equal to e and all elements after e are greater than or 
+	 * equal to e.
+	 * @return true if the element was successfully added.
+	 */
+	public bool add(E e) {
+		insert(e);
+		return true;
+	}
+	
+	/**
+	 * Removes an element from the list.
+	 * @return true if the element was successfully removed.
+	 */
+	public bool remove(E e) {
+		Tower t = findFirst(e);
+		if (t == tail || comp.compare((E)t.element, e) != 0) {
+			return false;
+		} else {
+			remove(t);
+			return true;
+		}
+	}
+	
+	/**
+	 * Returns an iterator over this list. The iterator will return elements in the order in which 
+	 * they appear in this list, which is in ascending order.
+	 * @return an iterator over this list.
+	 */
+	public Iterator<E> getIterator() {
+		return new SkipListIterator<E>(this, head.next(0));
+	}
+	
+	/**
+	 * Returns a SkipListIterator over this list, initialized to just before the first element. 
+	 * This iterator supports bidirectional iteration.
+	 * @return a SkipListIterator over this list, initialized to just before the first element.
+	 */
+	public SkipListIterator<E> getListIterator() {
+		return new SkipListIterator<E>(this, head.next(0));
+	}
+	
+	/**
+	 * Returns a SkipListIterator over this list, initialized to just after the last element.
+	 * This iterator supports bidirectional iteration.
+	 * @return a SkipListIterator over this list, initialized to just after the last element.
+	 */
+	public SkipListIterator<E> getListIteratorAtEnd() {
+		return new SkipListIterator<E>(this, tail);
+	}
+	
+	/**
+	 * Returns a SkipListIterator over this list, initialized to just before the specified position.
+	 * This iterator supports bidirectional iteration.
+	 * @return a SkipListIterator over this list, initialized to just before the specified position.
+	 */
+	public SkipListIterator<E> getListIteratorAt(int i) {
+		if (i < 0 || i > size) {
+			System.error("Index Out Of Bounds in a.util.SkipList.getListIteratorAt(int) @" + (int)this);
+			return null;
+		} else {
+			Tower t = head.next(0);
+			for (int j = 0; j < i; ++j, t = t.next(0));
+			return new SkipListIterator<E>(this, t);
+		}
+	}
+	
+	/**
+	 * Returns a SkipListIterator initialized to just before the first occurrence of 
+	 * the specified element in the list. A call to next() immediately after the 
+	 * iterator is returned will return the specified element.
+	 * @return a SkipListIterator initialized to just before the first occurence of 
+	 * the specified element in the list.
+	 */
+	public SkipListIterator<E> getListIteratorAtFirst(E e) {
+		Tower t = findFirst(e);
+		if (t != tail && comp.compare((E)t.element, e) == 0) {
+			return new SkipListIterator<E>(this, t);
+		} else {
+			return null;
+		}
+	}
+	
+	/**
+	 * Returns a SkipListIterator initialized to just after the last occurrence of 
+	 * the specified element in the list. A call to previous() immediately after the 
+	 * iterator is returned will return the specified element.
+	 * @return a SkipListIterator initialized to just after the last occurence of 
+	 * the specified element in the list.
+	 */
+	public SkipListIterator<E> getListIteratorAtLast(E e) {
+		Tower t = findLast(e);
+		if (t != tail && comp.compare((E)t.element, e) == 0) {
+			return new SkipListIterator<E>(this, t.next(0));
+		} else {
+			return null;
+		}
+	}
+}
+
+private class Tower [512] {
+	int element;
+	int heap;		// array: indices 0 thru n / 2 - 1 hold next ptrs, n / 2 thru n - 1 hold prev ptrs
+	int n;			// size of the array, or 2 * height of the tower
+	private int capacity;
+	
+	public Tower(int element, int height) {
+		this.element = element;
+		this.heap = Heap.malloc(2 * height);
+		this.n = 2 * height;
+		this.capacity = Heap.round(n);
+	}
+	
+	public ~Tower() {
+		Heap.free(heap);
+	}
+	
+	public int getHeight() {
+		return n >> 1;
+	}
+	
+	public Tower prev(int level) {
+		return (Tower)Heap.array[heap + getHeight() + level];
+	}
+	
+	public Tower next(int level) {
+		return (Tower)Heap.array[heap + level];
+	}
+	
+	public void setPrev(int level, Tower t) {
+		Heap.array[heap + getHeight() + level] = (int)t;
+	}
+	
+	public void setNext(int level, Tower t) {
+		Heap.array[heap + level] = (int)t;
+		t.setPrev(level, this);
+	}
+	
+	public void resize(int height) {
+		if (2 * height > capacity) {
+			int newHeap = Heap.calloc(2 * height);
+			for (int i = 0; i < n / 2; ++i) { 
+				Heap.array[newHeap + i] = Heap.array[heap + i]; // copy next pointers
+				Heap.array[newHeap + height + i] = Heap.array[heap + getHeight() + i]; // copy prev pointers
+			}
+			Heap.free(heap);
+			heap = newHeap;
+			n = 2 * height;
+			capacity = Heap.round(n);
+		}
+	}
+}
+
+public class SkipListIterator<E> extends Iterator<E> {
+	private SkipList<E> list;
+	private Tower next;
+	private Tower prev;
+	private Tower last;
+	
+	public SkipListIterator(SkipList<E> list, Tower t) {
+		this.list = list;
+		this.next = t;
+		this.prev = t.prev(0);
+		this.last = null;
+	}
+	
+	public bool hasNext() {
+		return next != list.tail;
+	}
+	
+	public bool hasPrevious() {
+		return prev != list.head;
+	}
+	
+	public E next() {
+		if (hasNext()) {
+			last = next;
+			next = next.next(0);
+			prev = prev.next(0);
+			return (E)last.element;
+		} else {
+			System.error("No Such Element in a.util.SkipList.SkipListIterator.next() @" 
+					+ (int)this);
+			return null;
+		}
+	}
+	
+	public E previous() {
+		if (hasPrevious()) {
+			last = prev;
+			next = next.prev(0);
+			prev = prev.prev(0);
+			return (E)last.element;
+		} else {
+			System.error("No Such Element in a.util.SkipList.SkipListIterator.previous() @" 
+					+ (int)this);
+			return null;
+		}
+	}
+	
+	public void remove() {
+		if (last != null) {
+			prev = last.prev(0);
+			next = last.next(0);
+			list.remove(last);
+			last = null;
+		}
+	}
+}

@@ -1,0 +1,50 @@
+package a.util;
+
+import a.util.Iterator;
+/**
+ * An iterator for a list, supporting reverse iteration and mutation/addition of elements in 
+ * addition to the normal operations supported by Iterator.
+ */
+public abstract class ListIterator<E> extends Iterator<E> {
+	
+	/**
+	 * Returns the index of the next element that would be returned by a call to next(), or 
+	 * size() if the iterator is at the end of the list.
+	 */
+	public abstract int nextIndex();
+	
+	/**
+	 * Returns the inex of the next element that would be returned by a call to previous(), or 
+	 * -1 if the iterator is at the beginning of the list.
+	 */
+	public abstract int previousIndex();
+	
+	/**
+	 * Checks if this iterator can return an element with a call to previous().
+	 * @return true if this iterator can return an element with a call to previous().
+	 */
+	public abstract bool hasPrevious();
+	
+	/**
+	 * Returns the element in the collection located immediately before this iterator's 
+	 * current position and decrements the position of the iterator by one.
+	 */
+	public abstract E previous();
+	
+	/**
+	 * Sets the value of the last element returned by this iterator in the collection. This 
+	 * method will only have an effect if no calls to remove() or add() have been made since 
+	 * the last call to next() or previous().
+	 */
+	public abstract void setElement(E e);
+	
+	/**
+	 * Adds a new element to the collection at the position immediately before the element that 
+	 * would be returned by a call to next() and after the element that would be returned by a call 
+	 * to previous(). After the operation is complete, a call to previous() will return the newly added 
+	 * element while a call to next() remains unaffected. Calling this method will prevent any calls 
+	 * to remove() or setElement() from having any affect until a subsequent to next() or previous() is 
+	 * made.
+	 */
+	public abstract void add(E e);
+}
