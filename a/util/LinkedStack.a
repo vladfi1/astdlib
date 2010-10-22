@@ -16,7 +16,7 @@ public class LinkedStack<E> extends Iterable<E> {
 	/**
 	 * The first link in the list.
 	 */
-	private Link<E> head;
+	StackLink<E> head;
 	
 	/**
 	 * Empty stack.
@@ -48,7 +48,7 @@ public class LinkedStack<E> extends Iterable<E> {
 	 */
 	public void clear() {
 		while(head != null) {
-			Link<E> temp = head;
+			StackLink<E> temp = head;
 			head = head.next;
 			delete temp;
 		}
@@ -59,8 +59,8 @@ public class LinkedStack<E> extends Iterable<E> {
 	 * Pushes an element onto the stack.
 	 */
 	public void push(E element) {
-		head = new Link<E>(element, head);
-		size++;
+		head = new StackLink<E>(element, head);
+		++size;
 	}
 	
 	/**
@@ -70,11 +70,12 @@ public class LinkedStack<E> extends Iterable<E> {
 	public E pop() {
 		if(isEmpty()) return null;
 		else {
-			Link<E> temp = head;
+			StackLink<E> temp = head;
+			E e = head.element;
 			head = head.next;
 			delete temp;
-			size--;
-			return head.element;
+			--size;
+			return e;
 		}
 	}
 	
@@ -91,14 +92,14 @@ public class LinkedStack<E> extends Iterable<E> {
 	 * @return An iterator for this LinkedStack.
 	 */
 	public Iterator<E> getIterator() {
-		return new LinkedStackIterator(this);
+		return new LinkedStackIterator<E>(this);
 	}
 }
 
 /**
  * The links in a LinkedStack.
  */
-private class Link<E> [256] {
+private class StackLink<E> [256] {
 	/**
 	 * The element in this link.
 	 */
@@ -106,9 +107,9 @@ private class Link<E> [256] {
 	/**
 	 * The next link.
 	 */
-	Link<E> next;
+	StackLink<E> next;
 	
-	Link(E element, Link<E> next) {
+	StackLink(E element, StackLink<E> next) {
 		this.element = element;
 		this.next = next;
 	}
@@ -118,7 +119,7 @@ private class Link<E> [256] {
  * Iterator for LinkedStack.
  */
 private class LinkedStackIterator<E> extends Iterator<E> {
-	private Link<E> current;
+	private StackLink<E> current;
 	
 	LinkedStackIterator(LinkedStack<E> stack) {
 		current = stack.head;
