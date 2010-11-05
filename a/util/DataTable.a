@@ -15,7 +15,12 @@ public class DataTable
 	private bool global;
 	private string prefix;
 	
-	public DataTable(bool global) //false for local, true for global. Use DataTable.GLOBAL/LOCAL for increased readability.
+	/**
+	* Returns a reference to the global or local data table and generates a prefix for it.
+	* @param global Which data table you want to get. false for local, true for glboal. Use DataTable.GLOBAL or DataTable.LOCAL for readability.
+	* @return A reference to the chosen data table with a generated prefix.
+	*/
+	public DataTable(bool global)
 	{
 		this.global = global;
 		this.prefix = "/" + Count; //Small as possible for maximum efficency, while allowing normal data table usage to have "0" and the like. "/" is unlikely to be used normally.
@@ -44,7 +49,7 @@ public class DataTable
 	* @return true if the value exists, false otherwise.
 	*/
 	public bool ifValueExists(string key) {
-		return DataTableValueExists(global, key);
+		return DataTableValueExists(global, prefix + key);
 	}
 	
 	/**
@@ -53,7 +58,7 @@ public class DataTable
 	* @return true if the value exists, false otherwise.
 	*/
 	public bool ifValueExists(int key) {
-		return DataTableValueExists(global, (string)key);
+		return DataTableValueExists(global, prefix + key);
 	}
 	
 	//Script generated methods
