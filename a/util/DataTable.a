@@ -1,0 +1,1473 @@
+package a.util;
+
+public class DataTable
+{
+	
+	public static const bool GLOBAL = true;
+	public static const bool LOCAL = false;
+	
+	private static int Count = 0;
+	
+	private bool global;
+	private string prefix;
+	
+	public DataTable(bool global)
+	{
+		this.global = global;
+		this.prefix = "/" + Count; //Small as possible for maximum efficency, while allowing normal data table usage to have "0" and the like. "/" is unlikely to be used normally.
+		Count++;
+	}
+	
+	/**
+	* Checks if a value is saved in the data table with the given key.
+	* @param key The key of the value to be checked.
+	* @return true if the value exists, false otherwise.
+	*/
+	public bool ifValueExists(string key) {
+		return DataTableValueExists(global, key);
+	}
+	
+	/**
+	* Checks if a value is saved in the data table with the given key.
+	* @param key The key of the value to be checked.
+	* @return true if the value exists, false otherwise.
+	*/
+	public bool ifValueExists(int key) {
+		return DataTableValueExists(global, (string)key);
+	}
+	
+	//Script generated methods
+	
+	/**
+	* Saves an abilcmd to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, abilcmd val) {
+		DataTableSetAbilCmd(global, key, val);
+	}
+	
+	/**
+	* Saves an abilcmd to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, abilcmd val) {
+		DataTableSetAbilCmd(global, (string)key, val);
+	}
+	/**
+	* Loads an abilcmd from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public abilcmd getAbilCmd(string key) {
+		return DataTableGetAbilCmd(global, key);
+	}
+	
+	/**
+	* Loads an abilcmd from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public abilcmd getAbilCmd(int key) {
+		return DataTableGetAbilCmd(global, (string)key);
+	}
+	/**
+	* Saves an actorscope to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, actorscope val) {
+		DataTableSetActorScope(global, key, val);
+	}
+	
+	/**
+	* Saves an actorscope to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, actorscope val) {
+		DataTableSetActorScope(global, (string)key, val);
+	}
+	/**
+	* Loads an actorscope from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public actorscope getActorScope(string key) {
+		return DataTableGetActorScope(global, key);
+	}
+	
+	/**
+	* Loads an actorscope from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public actorscope getActorScope(int key) {
+		return DataTableGetActorScope(global, (string)key);
+	}
+	/**
+	* Saves an actor to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, actor val) {
+		DataTableSetActor(global, key, val);
+	}
+	
+	/**
+	* Saves an actor to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, actor val) {
+		DataTableSetActor(global, (string)key, val);
+	}
+	/**
+	* Loads an actor from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public actor getActor(string key) {
+		return DataTableGetActor(global, key);
+	}
+	
+	/**
+	* Loads an actor from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public actor getActor(int key) {
+		return DataTableGetActor(global, (string)key);
+	}
+	/**
+	* Saves an aifilter to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, aifilter val) {
+		DataTableSetAIFilter(global, key, val);
+	}
+	
+	/**
+	* Saves an aifilter to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, aifilter val) {
+		DataTableSetAIFilter(global, (string)key, val);
+	}
+	/**
+	* Loads an aifilter from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public aifilter getAIFilter(string key) {
+		return DataTableGetAIFilter(global, key);
+	}
+	
+	/**
+	* Loads an aifilter from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public aifilter getAIFilter(int key) {
+		return DataTableGetAIFilter(global, (string)key);
+	}
+	/**
+	* Saves a bank to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, bank val) {
+		DataTableSetBank(global, key, val);
+	}
+	
+	/**
+	* Saves a bank to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, bank val) {
+		DataTableSetBank(global, (string)key, val);
+	}
+	/**
+	* Loads a bank from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public bank getBank(string key) {
+		return DataTableGetBank(global, key);
+	}
+	
+	/**
+	* Loads a bank from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public bank getBank(int key) {
+		return DataTableGetBank(global, (string)key);
+	}
+	/**
+	* Saves a bool to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, bool val) {
+		DataTableSetBool(global, key, val);
+	}
+	
+	/**
+	* Saves a bool to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, bool val) {
+		DataTableSetBool(global, (string)key, val);
+	}
+	/**
+	* Loads a bool from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public bool getBool(string key) {
+		return DataTableGetBool(global, key);
+	}
+	
+	/**
+	* Loads a bool from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public bool getBool(int key) {
+		return DataTableGetBool(global, (string)key);
+	}
+	/**
+	* Saves a byte to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, byte val) {
+		DataTableSetByte(global, key, val);
+	}
+	
+	/**
+	* Saves a byte to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, byte val) {
+		DataTableSetByte(global, (string)key, val);
+	}
+	/**
+	* Loads a byte from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public byte getByte(string key) {
+		return DataTableGetByte(global, key);
+	}
+	
+	/**
+	* Loads a byte from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public byte getByte(int key) {
+		return DataTableGetByte(global, (string)key);
+	}
+	/**
+	* Saves a camerainfo to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, camerainfo val) {
+		DataTableSetCameraInfo(global, key, val);
+	}
+	
+	/**
+	* Saves a camerainfo to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, camerainfo val) {
+		DataTableSetCameraInfo(global, (string)key, val);
+	}
+	/**
+	* Loads a camerainfo from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public camerainfo getCameraInfo(string key) {
+		return DataTableGetCameraInfo(global, key);
+	}
+	
+	/**
+	* Loads a camerainfo from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public camerainfo getCameraInfo(int key) {
+		return DataTableGetCameraInfo(global, (string)key);
+	}
+	/**
+	* Saves a cinematic to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void putCinematic(string key, int val) {
+		DataTableSetCinematic(global, key, val);
+	}
+	
+	/**
+	* Saves a cinematic to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void putCinematic(int key, int val) {
+		DataTableSetCinematic(global, (string)key, val);
+	}
+	/**
+	* Loads a cinematic from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getCinematic(string key) {
+		return DataTableGetCinematic(global, key);
+	}
+	
+	/**
+	* Loads a cinematic from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getCinematic(int key) {
+		return DataTableGetCinematic(global, (string)key);
+	}
+	/**
+	* Saves a color to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, color val) {
+		DataTableSetColor(global, key, val);
+	}
+	
+	/**
+	* Saves a color to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, color val) {
+		DataTableSetColor(global, (string)key, val);
+	}
+	/**
+	* Loads a color from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public color getColor(string key) {
+		return DataTableGetColor(global, key);
+	}
+	
+	/**
+	* Loads a color from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public color getColor(int key) {
+		return DataTableGetColor(global, (string)key);
+	}
+	/**
+	* Saves a control to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void putControl(string key, int val) {
+		DataTableSetControl(global, key, val);
+	}
+	
+	/**
+	* Saves a control to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void putControl(int key, int val) {
+		DataTableSetControl(global, (string)key, val);
+	}
+	/**
+	* Loads a control from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getControl(string key) {
+		return DataTableGetControl(global, key);
+	}
+	
+	/**
+	* Loads a control from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getControl(int key) {
+		return DataTableGetControl(global, (string)key);
+	}
+	/**
+	* Saves a conversation reply to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void putReply(string key, int val) {
+		DataTableSetReply(global, key, val);
+	}
+	
+	/**
+	* Saves a reply to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void putReply(int key, int val) {
+		DataTableSetReply(global, (string)key, val);
+	}
+	/**
+	* Loads a reply from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getReply(string key) {
+		return DataTableGetReply(global, key);
+	}
+	
+	/**
+	* Loads a reply from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getReply(int key) {
+		return DataTableGetReply(global, (string)key);
+	}
+	/**
+	* Saves a conversation to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void putConversation(string key, int val) {
+		DataTableSetConversation(global, key, val);
+	}
+	
+	/**
+	* Saves a conversation to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void putConversation(int key, int val) {
+		DataTableSetConversation(global, (string)key, val);
+	}
+	/**
+	* Loads a conversation from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getConversation(string key) {
+		return DataTableGetConversation(global, key);
+	}
+	
+	/**
+	* Loads a conversation from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getConversation(int key) {
+		return DataTableGetConversation(global, (string)key);
+	}
+	/**
+	* Saves a dialog item to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void putDialogItem(string key, int val) {
+		//todo Andromeda needs to stop failing on parsing this
+		//libNtve_gf_SaveDataTableValueDialogItem(global, key, val);
+	}
+	
+	/**
+	* Saves a dialog item to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void putDialogItem(int key, int val) {
+		//todo
+		//libNtve_gf_SaveDataTableValueDialogItem(global, (string)key, val);
+	}
+	/**
+	* Loads a dialog item from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getDialogItem(string key) {
+		//todo
+		return 0;//libNtve_gf_ValueFromDataTableDialogItem(global, key);
+	}
+	
+	/**
+	* Loads an int from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getDialogItem(int key) {
+		return 0;//libNtve_gf_ValueFromDataTableDialogItem(global, (string)key);
+	}
+	/**
+	* Saves a dialog to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void putDialog(string key, int val) {
+		DataTableSetDialog(global, key, val);
+	}
+	
+	/**
+	* Saves a dialog to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void putDialog(int key, int val) {
+		DataTableSetDialog(global, (string)key, val);
+	}
+	/**
+	* Loads a dialog from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getDialog(string key) {
+		return DataTableGetDialog(global, key);
+	}
+	
+	/**
+	* Loads a dialog from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getDialog(int key) {
+		return DataTableGetDialog(global, (string)key);
+	}
+	/**
+	* Saves a doodad to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, doodad val) {
+		DataTableSetDoodad(global, key, val);
+	}
+	
+	/**
+	* Saves a doodad to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, doodad val) {
+		DataTableSetDoodad(global, (string)key, val);
+	}
+	/**
+	* Loads a doodad from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public doodad getDoodad(string key) {
+		return DataTableGetDoodad(global, key);
+	}
+	
+	/**
+	* Loads a doodad from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public doodad getDoodad(int key) {
+		return DataTableGetDoodad(global, (string)key);
+	}
+	/**
+	* Saves a marker to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, marker val) {
+		DataTableSetMarker(global, key, val);
+	}
+	
+	/**
+	* Saves a marker to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, marker val) {
+		DataTableSetMarker(global, (string)key, val);
+	}
+	/**
+	* Loads a marker from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public marker getMarker(string key) {
+		return DataTableGetMarker(global, key);
+	}
+	
+	/**
+	* Loads a marker from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public marker getMarker(int key) {
+		return DataTableGetMarker(global, (string)key);
+	}
+	/**
+	* Saves an objective to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void putObjective(string key, int val) {
+		DataTableSetObjective(global, key, val);
+	}
+	
+	/**
+	* Saves an objective to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void putObjective(int key, int val) {
+		DataTableSetObjective(global, (string)key, val);
+	}
+	/**
+	* Loads an objective from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getObjective(string key) {
+		return DataTableGetObjective(global, key);
+	}
+	
+	/**
+	* Loads an objective from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getObjective(int key) {
+		return DataTableGetObjective(global, (string)key);
+	}
+	/**
+	* Saves an order to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, order val) {
+		DataTableSetOrder(global, key, val);
+	}
+	
+	/**
+	* Saves an order to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, order val) {
+		DataTableSetOrder(global, (string)key, val);
+	}
+	/**
+	* Loads an order from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public order getOrder(string key) {
+		return DataTableGetOrder(global, key);
+	}
+	
+	/**
+	* Loads an order from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public order getOrder(int key) {
+		return DataTableGetOrder(global, (string)key);
+	}
+	/**
+	* Saves a ping to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void putPing(string key, int val) {
+		DataTableSetPing(global, key, val);
+	}
+	
+	/**
+	* Saves a ping to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void putPing(int key, int val) {
+		DataTableSetPing(global, (string)key, val);
+	}
+	/**
+	* Loads a ping from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getPing(string key) {
+		return DataTableGetPing(global, key);
+	}
+	
+	/**
+	* Loads a ping from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getPing(int key) {
+		return DataTableGetPing(global, (string)key);
+	}
+	/**
+	* Saves a planet to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void putPlanet(string key, int val) {
+		DataTableSetPlanet(global, key, val);
+	}
+	
+	/**
+	* Saves a planet to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void putPlanet(int key, int val) {
+		DataTableSetPlanet(global, (string)key, val);
+	}
+	/**
+	* Loads a planet from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getPlanet(string key) {
+		return DataTableGetPlanet(global, key);
+	}
+	
+	/**
+	* Loads a planet from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getPlanet(int key) {
+		return DataTableGetPlanet(global, (string)key);
+	}
+	/**
+	* Saves a playergroup to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, playergroup val) {
+		DataTableSetPlayerGroup(global, key, val);
+	}
+	
+	/**
+	* Saves a playergroup to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, playergroup val) {
+		DataTableSetPlayerGroup(global, (string)key, val);
+	}
+	/**
+	* Loads a playergroup from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public playergroup getPlayerGroup(string key) {
+		return DataTableGetPlayerGroup(global, key);
+	}
+	
+	/**
+	* Loads a playergroup from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public playergroup getPlayerGroup(int key) {
+		return DataTableGetPlayerGroup(global, (string)key);
+	}
+	/**
+	* Saves a point to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, point val) {
+		DataTableSetPoint(global, key, val);
+	}
+	
+	/**
+	* Saves a point to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, point val) {
+		DataTableSetPoint(global, (string)key, val);
+	}
+	/**
+	* Loads a point from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public point getPoint(string key) {
+		return DataTableGetPoint(global, key);
+	}
+	
+	/**
+	* Loads a point from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public point getPoint(int key) {
+		return DataTableGetPoint(global, (string)key);
+	}
+	/**
+	* Saves a portrait to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void putPortrait(string key, int val) {
+		DataTableSetPortrait(global, key, val);
+	}
+	
+	/**
+	* Saves a portrait to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void putPortrait(int key, int val) {
+		DataTableSetPortrait(global, (string)key, val);
+	}
+	/**
+	* Loads a portrait from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getPortrait(string key) {
+		return DataTableGetPortrait(global, key);
+	}
+	
+	/**
+	* Loads a portrait from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getPortrait(int key) {
+		return DataTableGetPortrait(global, (string)key);
+	}
+	/**
+	* Saves a fixed to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, fixed val) {
+		DataTableSetFixed(global, key, val);
+	}
+	
+	/**
+	* Saves a fixed to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, fixed val) {
+		DataTableSetFixed(global, (string)key, val);
+	}
+	/**
+	* Loads a fixed from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public fixed getFixed(string key) {
+		return DataTableGetFixed(global, key);
+	}
+	
+	/**
+	* Loads a fixed from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public fixed getFixed(int key) {
+		return DataTableGetFixed(global, (string)key);
+	}
+	/**
+	* Saves a region to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, region val) {
+		DataTableSetRegion(global, key, val);
+	}
+	
+	/**
+	* Saves a region to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, region val) {
+		DataTableSetRegion(global, (string)key, val);
+	}
+	/**
+	* Loads a region from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public region getRegion(string key) {
+		return DataTableGetRegion(global, key);
+	}
+	
+	/**
+	* Loads a region from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public region getRegion(int key) {
+		return DataTableGetRegion(global, (string)key);
+	}
+	/**
+	* Saves a revealer to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, revealer val) {
+		DataTableSetRevealer(global, key, val);
+	}
+	
+	/**
+	* Saves a revealer to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, revealer val) {
+		DataTableSetRevealer(global, (string)key, val);
+	}
+	/**
+	* Loads a revealer from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public revealer getRevealer(string key) {
+		return DataTableGetRevealer(global, key);
+	}
+	
+	/**
+	* Loads a revealer from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public revealer getRevealer(int key) {
+		return DataTableGetRevealer(global, (string)key);
+	}
+	/**
+	* Saves a soundlink to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, soundlink val) {
+		DataTableSetSoundLink(global, key, val);
+	}
+	
+	/**
+	* Saves a soundlink to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, soundlink val) {
+		DataTableSetSoundLink(global, (string)key, val);
+	}
+	/**
+	* Loads a soundlink from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public soundlink getSoundLink(string key) {
+		return DataTableGetSoundLink(global, key);
+	}
+	
+	/**
+	* Loads a soundlink from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public soundlink getSoundLink(int key) {
+		return DataTableGetSoundLink(global, (string)key);
+	}
+	/**
+	* Saves a sound to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, sound val) {
+		DataTableSetSound(global, key, val);
+	}
+	
+	/**
+	* Saves a sound to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, sound val) {
+		DataTableSetSound(global, (string)key, val);
+	}
+	/**
+	* Loads a sound from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public sound getSound(string key) {
+		return DataTableGetSound(global, key);
+	}
+	
+	/**
+	* Loads a sound from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public sound getSound(int key) {
+		return DataTableGetSound(global, (string)key);
+	}
+	/**
+	* Saves a string to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, string val) {
+		DataTableSetString(global, key, val);
+	}
+	
+	/**
+	* Saves a string to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, string val) {
+		DataTableSetString(global, (string)key, val);
+	}
+	/**
+	* Loads a string from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public string getString(string key) {
+		return DataTableGetString(global, key);
+	}
+	
+	/**
+	* Loads a string from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public string getString(int key) {
+		return DataTableGetString(global, (string)key);
+	}
+	/**
+	* Saves a text to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, text val) {
+		DataTableSetText(global, key, val);
+	}
+	
+	/**
+	* Saves a text to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, text val) {
+		DataTableSetText(global, (string)key, val);
+	}
+	/**
+	* Loads a text from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public text getText(string key) {
+		return DataTableGetText(global, key);
+	}
+	
+	/**
+	* Loads a text from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public text getText(int key) {
+		return DataTableGetText(global, (string)key);
+	}
+	/**
+	* Saves a timer to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, timer val) {
+		DataTableSetTimer(global, key, val);
+	}
+	
+	/**
+	* Saves a timer to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, timer val) {
+		DataTableSetTimer(global, (string)key, val);
+	}
+	/**
+	* Loads a timer from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public timer getTimer(string key) {
+		return DataTableGetTimer(global, key);
+	}
+	
+	/**
+	* Loads a timer from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public timer getTimer(int key) {
+		return DataTableGetTimer(global, (string)key);
+	}
+	/**
+	* Saves a transmissionsource to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, transmissionsource val) {
+		DataTableSetTransmissionSource(global, key, val);
+	}
+	
+	/**
+	* Saves a transmissionsource to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, transmissionsource val) {
+		DataTableSetTransmissionSource(global, (string)key, val);
+	}
+	/**
+	* Loads a transmissionsource from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public transmissionsource getTransmissionSource(string key) {
+		return DataTableGetTransmissionSource(global, key);
+	}
+	
+	/**
+	* Loads a transmissionsource from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public transmissionsource getTransmissionSource(int key) {
+		return DataTableGetTransmissionSource(global, (string)key);
+	}
+	/**
+	* Saves a transmission to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void putTransmission(string key, int val) {
+		DataTableSetTransmission(global, key, val);
+	}
+	
+	/**
+	* Saves a transmission to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void putTransmission(int key, int val) {
+		DataTableSetTransmission(global, (string)key, val);
+	}
+	/**
+	* Loads a transmission from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getTransmission(string key) {
+		return DataTableGetTransmission(global, key);
+	}
+	
+	/**
+	* Loads a transmission from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getTransmission(int key) {
+		return DataTableGetTransmission(global, (string)key);
+	}
+	/**
+	* Saves a trigger to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, trigger val) {
+		DataTableSetTrigger(global, key, val);
+	}
+	
+	/**
+	* Saves a trigger to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, trigger val) {
+		DataTableSetTrigger(global, (string)key, val);
+	}
+	/**
+	* Loads a trigger from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public trigger getTrigger(string key) {
+		return DataTableGetTrigger(global, key);
+	}
+	
+	/**
+	* Loads a trigger from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public trigger getTrigger(int key) {
+		return DataTableGetTrigger(global, (string)key);
+	}
+	/**
+	* Saves an unitfilter to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, unitfilter val) {
+		DataTableSetUnitFilter(global, key, val);
+	}
+	
+	/**
+	* Saves an unitfilter to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, unitfilter val) {
+		DataTableSetUnitFilter(global, (string)key, val);
+	}
+	/**
+	* Loads an unitfilter from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public unitfilter getUnitFilter(string key) {
+		return DataTableGetUnitFilter(global, key);
+	}
+	
+	/**
+	* Loads an unitfilter from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public unitfilter getUnitFilter(int key) {
+		return DataTableGetUnitFilter(global, (string)key);
+	}
+	/**
+	* Saves an unitgroup to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, unitgroup val) {
+		DataTableSetUnitGroup(global, key, val);
+	}
+	
+	/**
+	* Saves an unitgroup to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, unitgroup val) {
+		DataTableSetUnitGroup(global, (string)key, val);
+	}
+	/**
+	* Loads an unitgroup from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public unitgroup getUnitGroup(string key) {
+		return DataTableGetUnitGroup(global, key);
+	}
+	
+	/**
+	* Loads an unitgroup from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public unitgroup getUnitGroup(int key) {
+		return DataTableGetUnitGroup(global, (string)key);
+	}
+	/**
+	* Saves an unitref to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, unitref val) {
+		DataTableSetUnitRef(global, key, val);
+	}
+	
+	/**
+	* Saves an unitref to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, unitref val) {
+		DataTableSetUnitRef(global, (string)key, val);
+	}
+	/**
+	* Loads an unitref from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public unitref getUnitRef(string key) {
+		return DataTableGetUnitRef(global, key);
+	}
+	
+	/**
+	* Loads an unitref from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public unitref getUnitRef(int key) {
+		return DataTableGetUnitRef(global, (string)key);
+	}
+	/**
+	* Saves an unit to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, unit val) {
+		DataTableSetUnit(global, key, val);
+	}
+	
+	/**
+	* Saves an unit to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, unit val) {
+		DataTableSetUnit(global, (string)key, val);
+	}
+	/**
+	* Loads an unit from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public unit getUnit(string key) {
+		return DataTableGetUnit(global, key);
+	}
+	
+	/**
+	* Loads an unit from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public unit getUnit(int key) {
+		return DataTableGetUnit(global, (string)key);
+	}
+	/**
+	* Saves a waveinfo to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, waveinfo val) {
+		DataTableSetWaveInfo(global, key, val);
+	}
+	
+	/**
+	* Saves a waveinfo to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, waveinfo val) {
+		DataTableSetWaveInfo(global, (string)key, val);
+	}
+	/**
+	* Loads a waveinfo from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public waveinfo getWaveInfo(string key) {
+		return DataTableGetWaveInfo(global, key);
+	}
+	
+	/**
+	* Loads a waveinfo from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public waveinfo getWaveInfo(int key) {
+		return DataTableGetWaveInfo(global, (string)key);
+	}
+	/**
+	* Saves a wavetarget to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, wavetarget val) {
+		DataTableSetWaveTarget(global, key, val);
+	}
+	
+	/**
+	* Saves a wavetarget to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, wavetarget val) {
+		DataTableSetWaveTarget(global, (string)key, val);
+	}
+	/**
+	* Loads a wavetarget from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public wavetarget getWaveTarget(string key) {
+		return DataTableGetWaveTarget(global, key);
+	}
+	
+	/**
+	* Loads a wavetarget from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public wavetarget getWaveTarget(int key) {
+		return DataTableGetWaveTarget(global, (string)key);
+	}
+	/**
+	* Saves a wave to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, wave val) {
+		DataTableSetWave(global, key, val);
+	}
+	
+	/**
+	* Saves a wave to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, wave val) {
+		DataTableSetWave(global, (string)key, val);
+	}
+	/**
+	* Loads a wave from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public wave getWave(string key) {
+		return DataTableGetWave(global, key);
+	}
+	
+	/**
+	* Loads a wave from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public wave getWave(int key) {
+		return DataTableGetWave(global, (string)key);
+	}
+
+}
