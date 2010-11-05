@@ -1,5 +1,9 @@
 package a.util;
 
+/**
+* Class for safe and convenient data table usage.
+* @author Moogle
+*/
 public class DataTable
 {
 	
@@ -584,6 +588,40 @@ public class DataTable
 	*/
 	public doodad getDoodad(int key) {
 		return DataTableGetDoodad(global, (string)key);
+	}
+	/**
+	* Saves an int to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(string key, int val) {
+		DataTableSetInt(global, key, val);
+	}
+	
+	/**
+	* Saves an int to the data table.
+	* @param key The key to save the value under.
+	* @val The value to save under the key.
+	*/
+	public void put(int key, int val) {
+		DataTableSetInt(global, (string)key, val);
+	}
+	/**
+	* Loads an int from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getInt(string key) {
+		return DataTableGetInt(global, key);
+	}
+	
+	/**
+	* Loads an int from the data table.
+	* @param key The key to load the value from.
+	* @return The value under the key.
+	*/
+	public int getInt(int key) {
+		return DataTableGetInt(global, (string)key);
 	}
 	/**
 	* Saves a marker to the data table.
