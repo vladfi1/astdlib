@@ -260,7 +260,8 @@ public enrich trigger
 	*/
 	public void addEventRoomPanelPressedButton(int p2, int p3)
 	{
-		TriggerAddEventRoomPanelPressedButton(this, p2, p3);
+		System.debug("addEventRoomPanelPressedButton is currently not recognized by Andromeda. TODO");
+		//TriggerAddEventRoomPanelPressedButton(this, p2, p3);
 	}
 
 	/**
@@ -269,7 +270,8 @@ public enrich trigger
 	*/
 	public void addEventRoomPanelCanceled(int p2)
 	{
-		TriggerAddEventRoomPanelCanceled(this, p2);
+		System.debug("addEventRoomPanelCanceled is currently not recognized by Andromeda. TODO");
+		//TriggerAddEventRoomPanelCanceled(this, p2);
 	}
 
 	/**
@@ -278,7 +280,8 @@ public enrich trigger
 	*/
 	public void addEventRoomPanelMouseRollOver(int p2)
 	{
-		TriggerAddEventRoomPanelMouseRollOver(this, p2);
+		System.debug("addEventRoomPanelMouseRollOver is currently not recognized by Andromeda. TODO");
+		//TriggerAddEventRoomPanelMouseRollOver(this, p2);
 	}
 
 	/**
@@ -287,7 +290,8 @@ public enrich trigger
 	*/
 	public void addEventRoomPanelMouseRollOut(int p2)
 	{
-		TriggerAddEventRoomPanelMouseRollOut(this, p2);
+		System.debug("addEventRoomPanelRollOut is currently not recognized by Andromeda. TODO");
+		//TriggerAddEventRoomPanelMouseRollOut(this, p2);
 	}
 
 	/**
