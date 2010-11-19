@@ -6,6 +6,10 @@ package a.natives;
 
 public enrich unit
 {
+	public static unit create(string name, int options, int player, point position, fixed angle) {
+		return UnitGroupUnit(UnitCreate(1, name, options, player, position, angle), 1);
+	}
+	
 	/**
 	*	Description here.
 	*/
@@ -167,6 +171,16 @@ public enrich unit
 	public fixed getHeight()
 	{
 		return UnitGetHeight(this);
+	}
+	
+	public fixed height {
+		get {
+			return this.getHeight();
+		}
+		
+		set {
+			this.setHeight(value);
+		}
 	}
 
 	/**

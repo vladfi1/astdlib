@@ -20,6 +20,26 @@ public enrich point {
 	public static point fromId(int id) {
 		return PointFromId(id);
 	}
+	
+	/**
+	 * Gets the height of the terrain at this point
+	 * 
+	 * @param heightmap The heightmap to be used. API is scarce, but Ground means the absolute height of the ground at this point.
+	 * @return the height of the terrain
+	 */
+	public fixed getWorldHeight(int heightmap) {
+		return WorldHeight(heightmap, this);
+	}
+	
+	public fixed getWorldHeight() {
+		return WorldHeight(c_heightMapGround, this);
+	}
+	
+	public fixed worldHeight {
+		get {
+			return WorldHeight(c_heightMapGround, this);
+		}
+	}
 
 	/**
 	 *   Accessors for the x-coordinate of the point. 
