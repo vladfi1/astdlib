@@ -73,10 +73,10 @@ public class BroadPhase<T> {
 	}
 		
 	private bool intersects(AABB aabb, Proxy<T> proxy) {
-		if(lower[0] > aabb.x2) return false;
-		if(lower[1] > aabb.y2) return false;
-		if(upper[0] < aabb.x1) return false;
-		if(upper[1] < aabb.y1) return false;
+		if(proxy.lower[0] > aabb.x2) return false;
+		if(proxy.lower[1] > aabb.y2) return false;
+		if(proxy.upper[0] < aabb.x1) return false;
+		if(proxy.upper[1] < aabb.y1) return false;
 		return true;
 	}
 	
@@ -95,7 +95,7 @@ public class BroadPhase<T> {
 		e[0] = proxy.upper[0] - proxy.lower[0];
 		e[1] = proxy.upper[1] - proxy.lower[1];
 		
-		fixed d[2];
+		fixed[2] d;
 		d[0] = seg.p2.x - seg.p1.x;
 		d[1] = seg.p2.y - seg.p1.y;
 		

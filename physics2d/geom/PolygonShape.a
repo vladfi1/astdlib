@@ -7,7 +7,7 @@ import physics2d.geom.Vec2;
 import physics2d.geom.Mat22;
 import physics2d.geom.XForm;
 import physics2d.geom.AABB;
-import physics2d.geom.Edge;
+//import physics2d.geom.Edge;
 
 /**
  * A polygon shape.
@@ -17,7 +17,7 @@ public class PolygonShape extends Shape {
 	
 	private fixed density;
 	private Array<Vec2> vertices;
-	private Array<Edge> edges;
+	//private Array<Edge> edges;
 	
 	/**
 	 * Creates a new polygon shape.
@@ -33,21 +33,23 @@ public class PolygonShape extends Shape {
 			vertices.setIndex(i, def.getVertex(i).clone());
 		}
 		
+		/*
 		edges = new Array<Edge>(vertices.length);
 		for(int i = 0; i < vertices.length; i++) {
 			int next = i+1;
 			if(next == vertices.length) next = 0;
 			edges.setIndex(i, new Edge(vertices.getIndex(next), vertices.getIndex(i)));
 		}
+		*/
 	}
 	
 	public ~PolygonShape() {
 		for(int i = 0; i < vertices.length; i++) {
 			delete vertices.getIndex(i);
-			delete edges.getIndex(i);
+			//delete edges.getIndex(i);
 		}
 		delete vertices;
-		delete edges;
+		//delete edges;
 	}
 	
 	public int getVertexCount() {
@@ -64,11 +66,12 @@ public class PolygonShape extends Shape {
 	
 	/**
 	 * Index is taken modulo the vertex count.
-	 */
+	 *
 	public Edge getEdge(int index) {
 		if(index >= edges.length) index -= edges.length;
 		return edges.getIndex(index);
 	}
+	*/
 	
 	public fixed getDensity() {
 		return density;

@@ -1,17 +1,20 @@
 package physics2d.collision;
 
+import physics2d.collision.Points;
+import physics2d.collision.Edge;
 import physics2d.geom.Vec2;
 import physics2d.geom.XForm;
 import physics2d.geom.Shape;
 
 import a.util.Array;
+import a.util.PriorityQueue;
 
 /**
  * Computes distances and penetrations between shapes.
  * @author XPilot
  */
 public static class Distance {
-	private static int maxIterations = 10;
+	public static const int maxIterations = 10;
 	
 	/**
 	 * Computes the distance between two convex shapes.
@@ -21,9 +24,25 @@ public static class Distance {
 	 * @param s2 The second shape.
 	 * @param p1 Stores the closest point on the first shape.
 	 * @param p2 Stores the closest point on the second shape.
-	 * @return null If the two shapes do not intersect.
+	 * @return null A simplex containing the origin, or null if the shapes don't intersect.
 	 */
 	public static Array<Points> computeDistance(XForm xf1, Shape s1, XForm xf2, Shape s2, Vec2 p1, Vec2 p2) {
+		return computeDistance(xf1, s1, Vec2.ZERO, xf2, s2, Vec2.ZERO, p1, p2);
+	}
+	
+	/**
+	 * Computes the distance between two translated convex shapes.
+	 * @param xf1 The transform of the first shape.
+	 * @param s1 The first shape.
+	 * @param t1 The translation of the first shape.
+	 * @param xf2 The transform of the second shape.
+	 * @param s2 The second shape.
+	 * @param t2 The translation of the second shape.
+	 * @param p1 Stores the closest point on the first shape.
+	 * @param p2 Stores the closest point on the second shape.
+	 * @return null A simplex containing the origin, or null if the shapes don't intersect.
+	 */
+	public static Array<Points> computeDistance(XForm xf1, Shape s1, Vec2 t1, XForm xf2, Shape s2, Vec2 t2, Vec2 p1, Vec2 p2) {
 		bool inside = false;
 		int count = 0;
 		Points[3] simplex;
@@ -37,18 +56,18 @@ public static class Distance {
 		s1.getPoint(xf1, p.v1);
 		s2.getPoint(xf2, p.v2);
 		p.setV();
-		System.debug("Initial: " + p.v.toString());
+		//System.debug("Initial: " + p.v.toString());
 		
 		int iter;
 		for(iter = 0; iter < maxIterations; iter++) {
 			vNeg.setVec(p.v).negate();
-			s1.support(xf1, vNeg, simplex[count].v1);
-			s2.support(xf2, p.v, simplex[count].v2);
+			support(xf1, s1, t1, vNeg, simplex[count].v1);
+			support(xf2, s2, t2, p.v, simplex[count].v2);
 			simplex[count].setV();
 			
-			System.debug("Support: " + simplex[count].v.toString());
+			//System.debug("Support: " + simplex[count].v.toString());
 			count++;
-			System.debug("Count:" + count);
+			//System.debug("Count:" + count);
 			
 			if(count == 1) {
 				if(simplex[0].v.x == 0.0 && simplex[0].v.y == 0.0) {//origin found
@@ -83,9 +102,9 @@ public static class Distance {
 				}
 			} else if(count == 3) {
 				if(simplex[2].equals(simplex[1]) || simplex[2].equals(simplex[0])) {
-					System.debug("Duplicate point in count = 3");
+					//System.debug("Duplicate point in count = 3");
 					for(int i = 0; i < 3; i++) {
-						System.debug(simplex[i].v.toString());
+						//System.debug(simplex[i].v.toString());
 					}
 					break;//same point found
 				}
@@ -149,7 +168,7 @@ public static class Distance {
 			}
 		}
 		
-		System.debug("iterations: " + iter);
+		//System.debug("iterations: " + iter);
 		
 		if(inside) {
 			delete p;
@@ -180,33 +199,76 @@ public static class Distance {
 		return null;
 	}
 	
+	/**
+	 * Computes the support point of a translated convex shape.
+	 * @param xf The transform of the shape.
+	 * @param s The shape.
+	 * @param t The translation.
+	 * @param v The direction.
+	 * @param result Stores the result.
+	 */
+	private static void support(XForm xf, Shape s, Vec2 t, Vec2 v, Vec2 result) {
+		s.support(xf, v, result);
+		if(v.dot(t) > 0) result.add(t);
+	}
 	
 	public static bool intersects(XForm xf1, Shape s1, XForm xf2, Shape s2) {
 		return false;
 	}
-}
+	
+	/**
+	 * Computes the minimum penetration between a pair of translated convex shapes.
+	 * @param xf1 The transform of the first shape.
+	 * @param s1 The first shape.
+	 * @param t1 The translation of the first shape.
+	 * @param xf2 The transform of the second shape.
+	 * @param s2 The second shape.
+	 * @param t2 The translation of the second shape.
+	 * @param simplex The simplex containing the origin.
+	 * @return The minimum penetration vector.
+	 */
+	public static Edge computePenetration(XForm xf1, Shape s1, Vec2 t1, XForm xf2, Shape s2, Vec2 t2, Array<Points> simplex) {
+		PriorityQueue<Edge> queue = new PriorityQueue<Edge>(3 + maxIterations, Edge.getComparator());
+		
+		queue.offer(new Edge(simplex.getIndex(0), simplex.getIndex(1)));
+		queue.offer(new Edge(simplex.getIndex(1), simplex.getIndex(2)));
+		queue.offer(new Edge(simplex.getIndex(2), simplex.getIndex(0)));
+		
+		for(int i = 0; i < maxIterations; i++) {
+			Edge e = queue.peek();
 
-public class Points {
-	Vec2 v1, v2, v;
-	Points() {
-		v1 = new Vec2();
-		v2 = new Vec2();
-		v = new Vec2();
-	}
-	~Points() {
-		delete v1;
-		delete v2;
-		delete v;
-	}
-	void setV() {
-		Vec2.difference(v1, v2, v);
-	}
-	void setPoints(Points p) {
-		v1.setVec(p.v1);
-		v2.setVec(p.v2);
-		v.setVec(p.v);
-	}
-	bool equals(Points p) {
-		return v.equals(p.v);
+			//System.debug("Best edge: " + e.toString());
+			//System.debug("normal: " + e.normal.toString());
+			
+			Points p = new Points();
+			p.v.setVec(e.normal).negate();
+			support(xf1, s1, t1, e.normal, p.v1);
+			support(xf2, s2, t2, p.v, p.v2);
+			p.setV();
+			
+			//System.debug("New points: " + p.v.toString());
+			
+			if(p.equals(e.p1) || p.equals(e.p2)) {
+				//System.debug("Duplicate points: " + p.v.toString());
+				break;
+			}
+			
+			queue.poll();
+			queue.offer(new Edge(e.p1, p));
+			queue.offer(new Edge(p, e.p2));
+			delete e;
+		}
+		
+		Edge edge = queue.peek().clone();
+		
+		for(Edge e : queue) {
+			delete e.p1;
+			delete e;
+		}
+		
+		delete simplex;
+		delete queue;
+		
+		return edge;
 	}
 }

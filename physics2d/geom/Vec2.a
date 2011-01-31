@@ -7,6 +7,11 @@ package physics2d.geom;
 public class Vec2 {
 
 	/**
+	 * The zero vector.
+	 */
+	public static /* final */ Vec2 ZERO = new Vec2();
+
+	/**
 	 * X and Y components.
 	 */
 	public fixed x, y;
