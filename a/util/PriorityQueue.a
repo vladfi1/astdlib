@@ -24,6 +24,8 @@ public class PriorityQueue<E> extends Iterable<E> {
 	public PriorityQueue(int capacity, Comparator<E> comparator) {
 		ptr = Heap.malloc(capacity);
 		this.comparator = comparator;
+		this.capacity = Heap.round(capacity);
+		size = 0;
 	}
 	
 	public ~PriorityQueue() {
@@ -52,13 +54,13 @@ public class PriorityQueue<E> extends Iterable<E> {
 	
 	private void fixUpward(int i) {
 		while ((i > 0) && comparator.compare((E)Heap.array[ptr + i], (E)Heap.array[ptr + parent(i)]) > 0) {
-			Heap.swap(i, parent(i));
+			Heap.swap(ptr + i, ptr + parent(i));
 			i = parent(i);
 		}
 	}
 	
 	private void fixDownward(int i) {
-		int max = i;
+		int max;
 		while (true) {
 			int left = left(i);
 			int right = left + 1;
@@ -71,7 +73,7 @@ public class PriorityQueue<E> extends Iterable<E> {
 				max = right;
 			}
 			if (comparator.compare((E)Heap.array[ptr + i], (E)Heap.array[ptr + max]) < 0) {
-				Heap.swap(i, max);
+				Heap.swap(ptr + i, ptr + max);
 				i = max;
 			} else {
 				return;
@@ -106,13 +108,15 @@ public class PriorityQueue<E> extends Iterable<E> {
 		}
 		
 		Heap.array[ptr + size] = (int)element;
-		fixUpward(size++);
+		fixUpward(size);
+		size++;
 	}
 	
 	public E poll() {
 		if(size == 0) return null;
 		E first = (E)Heap.array[ptr];
-		Heap.array[ptr] = Heap.array[ptr + --size];
+		size--;
+		Heap.array[ptr] = Heap.array[ptr + size];
 		fixDownward(0);
 		return first;
 	}

@@ -166,7 +166,7 @@ public enrich fixed
 	* 	@param that fixed to which we compare
 	* 	@return  negative, zero or a positive fixedeger if this is lesser, equal or greater than that respectively
 	*/
-	public fixed compareTo(fixed that)
+	public int compareTo(fixed that)
 	{
 		if (this < that) return -1;
 		else if (this > that) return 1;
