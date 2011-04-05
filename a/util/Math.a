@@ -177,4 +177,73 @@ public static class Math {
 		
 		return ans - s;
 	}
+	
+	/**
+	 * Calculates the sine of an angle measured in degrees.
+	 */
+	public static fixed sin(fixed deg) {
+		return Sin(deg);
+	}
+	
+	/**
+	 * Calculates the cosine of an angle measured in degrees.
+	 */
+	public static fixed cos(fixed deg) {
+		return Cos(deg);
+	}
+	
+	/**
+	 * Calculates the tangent of an angle measured in degrees.
+	 */
+	public static fixed tan(fixed deg) {
+		return Tan(deg);
+	}
+	
+	/**
+	 * Calculates the arcsine of a value. The result is in the
+	 * range -90 to 90 degrees.
+	 */
+	public static fixed asin(fixed x) {
+		return ASin(x);
+	}
+	
+	/**
+	 * Calculates the arccosine of a value. The result is in the
+	 * range 0 to 180 degrees.
+	 */
+	public static fixed acos(fixed x) {
+		return ACos(x);
+	}
+	
+	/**
+	 * Calculates the arctangent of a value. The result is in the
+	 * range -90 to 90 degrees.
+	 */
+	public static fixed atan(fixed x) {
+		return ATan(x);
+	}
+	
+	/**
+	 * Calculates the angle theta in the polar coordinate representation (r, theta) of the 
+	 * rectangular coordinates (x, y).
+	 */
+	public static fixed atan2(fixed y, fixed x) {
+		return ATan2(y, x);
+	}
+	
+	/**
+	 * Converts radians to degrees in an approximate fashion. The conversion is not exact. Users should 
+	 * do the conversion themselves if at all possible rather than relying on this method.
+	 */
+	public static fixed toDegrees(fixed rad) {
+		return 180.0 * rad / PI;
+	}
+	
+	/**
+	 * Converts degrees to radians in an approximate fashion. The conversion is not exact. Users should 
+	 * do the conversion themselves if at all possible rather than relying on this method.
+	 */
+	public static fixed toRadians(fixed deg) {
+		return PI * deg / 180.0;
+	}
 }
