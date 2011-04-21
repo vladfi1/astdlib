@@ -23,7 +23,7 @@ public class DataTable
 	public DataTable(bool global)
 	{
 		this.global = global;
-		this.prefix = "/" + Count; //Small as possible for maximum efficency, while allowing normal data table usage to have "0" and the like. "/" is unlikely to be used normally.
+		this.prefix = Count + "/"; //Small as possible for maximum efficency, while allowing normal data table usage to have "0" and the like. "/" is unlikely to be used normally.
 		Count++;
 	}
 	

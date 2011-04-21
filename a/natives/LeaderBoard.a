@@ -124,6 +124,10 @@ public enrich LeaderBoard
 		BoardSetState((int)this, players, c_boardStateShowing, value);
 	}
 	
+	public void setHeaderVisible(playergroup players, bool value) {
+		BoardSetState((int)this, players, c_boardStateShowHeader, value);
+	}
+	
 	/**
 	*	Minimises or unminimises this leaderboard for a group of players.
 	*	@param players the player group for which this board should be modified.
