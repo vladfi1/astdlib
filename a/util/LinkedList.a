@@ -227,7 +227,7 @@ public class LinkedList<E> extends List<E> {
 	}
 }
 
-private class Link<E> [512] {
+private class Link<E> [1024] {
 	E element;
 	Link<E> next, previous;
 	

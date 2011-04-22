@@ -68,7 +68,7 @@ public enrich string{
 	*	@return the substring ranging from start to end
 	*/
 	public string subStr(int start, int end){
-		return StringSub(this, start, end);
+		return StringSub(this, start + 1, end);
 	}
 	
 	/**
@@ -81,7 +81,7 @@ public enrich string{
 	*	@return the substring ranging from start to end
 	*/
 	public string subStr(int start){
-		return StringSub(this, start, this.length);
+		return this.subStr(start, this.length);
 	}
 	
 	/**
@@ -138,7 +138,7 @@ public enrich string{
 	*	@return starting position of first occurence or string.NOT_FOUND
 	*/
 	public int find(string toFind){
-		return StringFind(this,toFind,true);
+		return StringFind(this,toFind,true) - 1;
 	}
 	
 	/**
@@ -150,7 +150,7 @@ public enrich string{
 	*	@return starting position of first occurence or string.NOT_FOUND
 	*/
 	public int find(string toFind, bool caseSensitive){
-		return StringFind(this,toFind,caseSensitive);
+		return StringFind(this,toFind,caseSensitive) - 1;
 	}
 	
 	/**
@@ -238,7 +238,7 @@ public enrich string{
 	*	@return n'th word or null if the string doesn't have so many words
 	*/
 	public string replaceRange(string replacement, int start, int end){
-		return StringReplace(this, replacement, start, end);
+		return StringReplace(this, replacement, start + 1, end);
 	}
 	
 	/**
