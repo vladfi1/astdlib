@@ -1,0 +1,23 @@
+package a.wrapper;
+
+import a.wrapper.Char;
+
+/**
+ * Wrapper class for unit. Immutable.
+ * @author XPilot
+ */
+public class Unit {
+	private unit value;
+	
+	public Unit(unit value) {
+		this.value = value;
+	}
+	
+	public unit getValue() {
+		return value;
+	}
+	
+	public Unit clone() {
+		return new Unit(value);
+	}
+}
