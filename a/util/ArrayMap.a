@@ -1,0 +1,63 @@
+package a.util;
+
+import a.util.ArrayList;
+
+public class ArrayMap<K, V> extends Map<K, V> {
+
+  private ArrayList<V> list;
+  private int size;
+  
+  public ArrayMap() {
+    list = new ArrayList<V>();
+    size = 0;
+  }
+  
+  public ~ArrayMap() {
+    delete list;
+  }
+
+  public override bool isEmpty() {
+    return size == 0;
+  }
+  
+  public override int size() {
+    return size;
+  }
+  
+  public override void clear() {
+    list.clear();
+    size = 0;
+  }
+  
+  private void ensure(K key) {
+    while ((int) key >= list.size()) {
+      list.addLast(null);
+    }
+  }
+  
+  public override bool containsKey(K key) {
+    return getValue(key) != null;
+  }
+  
+  public override V put(K key, V value) {
+    V prev = getValue(key);
+    if (prev == null) size += 1;
+    list.setIndex((int)key, value);
+    if (value == null) size -= 1;
+    return prev;
+  }
+  
+  public override V getValue(K key) {
+    ensure(key);
+    return list.getIndex((int)key);
+  }
+  
+  public override V remove(K key) {
+    return put(key, null);
+  }
+  
+  public override Set<K> keySet() {
+    System.error("ArrayMap.keySet() not implemented!");
+    return null;
+  }
+}
