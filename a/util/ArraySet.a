@@ -38,56 +38,58 @@ public class ArraySet<E> extends Set<E> {
     }
   }
   
-	public override bool add(E e) {
-	  if (contains(e)) return false;
-	  list.setIndex((int)e, 1);
-	  size += 1;
-	  return true;
-	}
-	
-	public override bool contains(E e) {
-	  ensure(e);
-	  return list.getIndex((int)e) != 0;
-	}
-	
-	public override bool remove(E e) {
-	  if (contains(e)) {
-  	  list.setIndex((int)e, 0);
-  	  size -= 1;
-  	  return true;
-	  }
-	  return false;
-	}
-	
-	public override Iterator<E> getIterator() {
-	  return new ArraySetIterator<E>(list);
-	}
+  public override bool add(E e) {
+    if (contains(e)) return false;
+    list.setIndex((int)e, 1);
+    size += 1;
+    return true;
+  }
+  
+  public override bool contains(E e) {
+    ensure(e);
+    return list.getIndex((int)e) != 0;
+  }
+  
+  public override bool remove(E e) {
+    if (contains(e)) {
+      list.setIndex((int)e, 0);
+      size -= 1;
+      return true;
+    }
+    return false;
+  }
+  
+  public override Iterator<E> getIterator() {
+    return new ArraySetIterator<E>(list);
+  }
 }
 
 private class ArraySetIterator<E> extends Iterator<E> {
   private ArrayList<int> list;
-  int index;
+  private int index;
   
   ArraySetIterator(ArrayList<int> list) {
     this.list = list;
     this.index = 0;
   }
   
-	public override bool hasNext() {
-	  while(index < list.size()) {
-	    if (list.getIndex(index) != 0) {
-	      return true;
-	    }
-	    index += 1;
-	  }
-	  return false;
-	}
-	
-	public override E next() {
-	  return (E) index;
-	}
-	
-	public override void remove() {
-	  list.setIndex(index, 0);
-	}
+  public override bool hasNext() {
+    while(index < list.size()) {
+      if (list.getIndex(index) != 0) {
+        return true;
+      }
+      index += 1;
+    }
+    return false;
+  }
+  
+  public override E next() {
+    E temp = (E) index;
+    index += 1;
+    return temp;
+  }
+  
+  public override void remove() {
+    list.setIndex(index, 0);
+  }
 }
