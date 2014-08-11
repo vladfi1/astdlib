@@ -149,6 +149,13 @@ public enrich region
 	{
 		return RegionRect(minx, miny, maxx, maxy);
 	}
+    
+    public static region rect(point center, fixed width, fixed height)
+    {
+        width /= 2;
+        height /= 2;
+        return RegionRect(center.x - width, center.y - height, center.x + width, center.y + height);
+    }
 
 	/**
 	*	Create a circular region with the specified parameters.
