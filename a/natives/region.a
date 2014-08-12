@@ -1,4 +1,7 @@
 package a.natives;
+
+import a.natives.point;
+
 /*
 *	Enrichment for native type 'region'
 *	@author NewName
@@ -81,22 +84,39 @@ public enrich region
 
 	/**
 	*	The minimum boundary for this region. In general, this is a point composed of the left-most x coordinate, and the bottom-most y coordinate within this region.
-	*	@return a point describing the minimum boundary of this region.
+    *   Read-only.
 	*/
-	public point minBound()
+	public point minBound
 	{
-		return RegionGetBoundsMin(this);
+        public get {
+            return RegionGetBoundsMin(this);
+        }
 	}
 
 	/**
 	*	The maximum boundary for this region. In general, this is a point composed of the right-most x coordinate, and the top-most y coordinate within this region.
-	*	@return a point describing the maximum boundary of this region.
+    *   Read-only.
 	*/
-	public point maxBound()
+	public point maxBound
 	{
-		return RegionGetBoundsMax(this);
+        public get {
+            return RegionGetBoundsMax(this);
+        }
 	}
 
+    public fixed width {
+        public get {
+            return maxBound.x - minBound.x;
+        }
+    }
+    
+    public fixed height {
+        public get {
+            return maxBound.y - minBound.y;
+        }
+    }
+
+    
 	/**
 	*	The centre of this region. Setting the centre will adjust the offset such that the region becomes centred on the given point.
 	*/
@@ -204,4 +224,8 @@ public enrich region
 	{
 		return RegionPlayableMap();
 	}
+    
+    public string toString() {
+        return "[" + minBound.toString() + ", " + maxBound.toString() + "]";
+    }
 }
