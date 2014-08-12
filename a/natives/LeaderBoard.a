@@ -209,7 +209,7 @@ public enrich LeaderBoard
 	public static int ROW_HEADER = c_boardRowHeader;
 	
 	/**
-	*	Sets the diaplyed text for the given item.
+	*	Sets the displayed text for the given item.
 	*	@param column the column coordinate of the target item.
 	*	@param row the row coordinate of the target item.
 	*	@param value the new text to display in the target item.
