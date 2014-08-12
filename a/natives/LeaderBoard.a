@@ -12,6 +12,9 @@ typedef LeaderBoard uses int;
 
 public enrich LeaderBoard
 {
+    /** An invalid LeaderBoard. */
+    public static const LeaderBoard NULL = (LeaderBoard) (-1);
+    
 	/**
 	*	Creates a leaderboard with a specified amount of rows and columns.
 	*	@param columns the number of columns for the new leaderboard.
